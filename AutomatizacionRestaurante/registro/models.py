@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.regex_helper import Choice
 
 
 class Cliente(models.Model):
@@ -15,4 +14,7 @@ class Cliente(models.Model):
     )
     sexo = models.CharField(max_length=1,choices=SEXOS)
     clave = models.CharField(max_length=10)
+    
+    def __str__(self):
+        return str(self.ci)
     
