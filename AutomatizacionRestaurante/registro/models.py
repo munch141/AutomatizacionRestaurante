@@ -10,9 +10,9 @@ class Cliente(models.Model):
     nombre = models.CharField(max_length=60)
     apellido = models.CharField(max_length=60)
     fecha_nacimiento = models.DateTimeField('fecha de nacimiento')
+    sexo = models.CharField(max_length=1, choices=SEXOS)
     email = models.EmailField()
     telefono = models.CharField(max_length=12)
-    sexo = models.CharField(max_length=1, choices=SEXOS)
     clave = models.CharField(max_length=10)
     
     def __str__(self):

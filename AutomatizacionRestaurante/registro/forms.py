@@ -4,21 +4,27 @@ from django.forms.widgets import PasswordInput, EmailInput, TextInput, DateInput
 from django.forms.fields import RegexField
 
 class ClienteForm(ModelForm):
-    clave2 = CharField(label='Repita Contraseña',
+    telefono = RegexField(label = 'Teléfono',
+                          error_messages={'invalid':'El formato del teléfono'\
+                                          ' debe ser XXXX-XXXXXXX'},
+                          widget=TextInput(attrs={'placeholder': 'Teléfono',
+                                                  'required': True}),
+                          regex='[0-9]{3}-[0-9]{7}'
+                          )
+    clave = CharField(label='Contraseña',
+                       widget=PasswordInput(
+                                    attrs={'placeholder': 'Contraseña',
+                                           'required': True})
+                       )
+    clave2 = CharField(label='Confirme Contraseña',
                        widget=PasswordInput(
                                     attrs={'placeholder': 'Confirme contraseña',
                                            'required': True})
                        )
-    telefono = RegexField(error_messages={'invalid':'El formato del teléfono'\
-                                          ' debe ser XXXX-XXXXXXX'},
-                          widget=TextInput(attrs={'placeholder': 'Teléfono',
-                                                  'required': True}),
-                          regex='[0-9]{3}-[0-9]{7}',
-                          )
     
     class Meta:
         model = Cliente
-        exclude = ['telefono']
+        exclude = ['telefono', 'clave']
         widgets = {
             'ci': TextInput(attrs={'placeholder': 'Cédula',
                                    'required': True}),
@@ -30,8 +36,6 @@ class ClienteForm(ModelForm):
                                                  'required': True}),
             'email': EmailInput(attrs={'placeholder': 'Email',
                                        'required': True}),
-            'clave': PasswordInput(attrs={'placeholder': 'Contraseña',
-                                       'required': True}),
             }
         
         labels = {
@@ -39,8 +43,6 @@ class ClienteForm(ModelForm):
             'nombre': 'Nombre',
             'apellido': 'Apellido',
             'fecha_nacimiento': 'Fecha de nacimiento',
-            'email': 'Correo electrónico',
-            'telefono': 'Teléfono',
             'sexo': 'Sexo',
-            'clave': 'Contraseña'
+            'email': 'Correo electrónico',
             }
