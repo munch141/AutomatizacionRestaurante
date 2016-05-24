@@ -11,15 +11,15 @@ class PruebasRegistroCliente(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Regístrese:')
         
-    def test_cliente_registrado(self):
+    def test_registro_cliente_redireccion(self):
         response = self.client.post('/registro/registroCliente/',
                                     {'nombre': 'minombre',
                                      'apellido': 'miapellido',
-                                     'ci': 'mici',
-                                     'fecha_nacimiento': 'mifecha',
+                                     'ci': '123456',
+                                     'fecha_nacimiento': '11/15/1993',
                                      'email': 'miemail@email.com',
-                                     'telefono': '111-11111',
+                                     'telefono': '1111-1111111',
                                      'sexo': 'M',
-                                     'clave1': '1234',
+                                     'clave': '1234',
                                      'clave2': '1234',})
         self.assertEqual(response.status_code, 302)
