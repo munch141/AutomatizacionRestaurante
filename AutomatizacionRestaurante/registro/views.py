@@ -18,6 +18,5 @@ class registroCliente(FormView):
     success_url = '/registro/registroCliente/clienteRegistrado/'
 
     def form_valid(self, form):
-        form_data = form.cleaned_data
-        #Do something
+        form.save(commit=True)
         return super(registroCliente, self).form_valid(form)

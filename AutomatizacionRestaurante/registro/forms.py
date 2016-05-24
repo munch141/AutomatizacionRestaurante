@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django.forms import ModelForm, CharField, ValidationError
-from django.forms.extras.widgets import SelectDateWidget
-from .models import Cliente
 from django.forms.widgets import PasswordInput, EmailInput, TextInput, DateInput
-from django.forms.fields import RegexField
+from django.forms.extras.widgets import SelectDateWidget
+
+from .models import Cliente
 
 class ClienteForm(ModelForm):
     clave2 = CharField(
