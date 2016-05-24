@@ -1,2 +1,5 @@
 eclipse.preferences.version=1
+encoding//registro/forms.py=utf-8
 encoding//registro/migrations/0001_initial.py=utf-8
+encoding//registro/tests.py=utf-8
+encoding//registro/views.py=utf-8

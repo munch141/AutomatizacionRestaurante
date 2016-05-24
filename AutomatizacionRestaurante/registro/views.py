@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render
 from django.template.context_processors import request
 from django.http import HttpResponseRedirect
@@ -14,3 +16,8 @@ class registroCliente(FormView):
     template_name = 'registro/registroCliente.html'
     form_class = ClienteForm
     success_url = '/registro/registroCliente/clienteRegistrado/'
+
+    def form_valid(self, form):
+        form_data = form.cleaned_data
+        #Do something
+        return super(registroCliente, self).form_valid(form)

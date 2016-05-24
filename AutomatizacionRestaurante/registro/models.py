@@ -1,4 +1,5 @@
 from django.db import models
+import django.core.validators
 
 SEXOS = (
      ('M','Masculino'),
@@ -13,7 +14,7 @@ class Cliente(models.Model):
     sexo = models.CharField(max_length=1, choices=SEXOS)
     email = models.EmailField()
     telefono = models.CharField(max_length=12)
-    clave = models.CharField(max_length=10)
+    clave = models.CharField(max_length=30)
     
     def __str__(self):
         return str(self.ci)

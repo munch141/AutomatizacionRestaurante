@@ -1,48 +1,54 @@
-from django.forms import ModelForm,  CharField
+# -*- coding: utf-8 -*-
+
+from django.forms import ModelForm, CharField, ValidationError
+from django.forms.extras.widgets import SelectDateWidget
 from .models import Cliente
 from django.forms.widgets import PasswordInput, EmailInput, TextInput, DateInput
 from django.forms.fields import RegexField
 
 class ClienteForm(ModelForm):
-    telefono = RegexField(label = 'Teléfono',
-                          error_messages={'invalid':'El formato del teléfono'\
-                                          ' debe ser XXXX-XXXXXXX'},
-                          widget=TextInput(attrs={'placeholder': 'Teléfono',
-                                                  'required': True}),
-                          regex='[0-9]{3}-[0-9]{7}'
-                          )
-    clave = CharField(label='Contraseña',
-                       widget=PasswordInput(
-                                    attrs={'placeholder': 'Contraseña',
-                                           'required': True})
-                       )
-    clave2 = CharField(label='Confirme Contraseña',
-                       widget=PasswordInput(
-                                    attrs={'placeholder': 'Confirme contraseña',
-                                           'required': True})
-                       )
+    clave2 = CharField(
+                  label='Confirme Contraseña',
+                  widget=PasswordInput(attrs={'placeholder': 'confirme '\
+                                                             'contraseña',
+                                              'required': True})
+                  )
     
     class Meta:
         model = Cliente
-        exclude = ['telefono', 'clave']
+        fields = '__all__'
         widgets = {
-            'ci': TextInput(attrs={'placeholder': 'Cédula',
-                                   'required': True}),
-            'nombre': TextInput(attrs={'placeholder': 'Nombre',
+          'ci': TextInput(attrs={'placeholder': 'cédula',
+                                 'required': True}),
+          'nombre': TextInput(attrs={'placeholder': 'nombre',
+                                     'required': True}),
+          'apellido': TextInput(attrs={'placeholder': 'apellido',
                                        'required': True}),
-            'apellido': TextInput(attrs={'placeholder': 'Apellido',
-                                         'required': True}),
-            'fecha_nacimiento': DateInput(attrs={'placeholder': 'Fecha de Nacimiento',
-                                                 'required': True}),
-            'email': EmailInput(attrs={'placeholder': 'Email',
+          'fecha_nacimiento': SelectDateWidget(years = range(1900,2016)),
+
+          'email': EmailInput(attrs={'placeholder': 'e.g. example@mail.com',
+                                     'required': True}),
+          'telefono': TextInput(attrs={'placeholder': 'e.g. 0555-1234567',
+                                       'pattern': '[0-9]{4}-[0-9]{7}',
                                        'required': True}),
-            }
-        
+          'clave': PasswordInput(attrs={'placeholder': 'contraseña',
+                                        'required': True})
+        } 
         labels = {
-            'ci': 'Cédula',
-            'nombre': 'Nombre',
-            'apellido': 'Apellido',
-            'fecha_nacimiento': 'Fecha de nacimiento',
-            'sexo': 'Sexo',
-            'email': 'Correo electrónico',
-            }
+          'ci': 'Cédula',
+          'nombre': 'Nombre',
+          'apellido': 'Apellido',
+          'fecha_nacimiento': 'Fecha de nacimiento',
+          'sexo': 'Sexo',
+          'email': 'Correo electrónico',
+          'telefono': 'Teléfono',
+          'clave': 'Contraseña'
+        }
+
+    def clean_clave2(self):
+        clave = self.cleaned_data.get('clave')
+        clave2 = self.cleaned_data.get('clave2')
+
+        if clave != clave2:
+            raise ValidationError("Las contraseñas no concuerdan!")
+        return clave2
