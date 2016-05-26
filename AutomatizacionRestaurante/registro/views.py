@@ -22,6 +22,9 @@ app_name = 'registro'
 def clienteRegistrado(request):
     return render(request, 'registro/clienteRegistrado.html') 
 
+def proveedorRegistrado(request):
+    return render(request, 'registro/clienteRegistrado.html') 
+
 class registroCliente(FormView):
     template_name = 'registro/registroCliente.html'
     form_class = RegistroClienteForm
