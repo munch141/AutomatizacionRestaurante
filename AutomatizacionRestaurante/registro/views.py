@@ -17,13 +17,16 @@ from django.views.generic.edit import FormView
 from .forms import RegistroClienteForm
 from .models import Cliente
 
+from .forms import RegistroProveedorForm
+from .models import Proveedor
+
 app_name = 'registro'
 
 def clienteRegistrado(request):
     return render(request, 'registro/clienteRegistrado.html') 
 
 def proveedorRegistrado(request):
-    return render(request, 'registro/clienteRegistrado.html') 
+    return render(request, 'registro/proveedorRegistrado.html') 
 
 class registroCliente(FormView):
     template_name = 'registro/registroCliente.html'
@@ -48,3 +51,28 @@ class registroCliente(FormView):
         user.save()
         perfil.save()
         return super(registroCliente, self).form_valid(form)
+
+#################################################################
+
+class registroProveedor(FormView):
+    template_name = 'registro/registroProveedor.html'
+    form_class = RegistroProveedorForm
+    success_url = '/registro/registroProveedor/proveedorRegistrado/'
+
+    def form_valid(self, form):
+        user = User.objects.create_user(
+            username = form.cleaned_data['username'],
+            password = form.cleaned_data['clave'],
+            email = form.cleaned_data['email'],
+            first_name = form.cleaned_data['nombre'],
+            last_name = ''
+        )
+        perfil = Proveedor(
+			usuario = user,
+			rif = form.cleaned_data['rif'],
+			telefono = form.cleaned_data['telefono'],
+			direccion = form.cleaned_data['direccion']
+        )
+        user.save()
+        perfil.save()
+        return super(registroProveedor, self).form_valid(form)

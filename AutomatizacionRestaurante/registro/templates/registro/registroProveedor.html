@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'registro/registroProveedor.css' %}" />
+
+<head>
+	<h1>Regístrese (Proveedor):</h1>
+</head>
+
+<body>
+	<form action="/registro/registroProveedor/" method="post">
+	    {% csrf_token %}
+	    {{ form.as_p }}
+	    <input type="submit" value="Enviar" />
+	</form>
+</body>
+</html>
