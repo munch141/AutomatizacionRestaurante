@@ -176,3 +176,5 @@ class RegistroProveedorForm(forms.Form):
             raise ValidationError("Las contraseñas no concuerdan!")
         return clave2
 
+
+

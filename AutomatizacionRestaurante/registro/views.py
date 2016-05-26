@@ -2,7 +2,7 @@
 
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate, login
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -76,3 +76,4 @@ class registroProveedor(FormView):
         user.save()
         perfil.save()
         return super(registroProveedor, self).form_valid(form)
+
