@@ -8,7 +8,7 @@ SEXOS = (
 )
 
 class Cliente(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, default="")
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     ci = models.PositiveIntegerField(primary_key=True)
     fecha_nacimiento = models.DateField('fecha de nacimiento')
     sexo = models.CharField(max_length=1, choices=SEXOS)
