@@ -1,5 +1,6 @@
 from django.db import models
 import django.core.validators
+from django.contrib.auth.models import User
 
 SEXOS = (
      ('M','Masculino'),
@@ -7,15 +8,11 @@ SEXOS = (
 )
 
 class Cliente(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, default="")
     ci = models.PositiveIntegerField(primary_key=True)
-    nombre = models.CharField(max_length=60)
-    apellido = models.CharField(max_length=60)
-    fecha_nacimiento = models.DateTimeField('fecha de nacimiento')
+    fecha_nacimiento = models.DateField('fecha de nacimiento')
     sexo = models.CharField(max_length=1, choices=SEXOS)
-    email = models.EmailField()
     telefono = models.CharField(max_length=12)
-    clave = models.CharField(max_length=30)
-    
+
     def __str__(self):
-        return str(self.ci)
-    
+        return str(self.usuario.username)    

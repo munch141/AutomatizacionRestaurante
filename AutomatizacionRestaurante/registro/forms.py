@@ -1,49 +1,94 @@
 # -*- coding: utf-8 -*-
 
-from django.forms import ModelForm, CharField, ValidationError
-from django.forms.widgets import PasswordInput, EmailInput, TextInput, DateInput
+from django import forms
+from django.forms import RegexField, CharField, DateField, ValidationError,\
+                         EmailField, MultipleChoiceField, IntegerField
+from django.forms.widgets import PasswordInput, EmailInput, TextInput, DateInput, Select
 from django.forms.extras.widgets import SelectDateWidget
+from django.contrib.auth.models import User
 
 from .models import Cliente
 
-class ClienteForm(ModelForm):
+SEXOS = (
+     ('M','Masculino'),
+     ('F','Femenino')    
+)
+
+class RegistroClienteForm(forms.Form):
+    username = RegexField(
+                  label = "Nombre de usuario", 
+                  widget = TextInput(attrs={'placeholder':'nombre de usuario',\
+                                           'required':True, 'max_length':30}),
+                  error_messages={
+                        'invalid': 'This value must contain only letters, '\
+                                     'numbers and underscores.'},
+                  regex=r'^\w+$'
+    )
+    
+    ci = IntegerField(
+            label = 'Cédula',
+            widget = TextInput(attrs={'placeholder': 'cédula', 'required': True}),
+    )
+
+    nombre = CharField(
+            label = 'Nombre',
+            widget = TextInput(attrs={'placeholder': 'nombre', 'required': True}),
+    )
+
+    apellido = CharField(
+            label = 'Apellido',
+            widget = TextInput(attrs={'placeholder': 'apellido', 'required': True}),
+    )
+
+    fecha_nacimiento = DateField(
+            label = 'Fecha de nacimiento',
+            widget = SelectDateWidget(years = range(1900,2016)),
+    )
+
+    email = EmailField(
+            label = 'Correo electrónico',
+            widget = EmailInput(attrs={'placeholder': 'e.g. example@mail.com',\
+                                       'required': True}),
+    )
+
+    telefono = CharField(
+            label = 'Teléfono',
+            widget = TextInput(attrs={'placeholder': 'e.g. 0555-1234567',\
+                                      'pattern': '[0-9]{4}-[0-9]{7}',\
+                                      'required': True}),
+    )
+
+    sexo = MultipleChoiceField(required = False,
+              label = 'Sexo',
+              widget = Select(choices = SEXOS)
+    )
+
+    clave = CharField(
+                  label='Contraseña',
+                  widget=PasswordInput(attrs={'placeholder': 'contraseña',
+                                              'required': True})
+    )
+
     clave2 = CharField(
                   label='Confirme Contraseña',
                   widget=PasswordInput(attrs={'placeholder': 'confirme '\
                                                              'contraseña',
                                               'required': True})
-                  )
-    
-    class Meta:
-        model = Cliente
-        fields = '__all__'
-        widgets = {
-          'ci': TextInput(attrs={'placeholder': 'cédula',
-                                 'required': True}),
-          'nombre': TextInput(attrs={'placeholder': 'nombre',
-                                     'required': True}),
-          'apellido': TextInput(attrs={'placeholder': 'apellido',
-                                       'required': True}),
-          'fecha_nacimiento': SelectDateWidget(years = range(1900,2016)),
+    )
 
-          'email': EmailInput(attrs={'placeholder': 'e.g. example@mail.com',
-                                     'required': True}),
-          'telefono': TextInput(attrs={'placeholder': 'e.g. 0555-1234567',
-                                       'pattern': '[0-9]{4}-[0-9]{7}',
-                                       'required': True}),
-          'clave': PasswordInput(attrs={'placeholder': 'contraseña',
-                                        'required': True})
-        } 
-        labels = {
-          'ci': 'Cédula',
-          'nombre': 'Nombre',
-          'apellido': 'Apellido',
-          'fecha_nacimiento': 'Fecha de nacimiento',
-          'sexo': 'Sexo',
-          'email': 'Correo electrónico',
-          'telefono': 'Teléfono',
-          'clave': 'Contraseña'
-        }
+    def clean_username(self):
+        try:
+            user = User.objects.get(username__iexact=self.cleaned_data['username'])
+        except User.DoesNotExist:
+            return self.cleaned_data['username']
+        raise forms.ValidationError("The username already exists. Please try another one.")
+
+    def clean_ci(self):
+        try:
+            cliente = Cliente.objects.get(ci=self.cleaned_data['ci'])
+        except Cliente.DoesNotExist:
+            return self.cleaned_data['ci']
+        raise forms.ValidationError("Ya hay un usuario registrado con esa cédula. Intente de nuevo.")
 
     def clean_clave2(self):
         clave = self.cleaned_data.get('clave')
