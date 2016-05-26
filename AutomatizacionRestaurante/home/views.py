@@ -1,12 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect
 
 from .forms import LogInForm
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def perfil(request):
-	
-	return render(request, 'home/perfil.html')
+	return render_to_response('home/perfil.html', {'user':request.user})
 
 def LogIn(request):
 	if request.method == 'POST':
@@ -17,6 +18,7 @@ def LogIn(request):
 			user = authenticate(username=username, password = password)
 	
 			if user is not None:
+				login(request, user)
 				return HttpResponseRedirect('perfil')
 
 	else: 
