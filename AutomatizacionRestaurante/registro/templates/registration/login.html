@@ -1,4 +1,10 @@
-<h1>Login</h1>
+<html>
+
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'registro/login.css' %}" />
+
+<h1>Login Restaurante</h1>
+
     {% if form.errors %}
         <p>Su usuario y/o contraseña son incorrectos. Intente de nuevo.</p>
     {% endif %}
@@ -7,8 +13,10 @@
             <tr><th><label for="id_username">Usuario:</label></th><td>{{ form.username }}</td></tr>
             <tr><th><label for="id_password">Contraseña:</label></th><td>{{ form.password }}</td></tr>
         </table>
-        <input type="submit" value="Login" />
+        <input type="submit" value="Entrar" />
         <input type="hidden" name="next" value="/home/" />
     </form>
     <p><a href="/registro/registroCliente">Regístrese como cliente</a></p>
     <p><a href="/registro/registroProveedor">Regístrese como proveedor</a></p>
+
+</html>

@@ -1,3 +1,6 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'home/perfil.css' %}" />
+
 <h1>Perfil de {{ user.username }}:</h1>
 
 {% if user.cliente %}
