@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
 
-
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout, authenticate, login
-from django.views.decorators.csrf import csrf_protect
-from django.shortcuts import render_to_response
 from django.template import RequestContext
-
 from django.contrib.auth.models import User
-
 from django.shortcuts import render
 from django.template.context_processors import request
 from django.http import HttpResponseRedirect
@@ -22,16 +15,13 @@ from .models import Proveedor
 
 app_name = 'registro'
 
-def clienteRegistrado(request):
-    return render(request, 'registro/clienteRegistrado.html') 
-
-def proveedorRegistrado(request):
-    return render(request, 'registro/proveedorRegistrado.html') 
+def usuarioRegistrado(request):
+    return render(request, 'registro/exito.html') 
 
 class registroCliente(FormView):
     template_name = 'registro/registroCliente.html'
     form_class = RegistroClienteForm
-    success_url = '/registro/registroCliente/clienteRegistrado/'
+    success_url = '/registro/registroCliente/exito/'
 
     def form_valid(self, form):
         user = User.objects.create_user(
@@ -52,12 +42,10 @@ class registroCliente(FormView):
         perfil.save()
         return super(registroCliente, self).form_valid(form)
 
-#################################################################
-
 class registroProveedor(FormView):
     template_name = 'registro/registroProveedor.html'
     form_class = RegistroProveedorForm
-    success_url = '/registro/registroProveedor/proveedorRegistrado/'
+    success_url = '/registro/registroProveedor/exito/'
 
     def form_valid(self, form):
         user = User.objects.create_user(
@@ -76,4 +64,3 @@ class registroProveedor(FormView):
         user.save()
         perfil.save()
         return super(registroProveedor, self).form_valid(form)
-

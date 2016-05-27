@@ -19,10 +19,4 @@ class LogInForm(forms.Form):
     clave = CharField(
             label = 'Contraseña',
             widget = PasswordInput(attrs={'placeholder': 'contraseña', 'required': True}),
-    )
-
-    def clean_username(self):
-        usuario = User.objects.get(username=self.cleaned_data['username'])
-        if usuario == None:
-            raise ValidationError("Nombre de usuario no existente")
-        return usuario	   	 
+    ) 	 

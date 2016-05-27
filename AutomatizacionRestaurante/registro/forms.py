@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from django.forms import RegexField, CharField, DateField, ValidationError,\
-                         EmailField, MultipleChoiceField, IntegerField
+from django.forms import RegexField, CharField, DateField, ValidationError, EmailField, MultipleChoiceField, IntegerField
 from django.forms.widgets import PasswordInput, EmailInput, TextInput, DateInput, Select
 from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.auth.models import User
@@ -82,14 +81,16 @@ class RegistroClienteForm(forms.Form):
             user = User.objects.get(username__iexact=self.cleaned_data['username'])
         except User.DoesNotExist:
             return self.cleaned_data['username']
-        raise forms.ValidationError("The username already exists. Please try another one.")
+        raise forms.ValidationError('El nombre de usuario ya existe. Intente de'\
+                                    ' nuevo.')
 
     def clean_ci(self):
         try:
             cliente = Cliente.objects.get(ci=self.cleaned_data['ci'])
         except Cliente.DoesNotExist:
             return self.cleaned_data['ci']
-        raise forms.ValidationError("Ya hay un usuario registrado con esa cédula. Intente de nuevo.")
+        raise forms.ValidationError('Ya hay un usuario registrado con esa'\
+                                    ' cédula. Intente de nuevo.')
 
     def clean_clave2(self):
         clave = self.cleaned_data.get('clave')
@@ -99,8 +100,6 @@ class RegistroClienteForm(forms.Form):
             raise ValidationError("Las contraseñas no concuerdan!")
         return clave2
 
-
-##################################################################
 class RegistroProveedorForm(forms.Form):
     username = RegexField(
                   label = "Nombre de usuario", 
@@ -159,14 +158,16 @@ class RegistroProveedorForm(forms.Form):
             user = User.objects.get(username__iexact=self.cleaned_data['username'])
         except User.DoesNotExist:
             return self.cleaned_data['username']
-        raise forms.ValidationError("The username already exists. Please try another one.")
+        raise forms.ValidationError('El nombre de usuario ya existe. Intente de'\
+                                    ' nuevo.')
 
     def clean_rif(self):
         try:
             proveedor = Proveedor.objects.get(rif=self.cleaned_data['rif'])
         except Proveedor.DoesNotExist:
             return self.cleaned_data['rif']
-        raise forms.ValidationError("Ya hay un usuario registrado con ese rif. Intente de nuevo.")
+        raise forms.ValidationError('Ya hay un usuario registrado con ese rif.'\
+                                    'Intente de nuevo.')
 
     def clean_clave2(self):
         clave = self.cleaned_data.get('clave')
@@ -175,6 +176,3 @@ class RegistroProveedorForm(forms.Form):
         if clave != clave2:
             raise ValidationError("Las contraseñas no concuerdan!")
         return clave2
-
-
-
