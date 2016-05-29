@@ -31,14 +31,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'home.apps.HomeConfig', 
-    'registro.apps.RegistroConfig',              
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'home.apps.HomeConfig',
+    'registro.apps.RegistroConfig'
 ]
 
 MIDDLEWARE_CLASSES = [

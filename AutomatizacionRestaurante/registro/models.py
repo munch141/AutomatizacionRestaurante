@@ -1,11 +1,11 @@
-from django.db import models
-import django.core.validators
 from django.contrib.auth.models import User
+from django.db import models
 
 SEXOS = (
-     ('M','Masculino'),
-     ('F','Femenino')    
+    ('M', 'Masculino'),
+    ('F', 'Femenino')
 )
+
 
 class Cliente(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -15,7 +15,8 @@ class Cliente(models.Model):
     telefono = models.CharField(max_length=12)
 
     def __str__(self):
-        return str(self.usuario.username)    
+        return str(self.usuario.username)
+
 
 class Proveedor(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -24,4 +25,4 @@ class Proveedor(models.Model):
     direccion = models.CharField(max_length=128)
 
     def __str__(self):
-        return str(self.usuario.username)    
+        return str(self.usuario.username)
