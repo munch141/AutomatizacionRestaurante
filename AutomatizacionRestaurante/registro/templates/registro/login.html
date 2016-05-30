@@ -1,10 +1,11 @@
-<html>
+{% extends 'registro/base.html' %}
 
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'registro/login.css' %}" />
+{% block title %}
+    Log In
+{% endblock %}
 
-<h1>Login Restaurante</h1>
-
+{% block contenido %}
+    <h1>Ingrese sus datos:</h1>
     {% if form.errors %}
         <p>Su usuario y/o contraseña son incorrectos. Intente de nuevo.</p>
     {% endif %}
@@ -16,7 +17,10 @@
         <input type="submit" value="Entrar" />
         <input type="hidden" name="next" value="/home/" />
     </form>
-    <p><a href="/registro/registroCliente">Regístrese como cliente</a></p>
-    <p><a href="/registro/registroProveedor">Regístrese como proveedor</a></p>
-
-</html>
+    <p>
+      <a class="btn btn-lg btn-primary" href="/registro/registroCliente" role="button">Regístrese como cliente &raquo;</a>
+    </p>
+    <p>
+      <a class="btn btn-lg btn-primary" href="/registro/registroProveedor" role="button">Regístrese como proveedor &raquo;</a>
+    </p>
+{% endblock %}

@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
+from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.views.generic.edit import FormView
 
 from .forms import RegistroClienteForm
-from .models import Cliente
-
 from .forms import RegistroProveedorForm
+from .models import Cliente
 from .models import Proveedor
 
 app_name = 'registro'

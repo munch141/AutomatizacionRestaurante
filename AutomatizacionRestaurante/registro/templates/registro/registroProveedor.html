@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html>
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'registro/registroProveedor.css' %}" />
+{% extends 'registro/base.html' %}
 
-<head>
-	<h1>Regístrese (Proveedor):</h1>
-</head>
+{% block title %}
+    Registro Proveedor
+{% endblock %}
 
-<body>
-	<form action="/registro/registroProveedor/" method="post">
-	    {% csrf_token %}
-	    {{ form.as_p }}
-	    <input type="submit" value="Enviar" />
-	</form>
-</body>
-</html>
+{% block contenido %}
+        <h1>Regístrese (Proveedor):</h1>
+        <form action="/registro/registroProveedor/" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Enviar" />
+        </form>
+{% endblock %}

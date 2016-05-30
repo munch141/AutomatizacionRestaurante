@@ -1,10 +1,13 @@
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'home/home.css' %}" />
+{% extends 'home/base.html' %}
 
-<html>
+{% block title %}
+    {{ user.username }}
+{% endblock %}
 
-<h1>Bienvenido {{user.first_name}}.</h1>
-<h2><a href="/home/perfil">Ver mi perfil</a></h2>
-<h3><a href="/logout/">Salir</a></h3>
-
-</html>
+{% block contenido %}
+    <h1>Bienvenido {{user.first_name}}.</h1>
+    <p>Aquí van las opciones de la aplicación!</p>
+    <!-- <p>
+      <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
+    </p> -->
+{% endblock %}

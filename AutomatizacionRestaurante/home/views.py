@@ -7,10 +7,10 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-@login_required
+@login_required(login_url='/')
 def home(request):
 	return render_to_response('home/home.html', {'user':request.user})
 
-@login_required
+@login_required(login_url='/')
 def perfil(request):
 	return render_to_response('home/perfil.html', {'user':request.user})

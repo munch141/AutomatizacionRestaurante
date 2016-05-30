@@ -3,7 +3,7 @@
 import unittest
 from django.test import Client, TestCase
 
-class PruebasRegistroProveedor(TestCase):
+class PruebasRegistro(TestCase):
     def setUp(self):
         self.client = Client()
 
@@ -11,6 +11,11 @@ class PruebasRegistroProveedor(TestCase):
         response = self.client.get('/registro/registroProveedor/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Regístrese (Proveedor):')
+
+    def test_vista_registroCliente(self):
+        response = self.client.get('/registro/registroCliente/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Regístrese (Cliente):')
         
     def test_registro_proveedor_redireccion(self):
         response = self.client.post('/registro/registroProveedor/',
@@ -18,7 +23,20 @@ class PruebasRegistroProveedor(TestCase):
                                      'rif': '123456',
                                      'nombre': 'minombre',
                                      'email': 'miemail@email.com',
-												 'direccion': 'Caurimare',
+						             'direccion': 'Caurimare',
+                                     'telefono': '1111-1111111',
+                                     'clave': '1234',
+                                     'clave2': '1234'})
+        self.assertEqual(response.status_code, 302)
+
+    def test_registro_cliente_redireccion(self):
+        response = self.client.post('/registro/registroCliente/',
+                                    {'username': 'user1',
+                                     'ci': '123456',
+                                     'nombre': 'minombre',
+                                     'email': 'miemail@email.com',
+                                     'fecha_nacimiento': '11/15/1993',
+                                     'sexo': 'M',
                                      'telefono': '1111-1111111',
                                      'clave': '1234',
                                      'clave2': '1234'})
@@ -34,7 +52,7 @@ class PruebasRegistroProveedor(TestCase):
                                      'rif': '123456',
                                      'nombre': 'minombre',
                                      'email': 'miemail@email.com',
-												 'direccion': 'Caurimare',
+									 'direccion': 'Caurimare',
                                      'telefono': '1111-1111111',
                                      'clave': '1234',
                                      'clave2': '1234'})
@@ -59,7 +77,7 @@ class PruebasRegistroProveedor(TestCase):
                                      'rif': '',
                                      'nombre': 'minombre',
                                      'email': 'miemail@email.com',
-												 'direccion': 'Caurimare',
+									 'direccion': 'Caurimare',
                                      'telefono': '1111-1111111',
                                      'clave': '1234',
                                      'clave2': '1234'})
@@ -84,7 +102,7 @@ class PruebasRegistroProveedor(TestCase):
                                      'rif': '123456',
                                      'nombre': '',
                                      'email': 'miemail@email.com',
-												 'direccion': 'Caurimare',
+									 'direccion': 'Caurimare',
                                      'telefono': '1111-1111111',
                                      'clave': '1234',
                                      'clave2': '1234'})
@@ -109,7 +127,7 @@ class PruebasRegistroProveedor(TestCase):
                                      'rif': '123456',
                                      'nombre': 'minombre',
                                      'email': '',
-												 'direccion': 'Caurimare',
+									 'direccion': 'Caurimare',
                                      'telefono': '1111-1111111',
                                      'clave': '1234',
                                      'clave2': '1234'})
@@ -147,7 +165,7 @@ class PruebasRegistroProveedor(TestCase):
                                      'rif': '123456',
                                      'nombre': 'minombre',
                                      'email': 'miemail@email.com',
-												 'direccion': 'Caurimare',
+									 'direccion': 'Caurimare',
                                      'telefono': '',
                                      'clave': '1234',
                                      'clave2': '1234'})
@@ -159,7 +177,7 @@ class PruebasRegistroProveedor(TestCase):
                                      'rif': '123456',
                                      'nombre': 'minombre',
                                      'email': 'miemail@email.com',
-									 'direccion': 'Caurimare',
+						 'direccion': 'Caurimare',
                                      'telefono': '1111-1111111',
                                      'clave': '',
                                      'clave2': '1234'})
@@ -197,7 +215,7 @@ class PruebasRegistroProveedor(TestCase):
                                      'rif': '123456',
                                      'nombre': 'minombre',
                                      'email': 'miemail@email.com',
-									 'direccion': 'Caurimare',
+						             'direccion': 'Caurimare',
                                      'telefono': '1111-1111111',
                                      'clave': '1234',
                                      'clave2': ''})
@@ -222,7 +240,7 @@ class PruebasRegistroProveedor(TestCase):
                                      'rif': '123456',
                                      'nombre': 'minombre',
                                      'email': 'miemail@email.com',
-									 'direccion': 'Caurimare',
+						 'direccion': 'Caurimare',
                                      'telefono': '1111-1111111',
                                      'clave': '',
                                      'clave2': ''})
@@ -247,7 +265,7 @@ class PruebasRegistroProveedor(TestCase):
                                      'rif': 'jjhh',
                                      'nombre': 'minombre',
                                      'email': 'miemail@email.com',
-									 'direccion': 'Caurimare',
+						 'direccion': 'Caurimare',
                                      'telefono': '1111-1111111',
                                      'clave': '1234',
                                      'clave2': '1234'})
@@ -272,7 +290,7 @@ class PruebasRegistroProveedor(TestCase):
                                      'rif': '123456',
                                      'nombre': 'minombre',
                                      'email': 'miemailemailcom',
-									 'direccion': 'Caurimare',
+						             'direccion': 'Caurimare',
                                      'telefono': '1111-1111111',
                                      'clave': '1234',
                                      'clave2': '1234'})
@@ -297,7 +315,7 @@ class PruebasRegistroProveedor(TestCase):
                                      'rif': '123456',
                                      'nombre': 'minombre',
                                      'email': 'miemail@email.com',
-												 'direccion': 'Caurimare',
+									 'direccion': 'Caurimare',
                                      'telefono': '1111-1111111',
                                      'clave': '1234',
                                      'clave2': '1254'})
@@ -309,7 +327,7 @@ class PruebasRegistroProveedor(TestCase):
                                      'rif': '123456',
                                      'nombre': 'minombre',
                                      'email': 'miemail@email.com',
-												 'direccion': '',
+									 'direccion': '',
                                      'telefono': '1111-1111111',
                                      'clave': '1234',
                                      'clave2': '1254'})

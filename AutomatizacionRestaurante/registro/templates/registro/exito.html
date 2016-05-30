@@ -1,2 +1,12 @@
-<h1>Usted ha sido registrado!</h1>
-<h2><a href="/">Entrar al sitio</a></h2>
+{% extends 'registro/base.html' %}
+
+{% block title %}
+    {{ user.username }}
+{% endblock %}
+
+{% block contenido %}
+    <h1>Registro exitoso!.</h1>
+    <p>
+      <a class="btn btn-lg btn-primary" href="/" role="button">Entrar al sitio &raquo;</a>
+    </p>
+{% endblock %}
