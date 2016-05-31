@@ -6,9 +6,11 @@
 
 {% block contenido %}
     <h1>Ingrese sus datos:</h1>
+
     {% if form.errors %}
         <p>Su usuario y/o contraseña son incorrectos. Intente de nuevo.</p>
     {% endif %}
+
     <form method="post" action=".">{% csrf_token %}
         <table border="0">
             <tr><th><label for="id_username">Usuario:</label></th><td>{{ form.username }}</td></tr>

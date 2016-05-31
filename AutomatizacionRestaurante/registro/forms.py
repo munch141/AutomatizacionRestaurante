@@ -85,7 +85,7 @@ class RegistroClienteForm(forms.Form):
         raise forms.ValidationError('Ya hay un usuario registrado con esa'
                                     ' cédula. Intente de nuevo.')
 
-    def clean_clave2(self):
+    def clean_claves_iguales(self):
         clave = self.cleaned_data.get('clave')
         clave2 = self.cleaned_data.get('clave2')
 
@@ -105,9 +105,10 @@ class RegistroProveedorForm(forms.Form):
                                                      'd underscores.'},
                           regex=r'^\w+$')
 
-    rif = IntegerField(label='Rif',
-                       widget=TextInput(attrs={'placeholder': 'rif',
-                                               'required': True}))
+    rif = CharField(label='Rif',
+                    widget=TextInput(attrs={'placeholder': 'e.g. J-123456',
+                                            'pattern': 'J-[0-9]{6,8}',
+                                            'required': True}))
 
     nombre = CharField(label='Nombre Proveedor',
                        widget=TextInput(attrs={'placeholder': 'nombre',
@@ -118,7 +119,7 @@ class RegistroProveedorForm(forms.Form):
                                                   'required': True}))
 
     email = EmailField(label='Correo electrónico',
-                       widget=EmailInput(attrs={'placeholder': 'e.g. example@m'
+                       widget=EmailInput(attrs={'placeholder': 'e.g. ejemplo@m'
                                                                'ail.com',
                                                 'required': True}))
 
@@ -153,7 +154,7 @@ class RegistroProveedorForm(forms.Form):
         raise forms.ValidationError('Ya hay un usuario registrado con ese rif.'
                                     'Intente de nuevo.')
 
-    def clean_clave2(self):
+    def clean_claves_iguales(self):
         clave = self.cleaned_data.get('clave')
         clave2 = self.cleaned_data.get('clave2')
 

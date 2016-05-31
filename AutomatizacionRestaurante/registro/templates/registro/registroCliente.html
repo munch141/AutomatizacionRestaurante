@@ -5,10 +5,11 @@
 {% endblock %}
 
 {% block contenido %}
-        <h1>Regístrese (Cliente):</h1>
-        <form action="/registro/registroCliente/" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Enviar" />
-        </form>
+    <h1>Ingrese sus datos:</h1>
+
+    <form class="form" action="/registro/registroCliente/" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Enviar"/>
+    </form>
 {% endblock %}

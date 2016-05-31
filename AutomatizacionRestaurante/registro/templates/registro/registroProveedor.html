@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block contenido %}
-        <h1>Regístrese (Proveedor):</h1>
+        <h1>Ingrese sus datos:</h1>
+        
         <form action="/registro/registroProveedor/" method="post">
             {% csrf_token %}
             {{ form.as_p }}

@@ -20,7 +20,7 @@ class Cliente(models.Model):
 
 class Proveedor(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
-    rif = models.PositiveIntegerField(primary_key=True)
+    rif = models.CharField(max_length=10, primary_key=True)
     telefono = models.CharField(max_length=12)
     direccion = models.CharField(max_length=128)
 

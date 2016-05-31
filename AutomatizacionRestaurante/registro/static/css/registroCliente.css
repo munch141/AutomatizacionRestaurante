@@ -1,9 +1,3 @@
-html {
-	font-family: Helvetica
-}
-
-form, h1 {
-	margin-left: auto;
-	margin-right: auto;
-	width: 30em;
+.form {
+    font-family: Courier
 }
