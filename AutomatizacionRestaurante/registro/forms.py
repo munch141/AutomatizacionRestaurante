@@ -116,25 +116,27 @@ class RegistroProveedorForm(forms.Form):
                                                      'only letters, numbers an'
                                                      'd underscores.'},
                           regex=r'^\w+$')
-    rif = CharField(label='Rif',
-                    widget=TextInput(attrs={'placeholder': 'RIF',
-                                            'pattern': 'J-[0-9]{6,8}',
-                                            'required': True}))
-    nombre = CharField(label='Nombre Proveedor',
-                       widget=TextInput(attrs={'placeholder': 'nombre',
-                                               'required': True}))
-    direccion = CharField(label='Dirección',
-                          widget=TextInput(attrs={'placeholder': 'direccion',
-                                                  'required': True}))
+    rif = IntegerField(label='RIF',
+                       widget=TextInput(),
+                       error_messages={'invalid': 'El RIF debe ser un número'
+                                                  ' entero.',
+                                       'required': 'Este campo es requerido.'})
+    nombre = RegexField(label='Nombre',
+                        regex=r'^[a-zA-Z]+$',
+                        error_messages={'invalid': 'El nombre no puede contener'
+                                                   ' números ni caracteres espe'
+                                                   'ciales.',
+                                        'required': 'Este campo es requerido.'})
+    direccion = CharField(label='Dirección', widget=TextInput())
     email = EmailField(label='Correo electrónico',
                        widget=EmailInput(attrs={'placeholder': 'e.g. ejemplo@m'
                                                                'ail.com',
                                                 'required': True}))
-    telefono = CharField(label='Teléfono',
-                         widget=TextInput(attrs={'placeholder': 'e.g. 0555-123'
-                                                                '4567',
-                                                 'pattern': '[0-9]{4}-[0-9]{7}',
-                                                 'required': True}))
+    telefono = RegexField(label='Teléfono',
+                          regex=r'^[0-9]{4}-[0-9]{7}$',
+                          error_messages={'invalid': 'El teléfono debe tener es'
+                                                     'te formato: 1234-1234567',
+                                          'required': 'Este campo es requerido.'})
     clave = CharField(label='Contraseña',
                       widget=PasswordInput(attrs={'placeholder': 'contraseña',
                                                   'required': True}))
@@ -147,12 +149,17 @@ class RegistroProveedorForm(forms.Form):
     helper = FormHelper()
     helper.form_class = 'forms'
     helper.form_action = '/registro/registroProveedor/'
-    helper.form_method = 'POST'
+    helper.form_method = 'post'
     helper.add_input(Submit('submit', 'Registrarse'))
     helper.layout = Layout(
         Field('username', css_class='input-md'),
-        Field('email', css_class='input-md'),
-        PrependedText('rif', 'J -'))
+        PrependedText('rif', 'J -'),
+        Field('nombre', placeholder='nombre'),
+        Field('direccion', placeholder='dirección'),
+        Field('email', placeholder='e.g. ejemplo@mail.com'),
+        Field('telefono', placeholder='e.g. 0212-1234567'),
+        'clave',
+        'clave2')
 
     def clean_username(self):
         try:
