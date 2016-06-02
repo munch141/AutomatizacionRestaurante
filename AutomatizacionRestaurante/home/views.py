@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse_lazy
 
 from django.contrib.auth.decorators import login_required
 
-from .forms import LoginForm
+from .forms import LoginForm, editarPerfilForm
 
 
 class LoginView(generic.FormView):
@@ -39,3 +39,16 @@ def home(request):
 @login_required(login_url='/')
 def perfil(request):
 	return render_to_response('home/perfil.html', {'user':request.user})
+
+#@login_required(login_url='/')
+#def editarPerfil(request):
+#	return render_to_response('home/editarPerfil.html', {'user':request.user})
+
+class editarPerfilView(generic.FormView):
+    form_class = editarPerfilForm
+    success_url = reverse_lazy('perfilAct')
+    template_name = 'home/editarPerfil.html'
+
+@login_required(login_url='/')
+def perfilAct(request):
+	return render_to_response('home/perfilAct.html', {'user':request.user})

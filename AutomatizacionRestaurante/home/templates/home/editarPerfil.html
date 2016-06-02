@@ -1,0 +1,19 @@
+<!-- accounts/templates/accounts/base_accounts.html -->
+
+{% extends 'base.html' %}
+
+
+
+{% block contenido %}
+	<h2>Modificar Datos:</h2>
+
+
+
+	<form method="post" action="/home/editarPerfil/" class="form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Enviar"/>
+    </form>
+{% endblock %}
+
+

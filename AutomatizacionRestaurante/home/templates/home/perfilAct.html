@@ -5,6 +5,7 @@
 {% endblock title %}
 
 {% block contenido %}
+	<h2>Sus datos se han actualizado exitosamente</h2>
 	<h1>Perfil de {{ user.username }}:</h1>
 
 	{% if user.cliente %}
@@ -21,6 +22,7 @@
 		<p>Teléfono: {{user.proveedor.telefono}}</p>
 		<p>Dirección: {{user.proveedor.direccion}}</p>
 	{% endif %}
+
 
 	<FORM METHOD="LINK" ACTION="/home/editarPerfil"> <INPUT TYPE="submit" VALUE="Editar Perfil"> </FORM>
 
