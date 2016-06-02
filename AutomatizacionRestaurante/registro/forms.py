@@ -57,7 +57,8 @@ class RegistroClienteForm(forms.Form):
                                           'required': 'Este campo es requerido.'})
     sexo = ChoiceField(label='Sexo', choices=SEXOS)
     clave = CharField(label='Contraseña',
-                      widget=PasswordInput(attrs={'placeholder': 'contraseña'}))
+                      widget=PasswordInput(attrs={'placeholder': 'contraseña',
+                                                  'required': True}))
     clave2 = CharField(label='Confirme Contraseña',
                        widget=PasswordInput(attrs={'placeholder': 'confirme '
                                                                   'contraseña',
@@ -97,7 +98,7 @@ class RegistroClienteForm(forms.Form):
         raise forms.ValidationError('Ya hay un usuario registrado con esa'
                                     ' cédula. Intente de nuevo.')
 
-    def clean_claves_iguales(self):
+    def clean_claves(self):
         clave = self.cleaned_data.get('clave')
         clave2 = self.cleaned_data.get('clave2')
 
