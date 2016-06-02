@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block head %}
+    <link href="{% static 'home/css/login.css' %}" rel="stylesheet" type="text/css">
+{% endblock head %}
+
+{% block contenido %}
+    <h1>Entrar al sitio:</h1>
+
+    <div class="row container">
+        <div class="col-md-6">
+            {% crispy form form.helper %}
+
+            <div class="divider"/>
+            <a class="btn-link" href="/registro/registroCliente" role="button">Regístrarse como cliente</a>
+            <div class="divider"/>
+            <a class="btn-link" href="/registro/registroProveedor" role="button">Regístrarse como proveedor</a>
+        </div>
+    </div>
+
+{% endblock %}

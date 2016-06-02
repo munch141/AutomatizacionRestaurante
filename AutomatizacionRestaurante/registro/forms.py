@@ -8,6 +8,10 @@ from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.auth.models import User
 from django import forms
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Field, Layout, MultiWidgetField, Submit
+from crispy_forms.bootstrap import PrependedText
+
 from .models import Cliente
 from .models import Proveedor
 
@@ -19,55 +23,63 @@ SEXOS = (
 
 
 class RegistroClienteForm(forms.Form):
-    username = RegexField(label="Nombre de usuario",
-                          widget=TextInput(attrs={'placeholder': 'nombre de usu'
-                                                                 'ario',
-                                                  'required': True,
-                                                  'max_length': 30}),
-                          error_messages={'invalid': 'This value must contain '
-                                                     'only letters, numbers and'
-                                                     ' underscores.'},
-                          regex=r'^\w+$')
-
+    username = RegexField(label='Nombre de usuario',
+                          regex=r'^\w+$',
+                          error_messages={'invalid': 'El nombre de usuario sólo'
+                                                     'puede tener letras, númer'
+                                                     'os y _.',
+                                          'required': 'Este campo es requerido.'})
     ci = IntegerField(label='Cédula',
-                      widget=TextInput(attrs={'placeholder': 'cédula',
-                                              'required': True}))
-
-    nombre = CharField(label='Nombre',
-                       widget=TextInput(attrs={'placeholder': 'nombre',
-                                               'required': True}))
-
-    apellido = CharField(label='Apellido',
-                         widget=TextInput(attrs={'placeholder': 'apellido',
-                                                 'required': True}))
-
+                      widget=TextInput(),
+                      error_messages={'invalid': 'La cédula debe ser un número'
+                                                 ' entero.',
+                                      'required': 'Este campo es requerido.'})
+    nombre = RegexField(label='Nombre',
+                        regex=r'^[a-zA-Z]+$',
+                        error_messages={'invalid': 'El nombre no puede contener'
+                                                   ' números ni caracteres espe'
+                                                   'ciales.',
+                                        'required': 'Este campo es requerido.'})
+    apellido = RegexField(label='Apellido',
+                          regex=r'^[a-zA-Z]+$',
+                          error_messages={'invalid': 'El apellido no puede cont'
+                                                     'ener números ni caracter'
+                                                     'es especiales.',
+                                          'required': 'Este campo es requerido.'})
     fecha_nacimiento = DateField(label='Fecha de nacimiento',
                                  widget=SelectDateWidget(years=range(1900, 
                                                                      2016)))
-
-    email = EmailField(label='Correo electrónico',
-                       widget=EmailInput(attrs={'placeholder': 'e.g. example@'
-                                                               'mail.com',
-                                                'required': True}))
-
-    telefono = CharField(label='Teléfono',
-                         widget=TextInput(attrs={'placeholder': 'e.g. 0555-123'
-                                                                '4567',
-                                                 'pattern': '[0-9]{4}-[0-9]{7}',
-                                                 'required': True}))
-
-    sexo = ChoiceField(required=True,
-                       label='Sexo',
-                       choices=SEXOS)
-
+    email = EmailField(label='Correo electrónico', widget=EmailInput())
+    telefono = RegexField(label='Teléfono',
+                          regex=r'^[0-9]{4}-[0-9]{7}$',
+                          error_messages={'invalid': 'El teléfono debe tener es'
+                                                     'te formato: 1234-1234567',
+                                          'required': 'Este campo es requerido.'})
+    sexo = ChoiceField(label='Sexo', choices=SEXOS)
     clave = CharField(label='Contraseña',
-                      widget=PasswordInput(attrs={'placeholder': 'contraseña',
-                                                  'required': True}))
-
+                      widget=PasswordInput(attrs={'placeholder': 'contraseña'}))
     clave2 = CharField(label='Confirme Contraseña',
                        widget=PasswordInput(attrs={'placeholder': 'confirme '
                                                                   'contraseña',
                                                    'required': True}))
+    helper = FormHelper()
+    helper.form_class = 'forms'
+    helper.form_method = 'post'
+    helper.disable_csrf = False
+    helper.add_input(Submit('submit', 'Registrarse'))
+    helper.layout = Layout(
+        Field('username', placeholder='username'),
+        Field('nombre', placeholder='nombre'),
+        Field('apellido', placeholder='apellido'),
+        Field('ci', placeholder='cédula'),
+        Field('email', placeholder='e.g. ejemplo@mail.com'),
+        Field('telefono', placeholder='e.g. 0212-1234567'),
+        MultiWidgetField('sexo', attrs=({'style': 'width: auto; display: inline-block;'})),
+        MultiWidgetField(
+            'fecha_nacimiento',
+            attrs=({'style': 'width: auto; display: inline-block;'})),
+        'clave',
+        'clave2')
 
     def clean_username(self):
         try:
@@ -104,39 +116,43 @@ class RegistroProveedorForm(forms.Form):
                                                      'only letters, numbers an'
                                                      'd underscores.'},
                           regex=r'^\w+$')
-
     rif = CharField(label='Rif',
-                    widget=TextInput(attrs={'placeholder': 'e.g. J-123456',
+                    widget=TextInput(attrs={'placeholder': 'RIF',
                                             'pattern': 'J-[0-9]{6,8}',
                                             'required': True}))
-
     nombre = CharField(label='Nombre Proveedor',
                        widget=TextInput(attrs={'placeholder': 'nombre',
                                                'required': True}))
-
     direccion = CharField(label='Dirección',
                           widget=TextInput(attrs={'placeholder': 'direccion',
                                                   'required': True}))
-
     email = EmailField(label='Correo electrónico',
                        widget=EmailInput(attrs={'placeholder': 'e.g. ejemplo@m'
                                                                'ail.com',
                                                 'required': True}))
-
     telefono = CharField(label='Teléfono',
                          widget=TextInput(attrs={'placeholder': 'e.g. 0555-123'
                                                                 '4567',
                                                  'pattern': '[0-9]{4}-[0-9]{7}',
                                                  'required': True}))
-
     clave = CharField(label='Contraseña',
                       widget=PasswordInput(attrs={'placeholder': 'contraseña',
                                                   'required': True}))
-
     clave2 = CharField(label='Confirme Contraseña',
                        widget=PasswordInput(attrs={'placeholder': 'confirme '
                                                                   'contraseña',
                                                    'required': True}))
+
+
+    helper = FormHelper()
+    helper.form_class = 'forms'
+    helper.form_action = '/registro/registroProveedor/'
+    helper.form_method = 'POST'
+    helper.add_input(Submit('submit', 'Registrarse'))
+    helper.layout = Layout(
+        Field('username', css_class='input-md'),
+        Field('email', css_class='input-md'),
+        PrependedText('rif', 'J -'))
 
     def clean_username(self):
         try:

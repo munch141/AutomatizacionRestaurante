@@ -1,15 +1,22 @@
-{% extends 'registro/base.html' %}
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
 
 {% block title %}
     Registro Proveedor
 {% endblock %}
 
+{% block head %}
+    <link href="{% static 'registro/css/registroCliente.css' %}" rel="stylesheet" type="text/css">
+{% endblock head %}
+
 {% block contenido %}
-        <h1>Ingrese sus datos:</h1>
-        
-        <form action="/registro/registroProveedor/" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Enviar" />
-        </form>
+    <h1>Ingrese sus datos:</h1>
+
+    <div class="row container">
+        <div class="col-md-5">
+            {% crispy form form.helper %}
+        </div>
+    </div>
+
 {% endblock %}

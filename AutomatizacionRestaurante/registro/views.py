@@ -20,7 +20,7 @@ def usuarioRegistrado(request):
 class registroCliente(FormView):
     template_name = 'registro/registroCliente.html'
     form_class = RegistroClienteForm
-    success_url = '/registro/registroCliente/exito/'
+    success_url = '/registro/exito/'
 
     def form_valid(self, form):
         user = User.objects.create_user(
