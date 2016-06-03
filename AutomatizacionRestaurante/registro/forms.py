@@ -23,46 +23,63 @@ SEXOS = (
 
 
 class RegistroClienteForm(forms.Form):
-    username = RegexField(label='Nombre de usuario',
-                          regex=r'^\w+$',
-                          error_messages={'invalid': 'El nombre de usuario sólo'
-                                                     'puede tener letras, númer'
-                                                     'os y _.',
-                                          'required': 'Este campo es requerido.'})
-    ci = IntegerField(label='Cédula',
-                      widget=TextInput(),
-                      error_messages={'invalid': 'La cédula debe ser un número'
-                                                 ' entero.',
-                                      'required': 'Este campo es requerido.'})
-    nombre = RegexField(label='Nombre',
-                        regex=r'^[a-zA-Z]+$',
-                        error_messages={'invalid': 'El nombre no puede contener'
-                                                   ' números ni caracteres espe'
-                                                   'ciales.',
-                                        'required': 'Este campo es requerido.'})
-    apellido = RegexField(label='Apellido',
-                          regex=r'^[a-zA-Z]+$',
-                          error_messages={'invalid': 'El apellido no puede cont'
-                                                     'ener números ni caracter'
-                                                     'es especiales.',
-                                          'required': 'Este campo es requerido.'})
-    fecha_nacimiento = DateField(label='Fecha de nacimiento',
-                                 widget=SelectDateWidget(years=range(1900, 
-                                                                     2016)))
-    email = EmailField(label='Correo electrónico', widget=EmailInput())
-    telefono = RegexField(label='Teléfono',
-                          regex=r'^[0-9]{4}-[0-9]{7}$',
-                          error_messages={'invalid': 'El teléfono debe tener es'
-                                                     'te formato: 1234-1234567',
-                                          'required': 'Este campo es requerido.'})
-    sexo = ChoiceField(label='Sexo', choices=SEXOS)
-    clave = CharField(label='Contraseña',
-                      widget=PasswordInput(attrs={'placeholder': 'contraseña',
-                                                  'required': True}))
-    clave2 = CharField(label='Confirme Contraseña',
-                       widget=PasswordInput(attrs={'placeholder': 'confirme '
-                                                                  'contraseña',
-                                                   'required': True}))
+    username = CharField(
+        label='Nombre de usuario',
+        error_messages={
+            'invalid': 'El nombre de usuario sólo puede tener letras, números,'
+                       ' "_", "@", "+", "." y "-".',
+            'required': 'Este campo es requerido.'})
+    
+    ci = IntegerField(
+        label='Cédula',
+        widget=TextInput(),
+        error_messages={
+            'invalid': 'La cédula debe ser un número entero.',
+            'required': 'Este campo es requerido.'})
+    
+    nombre = RegexField(
+        label='Nombre',
+        regex=r'^[a-zA-Z]+$',
+        error_messages={
+            'invalid': 'El nombre no puede contener números ni caracteres '
+                       'especiales.',
+            'required': 'Este campo es requerido.'})
+    
+    apellido = RegexField(
+        label='Apellido',
+        regex=r'^[a-zA-Z]+$',
+        error_messages={
+            'invalid': 'El apellido no puede contener números ni caracteres '
+                       'especiales.',
+            'required': 'Este campo es requerido.'})
+    
+    fecha_nacimiento = DateField(
+        label='Fecha de nacimiento',
+        widget=SelectDateWidget(years=range(1900, 2016)))
+    
+    email = EmailField(
+        label='Correo electrónico',
+        widget=EmailInput())
+    
+    telefono = CharField(
+        label='Teléfono',
+        error_messages={'required': 'Este campo es requerido.'})
+    
+    sexo = ChoiceField(
+        label='Sexo',
+        choices=SEXOS)
+    
+    clave = CharField(
+        label='Contraseña',
+        widget=PasswordInput(
+            attrs={'placeholder': 'contraseña', 'required': True}))
+    
+    clave2 = CharField(
+        label='Confirme Contraseña',
+        widget=PasswordInput(
+            attrs={'placeholder': 'confirme contraseña',
+                   'required': True}))
+
     helper = FormHelper()
     helper.form_class = 'forms'
     helper.form_method = 'post'

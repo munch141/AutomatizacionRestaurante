@@ -37,7 +37,7 @@ def registro_cliente(request):
             user.save()
             perfil.save()
             messages.success(request, 'Registro Exitoso!')
-            return redirect(reverse('exito'))
+            return redirect(reverse('login'))
     else:
         form = RegistroClienteForm()
     return render(request, 'registro/registro.html', {'form': form})

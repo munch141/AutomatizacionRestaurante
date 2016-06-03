@@ -6,11 +6,11 @@
 
 {% block contenido %}
 	{% if messages %}
-        <ul class="messages">
+        <div class="messages" style="background-color:#83e965">
             {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
             {% endfor %}
-        </ul>
+        </div>
     {% endif %}
 
 	<h1>Perfil de {{ user.username }}:</h1>
