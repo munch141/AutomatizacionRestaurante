@@ -36,8 +36,7 @@ def registro_cliente(request):
             )
             user.save()
             perfil.save()
-            messages.success(request, 'Registro Exitoso!')
-            return redirect(reverse('login'))
+            return redirect(reverse('exito'))
     else:
         form = RegistroClienteForm()
     return render(request, 'registro/registro.html', {'form': form})
@@ -62,7 +61,6 @@ def registro_proveedor(request):
             )
             user.save()
             perfil.save()
-            messages.success(request, 'Registro Exitoso!')
             return redirect(reverse('exito'))
     else:
         form = RegistroClienteForm()
