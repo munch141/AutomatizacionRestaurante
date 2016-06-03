@@ -5,7 +5,6 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse_lazy
-
 from django.contrib.auth.decorators import login_required
 
 from .forms import LoginForm
