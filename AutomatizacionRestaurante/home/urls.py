@@ -8,5 +8,5 @@ urlpatterns = [
 
     url(r'^perfil/editar/$',
         views.editar_perfil,
-        name='editar_perfil')
+        name='editar_perfil'),
 ]
