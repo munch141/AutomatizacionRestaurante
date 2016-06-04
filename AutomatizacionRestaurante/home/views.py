@@ -2,7 +2,6 @@
 
 from django.views import generic
 from django.shortcuts import redirect, render
-from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -33,7 +32,7 @@ class LoginView(generic.FormView):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect('/')
+    return redirect(reverse('login'))
 
 
 @login_required(login_url='/')
