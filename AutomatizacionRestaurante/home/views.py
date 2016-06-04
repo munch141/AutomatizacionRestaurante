@@ -69,5 +69,5 @@ def editar_perfil(request):
         formset = cliente_inline_formset(instance=request.user)
     return render(
         request,
-        'home/actualizar_perfil.html',
+        'home/editar_perfil.html',
         {'user': request.user, 'formset': formset, 'form': form})
