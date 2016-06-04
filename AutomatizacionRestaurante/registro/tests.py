@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.contrib.auth.models import User
 
 from .forms import RegistroClienteForm, RegistroProveedorForm

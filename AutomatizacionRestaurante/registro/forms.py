@@ -1,96 +1,204 @@
 # -*- coding: utf-8 -*-
 
-from django import forms
-from django.forms import RegexField, CharField, DateField, ValidationError,\
-                         EmailField, MultipleChoiceField, IntegerField
-from django.forms.widgets import PasswordInput, EmailInput, TextInput, DateInput, Select
+from django.forms import CharField, ChoiceField, DateField, EmailField,\
+    IntegerField, RegexField, ValidationError
+from django.forms.widgets import EmailInput, PasswordInput, TextInput
 from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.auth.models import User
+from django import forms
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Field, Layout, MultiWidgetField, Submit
+from crispy_forms.bootstrap import PrependedText
 
 from .models import Cliente
+from .models import Proveedor
 
 SEXOS = (
-     ('M','Masculino'),
-     ('F','Femenino')    
+    ('', '-'),
+    ('M', 'M'),
+    ('F', 'F')
 )
 
+
 class RegistroClienteForm(forms.Form):
-    username = RegexField(
-                  label = "Nombre de usuario", 
-                  widget = TextInput(attrs={'placeholder':'nombre de usuario',\
-                                           'required':True, 'max_length':30}),
-                  error_messages={
-                        'invalid': 'This value must contain only letters, '\
-                                     'numbers and underscores.'},
-                  regex=r'^\w+$'
-    )
-    
+    username = CharField(
+        label='Nombre de usuario',
+        error_messages={
+            'invalid': 'El nombre de usuario sólo puede tener letras, números,'
+                       ' "_", "@", "+", "." y "-".',
+            'required': 'Este campo es requerido.'})
+
     ci = IntegerField(
-            label = 'Cédula',
-            widget = TextInput(attrs={'placeholder': 'cédula', 'required': True}),
-    )
+        label='Cédula',
+        widget=TextInput(),
+        error_messages={
+            'invalid': 'La cédula debe ser un número entero.',
+            'required': 'Este campo es requerido.'})
 
-    nombre = CharField(
-            label = 'Nombre',
-            widget = TextInput(attrs={'placeholder': 'nombre', 'required': True}),
-    )
+    nombre = RegexField(
+        label='Nombre',
+        regex=r'^[a-zA-Z]+$',
+        error_messages={
+            'invalid': 'El nombre no puede contener números ni caracteres '
+                       'especiales.',
+            'required': 'Este campo es requerido.'})
 
-    apellido = CharField(
-            label = 'Apellido',
-            widget = TextInput(attrs={'placeholder': 'apellido', 'required': True}),
-    )
+    apellido = RegexField(
+        label='Apellido',
+        regex=r'^[a-zA-Z]+$',
+        error_messages={
+            'invalid': 'El apellido no puede contener números ni caracteres '
+                       'especiales.',
+            'required': 'Este campo es requerido.'})
 
     fecha_nacimiento = DateField(
-            label = 'Fecha de nacimiento',
-            widget = SelectDateWidget(years = range(1900,2016)),
-    )
+        label='Fecha de nacimiento',
+        widget=SelectDateWidget(years=range(1900, 2016)))
 
     email = EmailField(
-            label = 'Correo electrónico',
-            widget = EmailInput(attrs={'placeholder': 'e.g. example@mail.com',\
-                                       'required': True}),
-    )
+        label='Correo electrónico',
+        widget=EmailInput())
 
     telefono = CharField(
-            label = 'Teléfono',
-            widget = TextInput(attrs={'placeholder': 'e.g. 0555-1234567',\
-                                      'pattern': '[0-9]{4}-[0-9]{7}',\
-                                      'required': True}),
-    )
+        label='Teléfono',
+        error_messages={'required': 'Este campo es requerido.'})
 
-    sexo = MultipleChoiceField(required = False,
-              label = 'Sexo',
-              widget = Select(choices = SEXOS)
-    )
+    sexo = ChoiceField(
+        label='Sexo',
+        choices=SEXOS)
 
     clave = CharField(
-                  label='Contraseña',
-                  widget=PasswordInput(attrs={'placeholder': 'contraseña',
-                                              'required': True})
-    )
+        label='Contraseña',
+        widget=PasswordInput(
+            attrs={'placeholder': 'contraseña', 'required': True}))
 
     clave2 = CharField(
-                  label='Confirme Contraseña',
-                  widget=PasswordInput(attrs={'placeholder': 'confirme '\
-                                                             'contraseña',
-                                              'required': True})
-    )
+        label='Confirme Contraseña',
+        widget=PasswordInput(
+            attrs={'placeholder': 'confirme contraseña',
+                   'required': True}))
+
+    helper = FormHelper()
+    helper.form_class = 'forms'
+    helper.form_method = 'post'
+    helper.disable_csrf = False
+    helper.add_input(Submit('submit', 'Registrarse'))
+    helper.layout = Layout(
+        Field('username', placeholder='username'),
+        Field('nombre', placeholder='nombre'),
+        Field('apellido', placeholder='apellido'),
+        Field('ci', placeholder='cédula'),
+        Field('email', placeholder='e.g. ejemplo@mail.com'),
+        Field('telefono', placeholder='e.g. 0212-1234567'),
+        MultiWidgetField('sexo', attrs=({'style': 'width: auto; display: '
+                                                  'inline-block;'})),
+        MultiWidgetField(
+            'fecha_nacimiento',
+            attrs=({'style': 'width: auto; display: inline-block;'})),
+        'clave',
+        'clave2')
 
     def clean_username(self):
         try:
-            user = User.objects.get(username__iexact=self.cleaned_data['username'])
+            User.objects.get(username__iexact=self.cleaned_data['username'])
         except User.DoesNotExist:
             return self.cleaned_data['username']
-        raise forms.ValidationError("The username already exists. Please try another one.")
+        raise forms.ValidationError('El nombre de usuario ya existe. Intente de'
+                                    ' nuevo.')
 
     def clean_ci(self):
         try:
-            cliente = Cliente.objects.get(ci=self.cleaned_data['ci'])
+            Cliente.objects.get(ci=self.cleaned_data['ci'])
         except Cliente.DoesNotExist:
             return self.cleaned_data['ci']
-        raise forms.ValidationError("Ya hay un usuario registrado con esa cédula. Intente de nuevo.")
+        raise forms.ValidationError('Ya hay un usuario registrado con esa'
+                                    ' cédula. Intente de nuevo.')
 
-    def clean_clave2(self):
+    def clean_claves(self):
+        clave = self.cleaned_data.get('clave')
+        clave2 = self.cleaned_data.get('clave2')
+
+        if clave != clave2:
+            raise ValidationError("Las contraseñas no concuerdan!")
+        return clave2
+
+
+class RegistroProveedorForm(forms.Form):
+    username = CharField(
+        label='Nombre de usuario',
+        error_messages={
+            'invalid': 'El nombre de usuario sólo puede tener letras, números,'
+                       ' "_", "@", "+", "." y "-".',
+            'required': 'Este campo es requerido.'})
+
+    rif = IntegerField(
+        label='RIF',
+        widget=TextInput(),
+        error_messages={'invalid': 'El RIF debe ser un número entero.',
+                        'required': 'Este campo es requerido.'})
+
+    nombre = RegexField(
+        label='Nombre',
+        regex=r'^[a-zA-Z]+$',
+        error_messages={
+            'invalid': 'El nombre no puede contener números ni caracteres '
+                       'especiales.',
+            'required': 'Este campo es requerido.'})
+
+    direccion = CharField(
+        label='Dirección',
+        widget=TextInput())
+
+    email = EmailField(
+        label='Correo electrónico',
+        widget=EmailInput())
+
+    telefono = CharField(
+        label='Teléfono',
+        error_messages={'required': 'Este campo es requerido.'})
+
+    clave = CharField(label='Contraseña',
+                      widget=PasswordInput(attrs={'placeholder': 'contraseña',
+                                                  'required': True}))
+
+    clave2 = CharField(label='Confirme Contraseña',
+                       widget=PasswordInput(attrs={'placeholder': 'confirme '
+                                                                  'contraseña',
+                                                   'required': True}))
+
+    helper = FormHelper()
+    helper.form_class = 'forms'
+    helper.form_action = '/registro/registroProveedor/'
+    helper.form_method = 'post'
+    helper.add_input(Submit('submit', 'Registrarse'))
+    helper.layout = Layout(
+        Field('username', css_class='input-md'),
+        PrependedText('rif', 'J -'),
+        Field('nombre', placeholder='nombre'),
+        Field('direccion', placeholder='dirección'),
+        Field('email', placeholder='e.g. ejemplo@mail.com'),
+        Field('telefono', placeholder='e.g. 0212-1234567'),
+        'clave',
+        'clave2')
+
+    def clean_username(self):
+        try:
+            User.objects.get(username__iexact=self.cleaned_data['username'])
+        except User.DoesNotExist:
+            return self.cleaned_data['username']
+        raise forms.ValidationError('El nombre de usuario ya existe. Intente de'
+                                    ' nuevo.')
+
+    def clean_rif(self):
+        try:
+            Proveedor.objects.get(rif=self.cleaned_data['rif'])
+        except Proveedor.DoesNotExist:
+            return self.cleaned_data['rif']
+        raise forms.ValidationError('Ya hay un usuario registrado con ese rif.'
+                                    'Intente de nuevo.')
+
+    def clean_claves_iguales(self):
         clave = self.cleaned_data.get('clave')
         clave2 = self.cleaned_data.get('clave2')
 
