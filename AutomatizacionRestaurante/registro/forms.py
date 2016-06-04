@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from django.forms import CharField, ChoiceField, DateField, EmailField, ModelForm, Form,\
+from django import forms
+from django.forms import CharField, ChoiceField, DateField, EmailField, Form,\
     IntegerField, RegexField, ValidationError
 from django.forms.widgets import EmailInput, PasswordInput, TextInput
 from django.forms.extras.widgets import SelectDateWidget
