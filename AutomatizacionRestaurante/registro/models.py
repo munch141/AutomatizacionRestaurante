@@ -16,7 +16,7 @@ class Cliente(models.Model):
     telefono = models.CharField(
         validators=[RegexValidator(
             regex='^[0-9]{4}-[0-9]{7}$',
-            message='El teléfono debe tener este formato: 1234-1234567',
+            message='El teléfono debe tener este formato: 0212-1234567',
             code='telefono_invalido')],
         max_length=12)
 
@@ -30,7 +30,7 @@ class Proveedor(models.Model):
     telefono = models.CharField(
         validators=[RegexValidator(
             regex='^[0-9]{4}-[0-9]{7}$',
-            message='El teléfono debe tener este formato: 1234-1234567',
+            message='El teléfono debe tener este formato: 0212-1234567',
             code='telefono_invalido')],
         max_length=12)
     direccion = models.CharField(max_length=128)

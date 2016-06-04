@@ -62,5 +62,5 @@ def registro_proveedor(request):
             perfil.save()
             return redirect(reverse('exito'))
     else:
-        form = RegistroClienteForm()
+        form = RegistroProveedorForm()
     return render(request, 'registro/registro.html', {'form': form})
