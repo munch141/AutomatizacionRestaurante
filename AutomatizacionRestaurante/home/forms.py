@@ -14,6 +14,13 @@ class EditarPerfilClienteForm(ModelForm):
 
     email = EmailField(label='Correo electrónico')
 
+class EditarPerfilProveedorForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['email']
+
+    email = EmailField(label='Correo electrónico')
+
 class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)

@@ -10,7 +10,8 @@ from django.forms.models import inlineformset_factory
 from django.contrib.auth.models import User
 
 from registro.models import Cliente
-from .forms import EditarPerfilClienteForm, LoginForm
+from registro.models import Proveedor
+from .forms import EditarPerfilClienteForm, LoginForm, EditarPerfilProveedorForm
 
 
 class LoginView(generic.FormView):
@@ -67,6 +68,33 @@ def editar_perfil(request):
     else:
         form = EditarPerfilClienteForm(instance=request.user)
         formset = cliente_inline_formset(instance=request.user)
+    return render(
+        request,
+        'home/editar_perfil.html',
+        {'user': request.user, 'formset': formset, 'form': form})
+
+@login_required(login_url='/')
+def editar_perfil_proveedor(request):
+    proveedor_inline_formset = inlineformset_factory(
+        User, Proveedor, fields=('telefono',), can_delete=False)
+
+    if request.method == 'POST':
+        form = EditarPerfilProveedorForm(request.POST, instance=request.user)
+        formset = proveedor_inline_formset(request.POST, instance=request.user)
+
+        if form.is_valid():
+            created_user = form.save(commit=False)
+            formset = proveedor_inline_formset(
+                request.POST, instance=created_user)
+
+            if formset.is_valid():
+                created_user.save()
+                formset.save()
+                messages.success(request, '✓ Se actualizaron los datos!')
+                return redirect(reverse('perfil'))
+    else:
+        form = EditarPerfilProveedorForm(instance=request.user)
+        formset = proveedor_inline_formset(instance=request.user)
     return render(
         request,
         'home/editar_perfil.html',

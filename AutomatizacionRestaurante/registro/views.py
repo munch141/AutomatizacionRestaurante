@@ -49,8 +49,8 @@ def registro_proveedor(request):
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['clave'],
                 email=form.cleaned_data['email'],
-                first_name=form.cleaned_data['nombre'],
-                last_name=form.cleaned_data['apellido']
+                first_name=form.cleaned_data['nombre']
+                #last_name=form.cleaned_data['apellido']
             )
             perfil = Proveedor(
                 usuario=user,
