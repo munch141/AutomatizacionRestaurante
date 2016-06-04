@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from django.forms import CharField, EmailField, ModelForm, RegexField
-from django.forms.widgets import EmailInput, PasswordInput
-from django import forms
+from django.forms import EmailField, ModelForm
 from django.contrib.auth.forms import AuthenticationForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Button, ButtonHolder, Field, HTML, Layout, Submit 
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import ButtonHolder, Layout, Submit
 from django.contrib.auth.models import User
 
 
-class ActualizarPerfilClienteForm(ModelForm):
+class EditarPerfilClienteForm(ModelForm):
     class Meta:
         model = User
         fields = ['email']

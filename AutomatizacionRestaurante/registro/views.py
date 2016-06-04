@@ -3,7 +3,6 @@
 from django.shortcuts import redirect, render
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from django.contrib import messages
 
 from .forms import RegistroClienteForm, RegistroProveedorForm
 from .models import Cliente, Proveedor
@@ -43,7 +42,7 @@ def registro_cliente(request):
 
 def registro_proveedor(request):
     if request.method == 'POST':
-        form = RegistroClienteForm(request.POST)
+        form = RegistroProveedorForm(request.POST)
 
         if form.is_valid():
             user = User.objects.create_user(

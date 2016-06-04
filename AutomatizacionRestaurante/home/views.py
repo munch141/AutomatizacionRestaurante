@@ -11,7 +11,7 @@ from django.forms.models import inlineformset_factory
 from django.contrib.auth.models import User
 
 from registro.models import Cliente
-from .forms import ActualizarPerfilClienteForm, LoginForm
+from .forms import EditarPerfilClienteForm, LoginForm
 
 
 class LoginView(generic.FormView):
@@ -35,32 +35,40 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
 
+
 @login_required(login_url='/')
 def home(request):
-	return render(request, 'home/home.html', {'user':request.user})
+    return render(request, 'home/home.html', {'user': request.user})
+
 
 @login_required(login_url='/')
 def perfil(request):
-	return render(request, 'home/perfil.html', {'user':request.user})
+    return render(request, 'home/perfil.html', {'user': request.user})
+
 
 @login_required(login_url='/')
-def actualizar_perfil(request):
-    ClienteInlineFormset = inlineformset_factory(User, Cliente, fields=('telefono',), can_delete=False)
+def editar_perfil(request):
+    cliente_inline_formset = inlineformset_factory(
+        User, Cliente, fields=('telefono',), can_delete=False)
 
     if request.method == 'POST':
-        form = ActualizarPerfilClienteForm(request.POST, instance=request.user)
-        formset = ClienteInlineFormset(request.POST, instance=request.user)
+        form = EditarPerfilClienteForm(request.POST, instance=request.user)
+        formset = cliente_inline_formset(request.POST, instance=request.user)
 
         if form.is_valid():
             created_user = form.save(commit=False)
-            formset = ClienteInlineFormset(request.POST, instance=created_user)
- 
+            formset = cliente_inline_formset(
+                request.POST, instance=created_user)
+
             if formset.is_valid():
                 created_user.save()
                 formset.save()
                 messages.success(request, '✓ Se actualizaron los datos!')
                 return redirect(reverse('perfil'))
     else:
-        form = ActualizarPerfilClienteForm(instance=request.user)
-        formset = ClienteInlineFormset(instance=request.user)
-    return render(request, 'home/actualizar_perfil.html', {'user':request.user, 'formset': formset, 'form': form})
+        form = EditarPerfilClienteForm(instance=request.user)
+        formset = cliente_inline_formset(instance=request.user)
+    return render(
+        request,
+        'home/actualizar_perfil.html',
+        {'user': request.user, 'formset': formset, 'form': form})

@@ -2,8 +2,7 @@
 
 from django.forms import CharField, ChoiceField, DateField, EmailField,\
     IntegerField, RegexField, ValidationError
-from django.forms.widgets import EmailInput, PasswordInput, Select,\
-    TextInput
+from django.forms.widgets import EmailInput, PasswordInput, TextInput
 from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.auth.models import User
 from django import forms
@@ -29,14 +28,14 @@ class RegistroClienteForm(forms.Form):
             'invalid': 'El nombre de usuario sólo puede tener letras, números,'
                        ' "_", "@", "+", "." y "-".',
             'required': 'Este campo es requerido.'})
-    
+
     ci = IntegerField(
         label='Cédula',
         widget=TextInput(),
         error_messages={
             'invalid': 'La cédula debe ser un número entero.',
             'required': 'Este campo es requerido.'})
-    
+
     nombre = RegexField(
         label='Nombre',
         regex=r'^[a-zA-Z]+$',
@@ -44,7 +43,7 @@ class RegistroClienteForm(forms.Form):
             'invalid': 'El nombre no puede contener números ni caracteres '
                        'especiales.',
             'required': 'Este campo es requerido.'})
-    
+
     apellido = RegexField(
         label='Apellido',
         regex=r'^[a-zA-Z]+$',
@@ -52,28 +51,28 @@ class RegistroClienteForm(forms.Form):
             'invalid': 'El apellido no puede contener números ni caracteres '
                        'especiales.',
             'required': 'Este campo es requerido.'})
-    
+
     fecha_nacimiento = DateField(
         label='Fecha de nacimiento',
         widget=SelectDateWidget(years=range(1900, 2016)))
-    
+
     email = EmailField(
         label='Correo electrónico',
         widget=EmailInput())
-    
+
     telefono = CharField(
         label='Teléfono',
         error_messages={'required': 'Este campo es requerido.'})
-    
+
     sexo = ChoiceField(
         label='Sexo',
         choices=SEXOS)
-    
+
     clave = CharField(
         label='Contraseña',
         widget=PasswordInput(
             attrs={'placeholder': 'contraseña', 'required': True}))
-    
+
     clave2 = CharField(
         label='Confirme Contraseña',
         widget=PasswordInput(
@@ -92,7 +91,8 @@ class RegistroClienteForm(forms.Form):
         Field('ci', placeholder='cédula'),
         Field('email', placeholder='e.g. ejemplo@mail.com'),
         Field('telefono', placeholder='e.g. 0212-1234567'),
-        MultiWidgetField('sexo', attrs=({'style': 'width: auto; display: inline-block;'})),
+        MultiWidgetField('sexo', attrs=({'style': 'width: auto; display: '
+                                                  'inline-block;'})),
         MultiWidgetField(
             'fecha_nacimiento',
             attrs=({'style': 'width: auto; display: inline-block;'})),
@@ -154,7 +154,8 @@ class RegistroProveedorForm(forms.Form):
                           regex=r'^[0-9]{4}-[0-9]{7}$',
                           error_messages={'invalid': 'El teléfono debe tener es'
                                                      'te formato: 1234-1234567',
-                                          'required': 'Este campo es requerido.'})
+                                          'required': 'Este campo es requerido'
+                                                      '.'})
     clave = CharField(label='Contraseña',
                       widget=PasswordInput(attrs={'placeholder': 'contraseña',
                                                   'required': True}))
@@ -162,7 +163,6 @@ class RegistroProveedorForm(forms.Form):
                        widget=PasswordInput(attrs={'placeholder': 'confirme '
                                                                   'contraseña',
                                                    'required': True}))
-
 
     helper = FormHelper()
     helper.form_class = 'forms'
