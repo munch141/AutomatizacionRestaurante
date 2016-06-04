@@ -125,40 +125,43 @@ class RegistroClienteForm(forms.Form):
 
 
 class RegistroProveedorForm(forms.Form):
-    username = RegexField(label="Nombre de usuario",
-                          widget=TextInput(attrs={'placeholder': 'nombre de us'
-                                                                 'uario',
-                                                  'required': True,
-                                                  'max_length': 30}),
-                          error_messages={'invalid': 'This value must contain '
-                                                     'only letters, numbers an'
-                                                     'd underscores.'},
-                          regex=r'^\w+$')
-    rif = IntegerField(label='RIF',
-                       widget=TextInput(),
-                       error_messages={'invalid': 'El RIF debe ser un número'
-                                                  ' entero.',
-                                       'required': 'Este campo es requerido.'})
-    nombre = RegexField(label='Nombre',
-                        regex=r'^[a-zA-Z]+$',
-                        error_messages={'invalid': 'El nombre no puede contener'
-                                                   ' números ni caracteres espe'
-                                                   'ciales.',
-                                        'required': 'Este campo es requerido.'})
-    direccion = CharField(label='Dirección', widget=TextInput())
-    email = EmailField(label='Correo electrónico',
-                       widget=EmailInput(attrs={'placeholder': 'e.g. ejemplo@m'
-                                                               'ail.com',
-                                                'required': True}))
-    telefono = RegexField(label='Teléfono',
-                          regex=r'^[0-9]{4}-[0-9]{7}$',
-                          error_messages={'invalid': 'El teléfono debe tener es'
-                                                     'te formato: 1234-1234567',
-                                          'required': 'Este campo es requerido'
-                                                      '.'})
+    username = CharField(
+        label='Nombre de usuario',
+        error_messages={
+            'invalid': 'El nombre de usuario sólo puede tener letras, números,'
+                       ' "_", "@", "+", "." y "-".',
+            'required': 'Este campo es requerido.'})
+
+    rif = IntegerField(
+        label='RIF',
+        widget=TextInput(),
+        error_messages={'invalid': 'El RIF debe ser un número entero.',
+                        'required': 'Este campo es requerido.'})
+
+    nombre = RegexField(
+        label='Nombre',
+        regex=r'^[a-zA-Z]+$',
+        error_messages={
+            'invalid': 'El nombre no puede contener números ni caracteres '
+                       'especiales.',
+            'required': 'Este campo es requerido.'})
+
+    direccion = CharField(
+        label='Dirección',
+        widget=TextInput())
+
+    email = EmailField(
+        label='Correo electrónico',
+        widget=EmailInput())
+
+    telefono = CharField(
+        label='Teléfono',
+        error_messages={'required': 'Este campo es requerido.'})
+
     clave = CharField(label='Contraseña',
                       widget=PasswordInput(attrs={'placeholder': 'contraseña',
                                                   'required': True}))
+
     clave2 = CharField(label='Confirme Contraseña',
                        widget=PasswordInput(attrs={'placeholder': 'confirme '
                                                                   'contraseña',
