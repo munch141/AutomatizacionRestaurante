@@ -80,27 +80,30 @@ class RegistroClienteForm(Form):
 
     email = EmailField(
         label='Correo electrónico',
-        widget=EmailInput())
+        widget=EmailInput(),
+        error_messages={'required': 'Este campo es requerido.'})
 
     telefono = RegexField(
         label='Teléfono',
         regex=r'^[0-9]{4}-[0-9]{7}$',
         error_messages={
-            'required': 'Este campo es requerido.',
-            'invalid': 'El teléfono debe tener este formato: 0212-1234567'})
+            'invalid': 'El teléfono debe tener este formato: 0212-1234567',
+            'required': 'Este campo es requerido.'})
 
     sexo = ChoiceField(
         label='Sexo',
-        choices=SEXOS)
+        choices=SEXOS,
+        error_messages={'required': 'Este campo es requerido.'})
 
     clave = CharField(
         label='Contraseña',
-        widget=PasswordInput())
+        widget=PasswordInput(),
+        error_messages={'required': 'Este campo es requerido.'})
 
     clave2 = CharField(
         label='Confirme Contraseña',
-        widget=PasswordInput(
-            attrs={'required': True}))
+        widget=PasswordInput(attrs={'required': True}),
+        error_messages={'required': 'Este campo es requerido.'})
 
 
     def clean_username(self):
@@ -112,20 +115,33 @@ class RegistroClienteForm(Form):
                                     ' nuevo.')
 
     def clean_ci(self):
+        cedula = self.cleaned_data['ci'] 
         try:
-            Cliente.objects.get(ci=self.cleaned_data['ci'])
+            Cliente.objects.get(ci=cedula)
         except Cliente.DoesNotExist:
-            return self.cleaned_data['ci']
+            if cedula < 0:
+                raise ValidationError('La cédula debe no puede ser menor que 0.')
+            return cedula
         raise forms.ValidationError('Ya hay un usuario registrado con esa'
                                     ' cédula. Intente de nuevo.')
 
-    def clean_claves(self):
+    def clean_clave(self):
         clave = self.cleaned_data.get('clave')
-        clave2 = self.cleaned_data.get('clave2')
+
+        if len(clave) < 6:
+            raise ValidationError('La clave debe tener al menos 6 caracteres.')
+        else:
+            return clave
+
+    def clean(self):
+        cleaned_data = super(RegistroClienteForm, self).clean()
+        clave = cleaned_data.get('clave')
+        clave2 = cleaned_data.get('clave2')
 
         if clave != clave2:
-            raise ValidationError("Las contraseñas no concuerdan!")
-        return clave2
+            self.add_error(
+                'clave',
+                ValidationError('Las contraseñas no concuerdan!'))
 
 
 class RegistroProveedorForm(Form):
@@ -168,7 +184,8 @@ class RegistroProveedorForm(Form):
             'required': 'Este campo es requerido.'})
 
     direccion = CharField(
-        label='Dirección')
+        label='Dirección',
+        error_messages={'required': 'Este campo es requerido.'})
 
     email = EmailField(
         label='Correo electrónico',
@@ -178,16 +195,18 @@ class RegistroProveedorForm(Form):
         label='Teléfono',
         regex=r'^[0-9]{4}-[0-9]{7}$',
         error_messages={
-            'required': 'Este campo es requerido.',
-            'invalid': 'El teléfono debe tener este formato: 0212-1234567'})
+            'invalid': 'El teléfono debe tener este formato: 0212-1234567',
+            'required': 'Este campo es requerido.'})
 
     clave = CharField(
         label='Contraseña',
-        widget=PasswordInput())
+        widget=PasswordInput(),
+        error_messages={'required': 'Este campo es requerido.'})
 
     clave2 = CharField(
         label='Confirme Contraseña',
-        widget=PasswordInput(attrs={'required': True}))
+        widget=PasswordInput(attrs={'required': True}),
+        error_messages={'required': 'Este campo es requerido.'})
 
     def clean_username(self):
         try:
@@ -205,10 +224,12 @@ class RegistroProveedorForm(Form):
         raise forms.ValidationError('Ya hay un usuario registrado con ese rif.'
                                     'Intente de nuevo.')
 
-    def clean_claves_iguales(self):
-        clave = self.cleaned_data.get('clave')
-        clave2 = self.cleaned_data.get('clave2')
+    def clean(self):
+        cleaned_data = super(RegistroProveedorForm, self).clean()
+        clave = cleaned_data.get('clave')
+        clave2 = cleaned_data.get('clave2')
 
         if clave != clave2:
-            raise ValidationError("Las contraseñas no concuerdan!")
-        return clave2
+            self.add_error(
+                'clave',
+                ValidationError('Las contraseñas no concuerdan!'))

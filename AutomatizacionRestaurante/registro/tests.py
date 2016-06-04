@@ -51,9 +51,10 @@ class PruebasFormRegistroCliente(TestCase):
             'clave': '12345678',
             'clave2': '12345678',
         }
-
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('username', form.errors)
+        
 
     def test_validacion_cedula_vacia(self):
         """
@@ -74,6 +75,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('ci', form.errors)
 
     def test_validacion_cedula_entero_negativo(self):
         """
@@ -95,6 +97,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('ci', form.errors)
 
     def test_validacion_cedula_caracteres(self):
         """
@@ -116,6 +119,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('ci', form.errors)
 
     def test_validacion_nombre_vacio(self):
         """
@@ -136,6 +140,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('nombre', form.errors)
 
     def test_validacion_nombre_con_numeros(self):
         """
@@ -156,6 +161,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('nombre', form.errors)
 
     def test_validacion_nombre_con_caracteres_especiales(self):
         """
@@ -177,6 +183,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('nombre', form.errors)
 
     def test_validacion_nombre_empieza_con_espacio(self):
         """
@@ -198,6 +205,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('nombre', form.errors)
 
     def test_validacion_nombre_solo_espacios(self):
         """
@@ -219,6 +227,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('nombre', form.errors)
 
     def test_validacion_nombre_termina_en_espacios(self):
         """
@@ -240,6 +249,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('nombre', form.errors)
 
     def test_validacion_apellido_vacio(self):
         """
@@ -260,6 +270,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('apellido', form.errors)
 
     def test_validacion_apellido_con_numeros(self):
         """
@@ -280,6 +291,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('apellido', form.errors)
 
     def test_validacion_apellido_con_caracteres_especiales(self):
         """
@@ -301,6 +313,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('apellido', form.errors)
 
     def test_validacion_apellido_empieza_con_espacio(self):
         """
@@ -322,6 +335,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('apellido', form.errors)
 
     def test_validacion_apellido_solo_espacios(self):
         """
@@ -343,6 +357,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('apellido', form.errors)
 
     def test_validacion_apellido_termina_en_espacios(self):
         """
@@ -364,6 +379,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('apellido', form.errors)
 
     def test_validacion_fecha_vacia(self):
         """
@@ -385,6 +401,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('fecha_nacimiento', form.errors)
 
     def test_validacion_email_vacio(self):
         """
@@ -405,6 +422,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors)
 
     def test_validacion_email_sin_usuario(self):
         """
@@ -426,6 +444,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors)
 
     def test_validacion_email_sin_arroba(self):
         """
@@ -447,6 +466,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors)
 
     def test_validacion_email_sin_dominio(self):
         """
@@ -468,6 +488,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors)
 
     def test_validacion_email_dominio_invalido(self):
         """
@@ -489,6 +510,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors)
 
     def test_validacion_telefono_vacio(self):
         """
@@ -509,6 +531,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('telefono', form.errors)
 
     def test_validacion_telefono_sin_guion(self):
         """
@@ -530,6 +553,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('telefono', form.errors)
 
     def test_validacion_telefono_digitos_insuficientes_antes_guion(self):
         """
@@ -551,6 +575,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('telefono', form.errors)
 
     def test_validacion_telefono_sin_digitos_antes_guion(self):
         """
@@ -572,6 +597,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('telefono', form.errors)
 
     def test_validacion_telefono_digitos_insuficientes_despues_guion(self):
         """
@@ -593,6 +619,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('telefono', form.errors)
 
     def test_validacion_telefono_sin_digitos_despues_guion(self):
         """
@@ -614,6 +641,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('telefono', form.errors)
 
     def test_validacion_telefono_con_caracteres_invalidos(self):
         """
@@ -635,6 +663,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('telefono', form.errors)
 
     def test_validacion_sexo_vacio(self):
         """
@@ -655,6 +684,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('sexo', form.errors)
 
     def test_validacion_clave_vacia(self):
         """
@@ -675,6 +705,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('clave', form.errors)
 
     def test_validacion_clave2_vacia(self):
         """
@@ -695,6 +726,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('clave2', form.errors)
 
     def test_validacion_claves_distintas(self):
         """
@@ -716,6 +748,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('clave', form.errors)
 
     def test_validacion_clave_muy_corta(self):
         """
@@ -737,6 +770,7 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('clave', form.errors)
 
 
 class PruebasFormRegistroCliente_BaseDeDatos(TestCase):
@@ -778,6 +812,7 @@ class PruebasFormRegistroCliente_BaseDeDatos(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('username', form.errors)
 
     def test_validacion_ci_existente(self):
         """
@@ -799,9 +834,10 @@ class PruebasFormRegistroCliente_BaseDeDatos(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('ci', form.errors)
 
 
-class PruebasFormRegistroProveedor(unittest.TestCase):
+class PruebasFormRegistroProveedor(TestCase):
     """
     Pruebas de validación del form de registro de proveedor
     """
@@ -843,6 +879,7 @@ class PruebasFormRegistroProveedor(unittest.TestCase):
 
         form = RegistroProveedorForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('username', form.errors)
 
 
     def test_validacion_rif_vacio(self):
@@ -862,6 +899,7 @@ class PruebasFormRegistroProveedor(unittest.TestCase):
 
         form = RegistroProveedorForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('rif', form.errors)
 
 
     def test_validacion_direccion_vacio(self):
@@ -881,3 +919,4 @@ class PruebasFormRegistroProveedor(unittest.TestCase):
 
         form = RegistroProveedorForm(data=form_data)
         self.assertFalse(form.is_valid())
+        self.assertIn('direccion', form.errors)
