@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Adiministrador Restaurante
+{% endblock %}
+
+{% block contenido %}
+    <h1>Bienvenido a la administracion del restaurante.</h1>
+    <p>Aquí van las opciones del administrador!</p>
+
+	<div class="divider"/>
+            <a class="btn-link" href="/administrador/Nuevo_menu" role="button">Agregar Nuevo Menu</a>
+            <div class="divider"/>
+            <a class="btn-link" href="/administrador/Nuevo_plato" role="button">Agregar Nuevo Plato</a>
+
+{% endblock %}
