@@ -224,6 +224,14 @@ class RegistroProveedorForm(Form):
         raise forms.ValidationError('Ya hay un usuario registrado con ese rif.'
                                     'Intente de nuevo.')
 
+    def clean_clave(self):
+        clave = self.cleaned_data.get('clave')
+
+        if len(clave) < 6:
+            raise ValidationError('La clave debe tener al menos 6 caracteres.')
+        else:
+            return clave
+
     def clean(self):
         cleaned_data = super(RegistroProveedorForm, self).clean()
         clave = cleaned_data.get('clave')
