@@ -44,7 +44,8 @@ INSTALLED_APPS = [
 
     #my apps
     'home.apps.HomeConfig',
-    'registro.apps.RegistroConfig'
+    'registro.apps.RegistroConfig',
+    'administrador.apps.AdministradorConfig'
 ]
 
 MIDDLEWARE_CLASSES = [
