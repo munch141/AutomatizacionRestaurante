@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Perfil de {{ user.username }}
+{% endblock title %}
+
+{% block contenido %}
+	{% if messages %}
+        <div class="messages" style="background-color:#83e965">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+	<h1>Perfil de {{ user.username }}:</h1>
+
+    <p>Nombre: {{user.first_name}}</p>
+    <p>RIF: {{user.proveedor.rif}}</p>
+    <p>Correo Electrónico: {{user.email}}</p>
+    <p>Teléfono: {{user.proveedor.telefono}}</p>
+    <p>Dirección: {{user.proveedor.direccion}}</p>
+	<div class="divider"/>
+	<a class="btn-link" href="{% url 'editar_perfil_proveedor' %}" role="button">Modificar datos</a>
+{% endblock %}
