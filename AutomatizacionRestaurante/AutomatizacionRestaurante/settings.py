@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'crispy_forms',
 
     #my apps
-    'home.apps.HomeConfig',
-    'registro.apps.RegistroConfig'
+    'cuentas.apps.CuentasConfig',
+    'cliente.apps.ClienteConfig',
+    'proveedor.apps.ProveedorConfig',
 ]
 
 MIDDLEWARE_CLASSES = [
