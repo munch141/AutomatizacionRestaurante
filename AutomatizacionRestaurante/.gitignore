@@ -8,3 +8,7 @@ proveedor/__pycache__
 .settings/
 administrador/__pycache__
 administrador/__pycache__/*
+administrador/migrations/__pycache__/*
+cliente/migrations/__pycache__/*
+cuentas/migrations/__pycache__/*
+administrador/migrations/__pycache__/*
