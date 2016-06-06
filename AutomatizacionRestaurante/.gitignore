@@ -1,0 +1,8 @@
+db.sqlite3
+AutomatizacionRestaurante/__pycache__
+*.pyc
+administrador/__pycache__
+cliente/__pycache__
+cuentas/__pycache__
+proveedor/__pycache__
+.settings/
