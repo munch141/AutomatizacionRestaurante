@@ -6,3 +6,5 @@ cliente/__pycache__
 cuentas/__pycache__
 proveedor/__pycache__
 .settings/
+administrador/__pycache__
+administrador/__pycache__/*
