@@ -1029,7 +1029,7 @@ class PruebasFormRegistroProveedor(TestCase):
         form_data = {
             'username': 'proveedor',
             'rif': '-123456',
-            'nombre': 'Empresa Prueba',
+            'nombre': 'EmpresaPrueba',
             'direccion': 'direccion prueba',
             'email': 'mail@ejemplo.com',
             'telefono': '1111-1111111',
@@ -1040,6 +1040,109 @@ class PruebasFormRegistroProveedor(TestCase):
         form = RegistroProveedorForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn('rif', form.errors)
+
+
+
+    def test_validacion_nombre_con_espacios(self):
+        """
+        Se prueba que el formulario sea valido cuando el nombre tiene espacios
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '123456',
+            'nombre': 'Empresa Prueba',
+            'direccion': 'direccion prueba',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertIn('nombre', form.errors)
+
+
+    def test_validacion_nombre_con_numeros(self):
+        """
+        Se prueba que el formulario sea valido cuando el nombre tiene numeros
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '123456',
+            'nombre': 'Empresa1',
+            'direccion': 'direccion prueba',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertIn('nombre', form.errors)
+
+
+    def test_validacion_rif_menos_digitos(self):
+        """
+        Se prueba que el formulario no sea válido cuando el rif es de menos digitos
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '12345',
+            'nombre': 'EmpresaPrueba',
+            'direccion': 'direccion prueba',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('rif', form.errors)
+
+
+    def test_validacion_rif_mas_caracteres(self):
+        """
+        Se prueba que el formulario no sea válido cuando el rif tiene mas de
+        ocho caracteres
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '1234567',
+            'nombre': 'EmpresaPrueba',
+            'direccion': 'direccion prueba',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('rif', form.errors)
+
+
+    def test_validacion_nombre_caracteres(self):
+        """
+        Se prueba que el formulario no sea válido cuando el nombre tiene 
+        caracteres diferente de .
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '123456',
+            'nombre': 'Empresa*',
+            'direccion': 'direccion prueba',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('nombre', form.errors)
 
 
 
