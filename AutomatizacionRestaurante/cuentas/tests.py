@@ -121,6 +121,54 @@ class PruebasFormRegistroCliente(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn('ci', form.errors)
 
+
+    def test_validacion_cedula_menos_digitos(self):
+        """
+        Se prueba que el formulario no sea válido cuando la cédula tiene menos
+        de 8 digitos
+        """
+        form_data = {
+            'username': 'cliente1',
+            'ci': '1234567',
+            'nombre': 'Ejemplo',
+            'apellido': 'Cliente',
+            'fecha_nacimiento': '10/25/1996',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'sexo': 'M',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroClienteForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('ci', form.errors)
+
+
+    def test_validacion_cedula_mas_digitos(self):
+        """
+        Se prueba que el formulario no sea válido cuando la cédula tiene mas de 
+        8 digitos
+        """
+        form_data = {
+            'username': 'cliente1',
+            'ci': '123456789',
+            'nombre': 'Ejemplo',
+            'apellido': 'Cliente',
+            'fecha_nacimiento': '10/25/1996',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'sexo': 'M',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroClienteForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('ci', form.errors)
+
+
+
     def test_validacion_nombre_vacio(self):
         """
         Se prueba que el formulario no sea válido cuando el nombre es vacío
@@ -250,6 +298,103 @@ class PruebasFormRegistroCliente(TestCase):
         form = RegistroClienteForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn('nombre', form.errors)
+
+
+    def test_validacion_nombre_con_dos_interespacios(self):
+        """
+        Se prueba que el formulario no sea válido cuando el nombre tiene mas de
+        un espacio entre ambos nombres
+        """
+        form_data = {
+            'username': 'cliente1',
+            'ci': '10000000',
+            'nombre': 'Ejemplo  nombre',
+            'apellido': 'Cliente',
+            'fecha_nacimiento': '10/25/1996',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'sexo': 'M',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroClienteForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('nombre', form.errors)
+
+
+    def test_validacion_nombre_termina_en_espacios1(self):
+        """
+        Se prueba que el formulario no sea válido cuando el nombre termina con
+        un espacio en blanco luego del segundo nombre
+        """
+        form_data = {
+            'username': 'cliente1',
+            'ci': '10000000',
+            'nombre': 'Ejemplo nombre ',
+            'apellido': 'Cliente',
+            'fecha_nacimiento': '10/25/1996',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'sexo': 'M',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroClienteForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('nombre', form.errors)
+
+
+
+    def test_validacion_nombre_con_dos_string(self):
+        """
+        Se prueba que el formulario sea valido cuando el nombre tiene dos palabras
+        """
+        form_data = {
+            'username': 'cliente1',
+            'ci': '10000000',
+            'nombre': 'Ejemplo noombre',
+            'apellido': 'Cliente',
+            'fecha_nacimiento': '10/25/1996',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'sexo': 'M',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroClienteForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertIn('nombre', form.errors)
+
+
+    def test_validacion_nombre_tiene_espacio(self):
+        """
+        Se prueba que el formulario sea valido cuando el nombre tiene espacio
+        en el centro
+        """
+        form_data = {
+            'username': 'cliente1',
+            'ci': '10000000',
+            'nombre': 'Ejemplo hola',
+            'apellido': 'Cliente',
+            'fecha_nacimiento': '10/25/1996',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'sexo': 'M',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroClienteForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertIn('nombre', form.errors)
+
+
+
+
+
 
     def test_validacion_apellido_vacio(self):
         """
@@ -1144,5 +1289,110 @@ class PruebasFormRegistroProveedor(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn('nombre', form.errors)
 
+
+    def test_validacion_nombre_con_punto(self):
+        """
+        Se prueba que el formulario sea valido cuando el nombre tiene .
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '123456',
+            'nombre': 'EmpresaPrueba.',
+            'direccion': 'direccion prueba',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        self.assertIn('nombre', form.errors)
+
+
+
+    def test_validacion_email_incompleto1(self):
+        """
+        Se prueba que el formulario no sea válido cuando el email esta incompleto
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '123456',
+            'nombre': 'EmpresaPrueba',
+            'direccion': 'direccion prueba',
+            'email': '@ejemplo.com',
+            'telefono': '1111-1111111',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors)
+
+
+
+    def test_validacion_email_incompleto2(self):
+        """
+        Se prueba que el formulario no sea válido cuando el email esta incompleto
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '123456',
+            'nombre': 'EmpresaPrueba',
+            'direccion': 'direccion prueba',
+            'email': 'mail@',
+            'telefono': '1111-1111111',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors)
+
+
+
+    def test_validacion_clave_menos_digitos(self):
+        """
+        Se prueba que el formulario no sea válido cuando el rif tiene mas de
+        ocho caracteres
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '123456',
+            'nombre': 'EmpresaPrueba',
+            'direccion': 'direccion prueba',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'clave': '12345',
+            'clave2': '12345',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('clave', 'clave2', form.errors)
+
+
+
+def test_validacion_claves_distintas(self):
+        """
+        Se prueba que el formulario no sea válido cuando el rif tiene mas de
+        ocho caracteres
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '123456',
+            'nombre': 'EmpresaPrueba',
+            'direccion': 'direccion prueba',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'clave': '12345678',
+            'clave2': '123459865',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('clave', 'clave2', form.errors)
 
 
