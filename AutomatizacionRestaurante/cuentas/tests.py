@@ -793,7 +793,7 @@ class PruebasFormRegistroCliente_BaseDeDatos(TestCase):
         cliente.save()
 
 
-    def test_validacion_username_existente(self):
+    def test_validacion_zexistente(self):
         """
         Se prueba que el formulario no es válido si el username está usado
         """
@@ -904,12 +904,12 @@ class PruebasFormRegistroProveedor(TestCase):
 
     def test_validacion_direccion_vacio(self):
         """
-        Se prueba que el formulario no sea válido cuando el username es vacío
+        Se prueba que el formulario no sea válido cuando la direccion es vacía
         """
         form_data = {
             'username': 'proveedor',
             'rif': '123456',
-            'nombre': 'Empresa',
+            'nombre': 'Empresa Prueba',
             'direccion': '',
             'email': 'mail@ejemplo.com',
             'telefono': '1111-1111111',
@@ -920,3 +920,126 @@ class PruebasFormRegistroProveedor(TestCase):
         form = RegistroProveedorForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn('direccion', form.errors)
+
+
+    def test_validacion_nombre_vacio(self):
+        """
+        Se prueba que el formulario no sea válido cuando el nombre es vací
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '123456',
+            'nombre': '',
+            'direccion': 'direccion',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('nombre', form.errors)
+
+
+    def test_validacion_email_vacio(self):
+        """
+        Se prueba que el formulario no sea válido cuando el email es vacío
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '123456',
+            'nombre': 'Empresa Prueba',
+            'direccion': 'direccion prueba',
+            'email': '',
+            'telefono': '1111-1111111',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('email', form.errors)
+
+
+    def test_validacion_telefono_vacio(self):
+        """
+        Se prueba que el formulario no sea válido cuando el telefono es vacío
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '123456',
+            'nombre': 'Empresa Prueba',
+            'direccion': 'direccion prueba',
+            'email': 'mail@ejemplo.com',
+            'telefono': '',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('telefono', form.errors)
+
+
+    def test_validacion_clave_vacio(self):
+        """
+        Se prueba que el formulario no sea válido cuando la clave es vacía
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '123456',
+            'nombre': 'Empresa Prueba',
+            'direccion': 'direccion prueba',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1234-1212121',
+            'clave': '',
+            'clave2': '12345678',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('clave', form.errors)
+
+
+    def test_validacion_clave2_vacio(self):
+        """
+        Se prueba que el formulario no sea válido cuando la clave2 es vacía
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '123456',
+            'nombre': 'Empresa Prueba',
+            'direccion': 'direccion prueba',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'clave': '12345678',
+            'clave2': '',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('clave2', form.errors)
+
+
+    def test_validacion_rif_negativo(self):
+        """
+        Se prueba que el formulario no sea válido cuando el rif es negativo
+        """
+        form_data = {
+            'username': 'proveedor',
+            'rif': '-123456',
+            'nombre': 'Empresa Prueba',
+            'direccion': 'direccion prueba',
+            'email': 'mail@ejemplo.com',
+            'telefono': '1111-1111111',
+            'clave': '12345678',
+            'clave2': '12345678',
+        }
+
+        form = RegistroProveedorForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('rif', form.errors)
+
+
+
