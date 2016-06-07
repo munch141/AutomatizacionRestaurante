@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Administrador, Ingrediente, Menu, Plato
+
+admin.site.register(Administrador)
+admin.site.register(Ingrediente)
+admin.site.register(Menu)
+admin.site.register(Plato)

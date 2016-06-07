@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import redirect, render
@@ -73,7 +74,6 @@ def registro_proveedor(request):
     return render(request, 'cuentas/registro.html', {'form': form})
 
 
-@method_decorator(login_check, name='dispatch')
 class LoginView(generic.FormView):
     form_class = LoginForm
     success_url = reverse_lazy('home')
@@ -92,6 +92,7 @@ class LoginView(generic.FormView):
 
 
 def logout_view(request):
+    print(request.user.__repr__)
     logout(request)
     return redirect(reverse('login'))
 
@@ -101,4 +102,12 @@ def home(request):
         request.user.cliente
         return redirect(reverse('home_cliente'))
     except:
-        return redirect(reverse('home_proveedor'))
+        try:
+            request.user.proveedor
+            return redirect(reverse('home_proveedor'))
+        except:
+            try:
+                request.user.administrador
+                return redirect(reverse('home_administrador'))
+            except:
+                return logout_view(request)

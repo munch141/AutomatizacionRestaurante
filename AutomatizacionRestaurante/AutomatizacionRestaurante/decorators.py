@@ -1,6 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 
+from cuentas.views import logout
+
 
 def login_check(func):
     def wrapper(request, *args, **kwargs):
@@ -16,7 +18,7 @@ def login_check(func):
                     request.user.proveedor
                     return redirect(reverse('home_proveedor'))
                 except:
-                    return cuentas.views.logout(request)
+                    return logout(request)
 
         else:
             return func(request)

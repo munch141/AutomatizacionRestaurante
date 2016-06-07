@@ -25,14 +25,15 @@ class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
 
-        #crispy forms
         self.fields['username'].label = "Nombre de usuario:"
         self.fields['password'].label = "Contraseña:"
 
-        self.helper = FormHelper()
+        #crispy forms
+        self.helper = FormHelper(self)
+        self.helper.form_id = 'login_form'
         self.helper.layout = Layout(
-            'username',
-            'password',
+            Field('username', id='username_field'),
+            Field('password', id='password_field'),
             ButtonHolder(
                 Submit('login', 'Entrar', css_class='btn-success')
             )
@@ -43,8 +44,9 @@ class RegistroClienteForm(Form):
     def __init__(self, *args, **kwargs):
         super(RegistroClienteForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
+        self.helper.form_id = 'registro_cliente_form'
         self.helper.form_class = 'forms col-md-8'
-        self.helper.form_method = 'post'
+        self.helper.form_method = 'POST'
         self.helper.add_input(Submit('submit', 'Registrarse'))
         self.helper.layout = Layout(
             Field('username', placeholder='username'),
@@ -166,8 +168,9 @@ class RegistroProveedorForm(Form):
     def __init__(self, *args, **kwargs):
         super(RegistroProveedorForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
+        self.helper.form_id = 'registro_proveedor_form'
         self.helper.form_class = 'forms col-md-7'
-        self.helper.form_method = 'post'
+        self.helper.form_method = 'POST'
         self.helper.add_input(Submit('submit', 'Registrarse'))
         self.helper.layout = Layout(
             Field('username', placeholder='nombre de usuario'),
