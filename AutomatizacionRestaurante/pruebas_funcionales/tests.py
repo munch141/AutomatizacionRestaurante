@@ -36,10 +36,12 @@ class PruebasAdministrador(LiveServerTestCase):
         home_admin_url = '%s%s' % (self.live_server_url, '/administrador/')
 
         self.assertEqual(home_admin_url, self.browser.current_url)
-        self.fail('Hay que terminar la prueba!')
 
         # En la página principal ve una opción que dice "Ver clientes" y le da
         # click
+        self.browser.find_element_by_id('ver_clientes_button').click()
+        self.fail('Hay que terminar la prueba!')
+
 
 
         # La página ahora muestra un título que dice "Clientes registrados:"

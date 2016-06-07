@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.core.urlresolvers import resolve
+from django.core.urlresolvers import resolve, reverse
 from django.http import HttpRequest
 from django.test import TestCase
 from django.template.loader import render_to_string
@@ -19,6 +19,8 @@ class PruebasHomeAdmin(TestCase):
         expected_html = render_to_string('administrador/home.html', request=request)
         self.assertEqual(response.content.decode(), expected_html)
 
-    def test_(self):
+    def test_url_llama_a_vista_home_administrador(self):
+        found = resolve(reverse('home_administrador'))
+        self.assertEqual(found.func, home)
 
-
+    
