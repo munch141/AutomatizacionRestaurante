@@ -12,3 +12,4 @@ administrador/migrations/__pycache__/*
 cliente/migrations/__pycache__/*
 cuentas/migrations/__pycache__/*
 administrador/migrations/__pycache__/*
+cuentas/__pycache__/admin.cpython-34.pyc cuentas/__pycache__/apps.cpython-34.pyc cuentas/__pycache__/forms.cpython-34.pyc cuentas/__pycache__/__init__.cpython-34.pyc cuentas/__pycache__/models.cpython-34.pyc cuentas/__pycache__/tests.cpython-34.pyc cuentas/__pycache__/urls.cpython-34.pyc cuentas/__pycache__/views.cpython-34.pyc
