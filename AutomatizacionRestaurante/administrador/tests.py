@@ -31,10 +31,11 @@ class PruebasHomeAdmin(TestCase):
     def test_pagina_ver_clientes_devuelve_html_correcto(self):
         request = HttpRequest()
         response = ver_clientes(request)
-        expected_html = render_to_string('administrador/ver_clientes.html', request=request)
+        expected_html = render_to_string(
+            'administrador/ver_clientes.html', request=request)
         self.assertEqual(response.content.decode(), expected_html)
 
-    def test_pagina_ver_clientes_muestra_clientes_registrados_y_fecha_de_registro(self):
+    def test_pagina_ver_clientes_muestra_info_clientes_registrados(self):
         user1 = User.objects.create_user(
                 username='cliente1',
                 password='pw',
