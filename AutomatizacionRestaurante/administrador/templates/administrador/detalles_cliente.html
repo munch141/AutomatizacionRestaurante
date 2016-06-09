@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Datos de {{ cliente.usuario.username }}:
+{% endblock title %}
+
+{% block contenido %}
+    {% if cliente %}
+        <h1>Datos de {{ cliente.usuario.username }}</h1>
+
+        <p id="nombre">Nombre: {{cliente.usuario.first_name}}</p>
+        <p id="apellido">Apellido: {{cliente.usuario.last_name}}</p>
+        <p id="cedula">Cédula: {{cliente.ci}}</p>
+        <p id="email">Correo electrónico: {{cliente.usuario.email}}</p>
+        <p id="telefono">Teléfono: {{cliente.telefono}}</p>
+        <p id="sexo">Sexo: {{cliente.sexo}}</p>
+        <p id="fecha_nacimiento">Fecha de nacimiento: {{cliente.fecha_nacimiento|date:'d/m/Y'}}</p>
+        <p id="fecha_registro">Fecha de registro: {{cliente.usuario.date_joined|date:'d/m/Y'}}</p>
+    {% endif %}
+    <div class="divider"/>
+    <a id="boton_regresar" class="btn-success" href="{% url 'ver_clientes' %}">Regresar a la lista de clientes</a>
+{% endblock %}
