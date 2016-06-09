@@ -18,9 +18,10 @@
     <p>Nombre: {{user.first_name}}</p>
     <p>Apellido: {{user.last_name}}</p>
     <p>Cédula: {{user.cliente.ci}}</p>
-    <p>Fecha de nacimiento: {{user.cliente.fecha_nacimiento}}</p>
     <p>Correo Electrónico: {{user.email}}</p>
     <p>Teléfono: {{user.cliente.telefono}}</p>
+    <p>Sexo: {{user.cliente.sexo}}</p>
+    <p>Fecha de nacimiento: {{user.cliente.fecha_nacimiento}}</p>
 	<div class="divider"/>
 	<a class="btn-link" href="{% url 'editar_perfil_cliente' %}" role="button">Modificar datos</a>
 {% endblock %}

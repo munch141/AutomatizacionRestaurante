@@ -13,7 +13,11 @@
         </tr>
         {% for cliente in clientes %}
             <tr>
-                <td>{{ cliente.usuario.username }}</td>
+                <td>
+                    <a id="{{cliente.usuario.username}}" class="btn-link" href="{% url 'detalles_cliente' cliente.usuario.username %}">
+                        {{ cliente.usuario.username }}
+                    </a>
+                </td>
                 <td>{{ cliente.usuario.date_joined|date:'d/m/Y' }}</td>
             </tr>
         {% endfor %}

@@ -32,11 +32,11 @@
             <div class="container">
                 <div class="navbar-header">
                     {% if user.cliente %}
-                        <a class="navbar-brand" href="{% url 'home_cliente' %}">Restaurante</a>
+                        <a id="boton_home" class="navbar-brand" href="{% url 'home_cliente' %}">Restaurante</a>
                     {% elif user.proveedor %}
-                        <a class="navbar-brand" href="{% url 'home_proveedor' %}">Restaurante</a>
+                        <a id="boton_home" class="navbar-brand" href="{% url 'home_proveedor' %}">Restaurante</a>
                     {% elif user.administrador %}
-                        <a class="navbar-brand" href="{% url 'home_administrador' %}">Restaurante</a>
+                        <a id="boton_home" class="navbar-brand" href="{% url 'home_administrador' %}">Restaurante</a>
                     {% endif %}
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
