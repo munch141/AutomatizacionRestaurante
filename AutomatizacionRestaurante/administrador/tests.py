@@ -82,3 +82,37 @@ class PruebasHomeAdmin(TestCase):
         expected_html = render_to_string(
             'administrador/detalles_cliente.html', request=request)
         self.assertEqual(response.content.decode(), expected_html)
+
+
+class PruebasFormMenu (TestCase):
+
+
+    def test_validacion_datos_correctos(self):
+     """
+     Se prueba que el formulario del menu sea valido solo si esta completo
+     """
+      form_data = {
+         'nombre': 'menu1',
+         'actual': True,
+         'platos': [],
+      }
+      form = CrearMenuForm(data=form_data)
+      self.assertTrue(form.is_valid())
+
+
+
+
+    def test_validacion_nombre_menu_vacio(self):
+	  """
+     Se prueba que el formulario no sea valido cuando el nombre del menu sea vacio
+     """
+      form_data = {
+         'nombre': '',
+         'actual': True,
+         'platos': [],
+      }
+      form = CrearMenuForm(data=form_data)
+      self.assertTrue(form.is_valid())
+      self.assertIn('nombre', form.errors)
+
+    
