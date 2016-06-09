@@ -101,7 +101,6 @@ class PruebasFormMenu (TestCase):
 
 
 
-
     def test_validacion_nombre_menu_vacio(self):
 	  """
      Se prueba que el formulario no sea valido cuando el nombre del menu sea vacio
@@ -112,7 +111,22 @@ class PruebasFormMenu (TestCase):
          'platos': [],
       }
       form = CrearMenuForm(data=form_data)
-      self.assertTrue(form.is_valid())
+      self.assertFalse(form.is_valid())
       self.assertIn('nombre', form.errors)
 
-    
+
+    def test_validacion_nombre_menu_espacios(self):
+	  """
+     Se prueba que el formulario no sea valido cuando el nombre solo tenga espacios
+     """
+      form_data = {
+         'nombre': '  ',
+         'actual': True,
+         'platos': [],
+      }
+      form = CrearMenuForm(data=form_data)
+      self.assertFalse(form.is_valid())
+      self.assertIn('nombre', form.errors)
+
+
+
