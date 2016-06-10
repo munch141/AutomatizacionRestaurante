@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 
 from cuentas.models import Cliente
 from .models import Ingrediente, Menu, Plato
-from .forms import CrearMenuForm
+from .forms import CrearMenuForm, CrearPlatoForm, AgregarIngredienteForm
 
 
 def home(request):
@@ -35,10 +35,52 @@ def crear_menu(request):
             platos = form.cleaned_data['incluye']
 
             menu = Menu.objects.create(nombre=nombre, actual=actual)
-            print(platos)
-            menu.incluye.add(platos)
+                
+            for p in platos:
+                plato = Plato.objects.get(nombre=p.nombre)
+                menu.incluye.add(plato)
+
             messages.success(request, '✓ Se creó un nuevo menú "%s"!' % nombre)
             return redirect(reverse('home_administrador'))
     else:
         form = CrearMenuForm()
     return render(request, 'administrador/crear_menu.html', {'form': form})
+
+def crear_plato(request):
+    if request.method == 'POST':
+        form = CrearPlatoForm(request.POST)
+
+        if form.is_valid():
+            nombre = form.cleaned_data['nombre']
+            descripcion = form.cleaned_data['descripcion']
+            precio = form.cleaned_data['precio']
+            ingredientes = form.cleaned_data['contiene']
+
+            plato = Plato.objects.create(
+                nombre=nombre, descripcion=descripcion, precio=precio)
+                
+            for i in ingredientes:
+                ingrediente = Ingrediente.objects.get(nombre=i.nombre)
+                plato.contiene.add(ingrediente)
+                
+            messages.success(request, '✓ Se creó un nuevo plato "%s"!' % nombre)
+            return redirect(reverse('home_administrador'))
+    else:
+        form = CrearPlatoForm()
+    return render(request, 'administrador/crear_plato.html', {'form': form})
+
+
+def agregar_ingrediente(request):
+    if request.method == 'POST':
+        form = AgregarIngredienteForm(request.POST)
+
+        if form.is_valid():
+            nombre = form.cleaned_data['nombre']
+
+            ingrediente = Ingrediente.objects.create(nombre=nombre)
+                
+            messages.success(request, '✓ Se agregó el ingrediente "%s"!' % nombre)
+            return redirect(reverse('home_administrador'))
+    else:
+        form = AgregarIngredienteForm()
+    return render(request, 'administrador/agregar_ingrediente.html', {'form': form})

@@ -14,7 +14,19 @@
             {% endfor %}
         </div>
     {% endif %}
+    <div class="row">
+        <a class="btn btn-lg btn-link" id="crear_menu_button" href="{% url 'crear_menu' %}" role="button">Crear menú</a>
+    </div>
+    
+    <div class="row">
+        <a class="btn btn-lg btn-link" id="crear_menu_button" href="{% url 'crear_plato' %}" role="button">Crear plato</a>
+    </div>
+    
+    <div class="row">
+        <a class="btn btn-lg btn-link" id="crear_menu_button" href="{% url 'agregar_ingrediente' %}" role="button">Agregar ingrediente</a>
+    </div>
 
-    <a class="btn btn-lg btn-info" id="ver_clientes_button" href="{% url 'ver_clientes' %}" role="button">Ver clientes registrados</a>
-    <a class="btn btn-lg btn-success" id="crear_menu_button" href="{% url 'crear_menu' %}" role="button">Crear menú</a>
+    <div class="row">
+        <a class="btn btn-lg btn-link" id="ver_clientes_button" href="{% url 'ver_clientes' %}" role="button">Ver clientes registrados</a>
+    </div>
 {% endblock %}
