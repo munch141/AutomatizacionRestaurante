@@ -2,6 +2,7 @@
 
 from django.forms import EmailField, ModelForm, CharField
 from django.contrib.auth.models import User
+from django.forms.widgets import PasswordInput
 
 from .models import BilleteraElectronica
 
@@ -18,4 +19,4 @@ class CrearBilleteraForm(ModelForm):
 		model = BilleteraElectronica
 		fields = ['pin']
 
-	pin = CharField(label='Pin')
+	pin = CharField(label='Pin', widget=PasswordInput())

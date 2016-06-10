@@ -55,7 +55,8 @@ def crear_billetera(request):
 		form = CrearBilleteraForm(request.POST)
 		if form.is_valid():
 			pin = form.cleaned_data['pin']
-			billetera = BilleteraElectronica.objects.create(pin=pin)
+			billetera = BilleteraElectronica.objects.create(
+                usuario=request.user.cliente, pin=pin)
 			billetera.save()
 
 			messages.success(request, '✓ Se ha creado su billetera')       

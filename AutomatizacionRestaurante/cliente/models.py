@@ -9,4 +9,4 @@ class BilleteraElectronica(models.Model):
 	pin = models.CharField(max_length=6,)
 
 	def __str__(self):
-		return str(self.pin)
+		return str(self.usuario.usuario.username)

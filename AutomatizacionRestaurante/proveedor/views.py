@@ -79,9 +79,11 @@ def crear_inventario(request):
             ingredientes = form.cleaned_data['ingredientes']
 
             inventario = Inventario.objects.create(rif_proveedor=rif_proveedor)
-            #print(platos)
             inventario.ingredientes.add(ingredientes)
-            messages.success(request, '✓ Se creó el inventario')
+            i = [ingrediente.nombre for ingrediente in ingredientes]
+            messages.success(
+                request,
+                '✓ Se creó el inventario con los ingredientes "%s"' % str(i))
             return redirect(reverse('home_proveedor'))
     else:
         form = CrearInventarioForm()

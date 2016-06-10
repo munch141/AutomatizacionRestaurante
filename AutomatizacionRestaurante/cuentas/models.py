@@ -44,9 +44,9 @@ class Proveedor(models.Model):
         return str(self.usuario.username)
 
 class Inventario(models.Model):
-    rif_proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
+    rif_proveedor = models.OneToOneField(Proveedor, on_delete=models.CASCADE)
     ingredientes = models.ManyToManyField(Ingrediente) 
 
 
     def __str__(self):
-        return str(self.rif_usuario)
+        return str(self.rif_proveedor)
