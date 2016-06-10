@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Inventario
+{% endblock %}
+
+{% block contenido %}
+
+	{% if messages %}
+        <div class="messages" style="background-color:#83e965">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+	<h1>Inventario de {{user.first_name}}:</h1>
+
+
+	<div class="row">
+        <div class="col-md-3">
+            <form id="menu_form" action="." role="form" class="form-horizontal" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" class="btn btn-success" value="Crear Inventario">
+                <a href="{% url 'home_proveedor' %}" class="btn btn-default" role="button">Cancelar</a>
+            </form>
+        </div>
+    </div>
+
+
+	<h2> </h2>
+
+	<a class="btn btn-lg btn-success" id="nuevo_ingrediente_button" href="{% url 'agregar_ingrediente' %}" role="button">Nuevo Ingrediente</a>
+{% endblock %}

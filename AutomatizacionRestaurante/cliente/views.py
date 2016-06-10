@@ -8,7 +8,8 @@ from django.forms.models import inlineformset_factory
 from django.contrib.auth.models import User
 
 from cuentas.models import Cliente
-from .forms import EditarPerfilForm
+from .models import BilleteraElectronica
+from .forms import EditarPerfilForm, CrearBilleteraForm
 
 
 @login_required(login_url=reverse_lazy('login'))
@@ -47,3 +48,19 @@ def editar_perfil(request):
         request,
         'cliente/editar_perfil.html',
         {'user': request.user, 'formset': formset, 'form': form})
+
+@login_required(login_url=reverse_lazy('login'))
+def crear_billetera(request):
+	if request.method == 'POST':
+		form = CrearBilleteraForm(request.POST)
+		if form.is_valid():
+			pin = form.cleaned_data['pin']
+			billetera = BilleteraElectronica.objects.create(pin=pin)
+			billetera.save()
+
+			messages.success(request, '✓ Se ha creado su billetera')       
+
+			return redirect(reverse('home_cliente'))
+	else:
+		form = CrearBilleteraForm()
+	return render(request, 'cliente/crear_billetera.html', {'form': form})

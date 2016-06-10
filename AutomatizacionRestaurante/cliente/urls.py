@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'^perfil/editar/$',
         views.editar_perfil,
         name='editar_perfil_cliente'),
+
+	url(r'^crear_billetera/$', views.crear_billetera, name='crear_billetera'),
 ]

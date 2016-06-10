@@ -5,6 +5,15 @@
 {% endblock %}
 
 {% block contenido %}
+
+	{% if messages %}
+        <div class="messages" style="background-color:#83e965">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <h1>Bienvenido {{user.first_name}}.</h1>
-    <p>Aquí van las opciones de la aplicación!</p>
+    <a class="btn btn-lg btn-success" id="crear_billetera_button" href="{% url 'crear_billetera' %}" role="button">Crear Billetera</a>
 {% endblock %}
