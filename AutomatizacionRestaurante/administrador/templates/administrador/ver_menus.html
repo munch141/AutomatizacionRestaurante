@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Adiministrador Restaurante - Ver Menús
+{% endblock %}
+
+{% block contenido %}
+    <h1>Menús en el sistema:</h1>
+    <table id="tabla_menus" class='table table-hover'>
+        <tr>
+            <th>Nombre</th>
+        </tr>
+        {% for menu in menus %}
+            <tr>
+                <td>
+                    <a id="{{menu.nombre}}" class="btn-link" href="{% url 'detalles_menu' menu.nombre %}">
+                        {{ menu.nombre }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div class="row">
+        <a class="btn btn-lg btn-link" href="{% url 'home_administrador' %}" role="button">Regresar a la página principal</a>
+    </div>
+{% endblock %}

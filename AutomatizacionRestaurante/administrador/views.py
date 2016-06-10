@@ -12,7 +12,11 @@ from .forms import CrearMenuForm, CrearPlatoForm, AgregarIngredienteForm
 
 
 def home(request):
-    return render(request, 'administrador/home.html')
+    try:
+        menu_actual = Menu.objects.get(actual=True)
+    except:
+        menu_actual = None
+    return render(request, 'administrador/home.html', {'menu_actual': menu_actual})
 
 def ver_clientes(request):
     clientes = Cliente.objects.all()
@@ -84,3 +88,15 @@ def agregar_ingrediente(request):
     else:
         form = AgregarIngredienteForm()
     return render(request, 'administrador/agregar_ingrediente.html', {'form': form})
+
+
+def ver_menus(request):
+    menus = Menu.objects.all()
+    return render(request, 'administrador/ver_menus.html', {'menus': menus})
+
+def detalles_menu(request, nombre):
+    try:
+        menu = Menu.objects.get(nombre=nombre)
+    except:
+        menu = None
+    return render(request, 'administrador/detalles_menu.html', {'menu': menu})

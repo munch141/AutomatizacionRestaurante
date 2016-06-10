@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Datos de {{ menu.nombre }}:
+{% endblock title %}
+
+{% block contenido %}
+    {% if menu %}
+        <h1>Datos de {{ menu.nombre }}</h1>
+
+        <h3>Actual:
+            {% if menu.actual == "False" %} 
+                <span style="color:#c20a0a">{{menu.actual}}</span>
+            {% else %}
+                <span style="color:#64bb33">{{menu.actual}}</span>
+            {% endif %}
+        </h3>
+
+        <h3>Platos:</h3>
+        <ul>
+            {% for plato in menu.incluye.all %}
+                <li>{{plato.nombre}}</li>
+            {% endfor %}
+        </ul>
+    
+    {% endif %}
+    <div class="divider"/>
+    <a id="boton_regresar" class="btn btn-info" href="{% url 'ver_menus' %}" role="button">Regresar a la lista de menus</a>
+{% endblock %}

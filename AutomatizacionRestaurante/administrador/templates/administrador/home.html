@@ -14,19 +14,41 @@
             {% endfor %}
         </div>
     {% endif %}
-    <div class="row">
-        <a class="btn btn-lg btn-link" id="crear_menu_button" href="{% url 'crear_menu' %}" role="button">Crear menú</a>
-    </div>
-    
-    <div class="row">
-        <a class="btn btn-lg btn-link" id="crear_menu_button" href="{% url 'crear_plato' %}" role="button">Crear plato</a>
-    </div>
-    
-    <div class="row">
-        <a class="btn btn-lg btn-link" id="crear_menu_button" href="{% url 'agregar_ingrediente' %}" role="button">Agregar ingrediente</a>
-    </div>
 
     <div class="row">
-        <a class="btn btn-lg btn-link" id="ver_clientes_button" href="{% url 'ver_clientes' %}" role="button">Ver clientes registrados</a>
+        <div class="col-md-3">
+            <div class="row">
+                <a class="btn btn-lg btn-link" href="{% url 'ver_menus' %}" role="button">Ver menús</a>
+            </div>
+
+            <div class="row">
+                <a class="btn btn-lg btn-link" href="{% url 'crear_menu' %}" role="button">Crear menú</a>
+            </div>
+            
+            <div class="row">
+                <a class="btn btn-lg btn-link" href="{% url 'crear_plato' %}" role="button">Crear plato</a>
+            </div>
+            
+            <div class="row">
+                <a class="btn btn-lg btn-link" href="{% url 'agregar_ingrediente' %}" role="button">Agregar ingrediente</a>
+            </div>
+
+            <div class="row">
+                <a class="btn btn-lg btn-link" href="{% url 'ver_clientes' %}" role="button">Ver clientes registrados</a>
+            </div>
+        </div>
+
+        <div class="col-md-6" style="background-color:ffffff">
+            {% if menu_actual %}
+                <h2>Menú actual: <span style="color:#69cf2f">{{menu_actual.nombre}}</span></h2>
+                <h3>Platos:</h3>
+                <ul>
+                    {% for plato in menu_actual.incluye.all %}
+                        <li>{{plato.nombre}}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
     </div>
+
 {% endblock %}

@@ -11,4 +11,10 @@ urlpatterns = [
     url(r'^crear_menu/$', views.crear_menu, name='crear_menu'),
     url(r'^crear_plato/$', views.crear_plato, name='crear_plato'),
     url(r'^agregar_ingrediente/$', views.agregar_ingrediente, name='agregar_ingrediente'),
+
+    url(r'^ver_menus/$', views.ver_menus, name='ver_menus'),
+    url(
+        r'^ver_menu/(.+)$',
+        views.detalles_menu,
+        name='detalles_menu'),
 ]
