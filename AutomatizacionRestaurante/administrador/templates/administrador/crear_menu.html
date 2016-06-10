@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Adiministrador Restaurante - Crear Menú
+{% endblock %}
+
+{% block contenido %}
+    <h1>Ingrese la información del nuevo menú:</h1>
+
+    <div class="row">
+        <div class="col-md-3">
+            <form id="menu_form" action="." role="form" class="form-horizontal" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" class="btn btn-success" value="Crear menú">
+                <a href="{% url 'home_administrador' %}" class="btn btn-default" role="button">Cancelar</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -7,5 +7,6 @@ urlpatterns = [
     url(
         r'^ver_clientes/([a-zA-Z0-9_@+.-]+)$',
         views.detalles_cliente,
-        name='detalles_cliente')
+        name='detalles_cliente'),
+    url(r'^crear_menu/$', views.crear_menu, name='crear_menu'),
 ]

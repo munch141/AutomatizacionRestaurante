@@ -5,6 +5,16 @@
 {% endblock %}
 
 {% block contenido %}
-    <h1>Bienvenido a la administracion del restaurante.</h1>
-    <a class="btn btn-lg btn-success" id="ver_clientes_button" href="{% url 'ver_clientes' %}" role="button">Ver clientes</a>
+    <h1>Bienvenido a la administración del restaurante.</h1>
+
+    {% if messages %}
+        <div class="messages" style="background-color:#83e965">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <a class="btn btn-lg btn-info" id="ver_clientes_button" href="{% url 'ver_clientes' %}" role="button">Ver clientes registrados</a>
+    <a class="btn btn-lg btn-success" id="crear_menu_button" href="{% url 'crear_menu' %}" role="button">Crear menú</a>
 {% endblock %}
