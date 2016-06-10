@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block title %}
+    Adiministrador Restaurante - Crear Plato
+{% endblock %}
+
+{% block head %}
+    <link href="{% static 'administrador/css/forms.css' %}" rel="stylesheet" type="text/css">
+{% endblock head %}
+
+{% block contenido %}
+    <h1>Ingrese la información del nuevo plato:</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form id="menu_form" action="." role="form" class="form-horizontal" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" class="btn btn-success" value="Crear plato">
+                <a href="{% url 'home_administrador' %}" class="btn btn-default" role="button">Cancelar</a>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

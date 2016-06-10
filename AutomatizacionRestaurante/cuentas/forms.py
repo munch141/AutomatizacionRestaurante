@@ -80,7 +80,7 @@ class RegistroClienteForm(Form):
 
     nombre = RegexField(
         label='Nombre',
-        regex=r'^[a-zA-Z]+$',
+        regex=r'^([a-zA-Z]+|[a-zA-Z]+\s[a-zA-Z]+)$',
         error_messages={
             'invalid': 'El nombre no puede contener números ni caracteres '
                        'especiales.',
@@ -88,7 +88,7 @@ class RegistroClienteForm(Form):
 
     apellido = RegexField(
         label='Apellido',
-        regex=r'^[a-zA-Z]+$',
+        regex=r'^([a-zA-Z]+|[a-zA-Z]+\s[a-zA-Z]+)$',
         error_messages={
             'invalid': 'El apellido no puede contener números ni caracteres '
                        'especiales.',
@@ -136,11 +136,12 @@ class RegistroClienteForm(Form):
 
     def clean_ci(self):
         cedula = self.cleaned_data['ci']
+
         try:
             Cliente.objects.get(ci=cedula)
         except Cliente.DoesNotExist:
-            if cedula < 0:
-                raise ValidationError('La cédula debe no puede ser menor que 0.')
+            if (cedula <= 9999999) or (99999999 < cedula):
+                raise ValidationError('La cédula debe ser de 8 dígitos.')
             return cedula
         raise forms.ValidationError('Ya hay un usuario registrado con esa'
                                     ' cédula. Intente de nuevo.')
@@ -198,7 +199,7 @@ class RegistroProveedorForm(Form):
 
     nombre = RegexField(
         label='Nombre',
-        regex=r'^[a-zA-Z]+$',
+        regex=r'^([a-zA-Z0-9.]+|[a-zA-Z0-9.]+\s[a-zA-Z0-9.]+)$',
         error_messages={
             'invalid': 'El nombre no puede contener números ni caracteres '
                        'especiales.',
@@ -238,9 +239,13 @@ class RegistroProveedorForm(Form):
                                     ' nuevo.')
 
     def clean_rif(self):
+        rif = self.cleaned_data['rif']
+
         try:
-            Proveedor.objects.get(rif=self.cleaned_data['rif'])
+            Proveedor.objects.get(rif=rif)
         except Proveedor.DoesNotExist:
+            if (rif <= 99999) or (99999999 < rif):
+                raise ValidationError('La cédula debe ser de 8 dígitos.') 
             return self.cleaned_data['rif']
         raise forms.ValidationError('Ya hay un usuario registrado con ese rif.'
                                     'Intente de nuevo.')

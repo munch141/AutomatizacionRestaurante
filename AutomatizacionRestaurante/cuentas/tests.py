@@ -366,7 +366,6 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertTrue(form.is_valid())
-        self.assertIn('nombre', form.errors)
 
 
     def test_validacion_nombre_tiene_espacio(self):
@@ -389,7 +388,6 @@ class PruebasFormRegistroCliente(TestCase):
 
         form = RegistroClienteForm(data=form_data)
         self.assertTrue(form.is_valid())
-        self.assertIn('nombre', form.errors)
 
 
 
@@ -1205,7 +1203,6 @@ class PruebasFormRegistroProveedor(TestCase):
 
         form = RegistroProveedorForm(data=form_data)
         self.assertTrue(form.is_valid())
-        self.assertIn('nombre', form.errors)
 
 
     def test_validacion_nombre_con_numeros(self):
@@ -1225,7 +1222,6 @@ class PruebasFormRegistroProveedor(TestCase):
 
         form = RegistroProveedorForm(data=form_data)
         self.assertTrue(form.is_valid())
-        self.assertIn('nombre', form.errors)
 
 
     def test_validacion_rif_menos_digitos(self):
@@ -1255,7 +1251,7 @@ class PruebasFormRegistroProveedor(TestCase):
         """
         form_data = {
             'username': 'proveedor',
-            'rif': '1234567',
+            'rif': '123456789',
             'nombre': 'EmpresaPrueba',
             'direccion': 'direccion prueba',
             'email': 'mail@ejemplo.com',
@@ -1307,7 +1303,6 @@ class PruebasFormRegistroProveedor(TestCase):
 
         form = RegistroProveedorForm(data=form_data)
         self.assertTrue(form.is_valid())
-        self.assertIn('nombre', form.errors)
 
 
 
