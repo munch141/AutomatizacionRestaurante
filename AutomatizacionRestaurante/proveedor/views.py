@@ -75,7 +75,7 @@ def crear_inventario(request):
         form = CrearInventarioForm(request.POST)
 
         if form.is_valid():
-            rif_proveedor = form.cleaned_data['rif_proveedor']
+            rif_proveedor = request.user.proveedor
             ingredientes = form.cleaned_data['ingredientes']
 
             inventario = Inventario.objects.create(rif_proveedor=rif_proveedor)
@@ -85,5 +85,5 @@ def crear_inventario(request):
             return redirect(reverse('home_proveedor'))
     else:
         form = CrearInventarioForm()
-    return render(request, 'proveedor/crear_inventario.html', {'user': request.user})
+    return render(request, 'proveedor/crear_inventario.html', {'form':form, 'user': request.user})
 		

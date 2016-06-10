@@ -29,7 +29,7 @@ class CrearInventarioForm(forms.ModelForm):
 
     class Meta:
         model = Inventario
-        fields = ['ingredientes', 'rif_proveedor']
+        fields = ['ingredientes']
 
     def __init__(self, *args, **kwargs):
         super(CrearInventarioForm, self).__init__(*args, **kwargs)
