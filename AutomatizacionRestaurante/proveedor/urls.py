@@ -14,5 +14,5 @@ urlpatterns = [
 
     
 
-	url(r'^agregar_ingrediente/$' , views.agregar_ingrediente, name='agregar_ingrediente'),	
+	url(r'^agregar_ingrediente/$' , views.agregar_ingrediente, name='agregar_ingrediente_proveedor'),	
 ]

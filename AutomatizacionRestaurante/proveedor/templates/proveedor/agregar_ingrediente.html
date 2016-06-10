@@ -6,17 +6,18 @@
     Agregar Ingredientes
 {% endblock %}
 
-
+{% block head %}
+    <link href="{% static 'administrador/css/forms.css' %}" rel="stylesheet" type="text/css">
+{% endblock head %}
 
 {% block contenido %}
     <h2>Ingrese ingrediente:</h2>
 
 	<div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <form action="." role="form" class="form-horizontal" method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
-
                 <input type="submit" class="btn btn-success" value="Guardar cambios">
                 <a href="{% url 'crear_inventario' %}" class="btn btn-default" role="button">Cancelar</a>
             </form>
