@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load staticfiles %}
 
 {% block title %}
     Adiministrador Restaurante - Crear Menú
 {% endblock %}
+
+{% block head %}
+    <link href="{% static 'administrador/css/forms.css' %}" rel="stylesheet" type="text/css">
+{% endblock head %}
 
 {% block contenido %}
     <h1>Ingrese la información del nuevo menú:</h1>
