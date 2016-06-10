@@ -4,7 +4,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 
-from administrador.models import Administrador
+from administrador.models import Administrador, Ingrediente, Plato, Menu
 from cuentas.models import Cliente
 
 class PruebasAdministrador(LiveServerTestCase):
@@ -58,6 +58,24 @@ class PruebasAdministrador(LiveServerTestCase):
         self.agregar_cliente(
             'cliente3', 'Tres', 'Cliente', '3', 'cliente3@mail.com',
             '3333-3333333', 'M', '1993-3-3')
+
+        ingrediente = Ingrediente(
+            nombre='Ingrediente 1', descripcion='Descripción del ingrediente')
+        ingrediente.save()
+
+        ingrediente2 = Ingrediente(
+            nombre='Ingrediente 2', descripcion='Descripción del ingrediente 2')
+        ingrediente2.save()
+
+        plato1 = Plato(
+            nombre='Plato 1', descripcion = 'Descripción del plato1', precio = 1)
+        plato1.save()
+        plato1.contiene.add('Ingrediente 1', 'Ingrediente 2')
+
+        plato2 = Plato(
+            nombre='Plato 2', descripcion = 'Descripción del plato2', precio = 2)
+        plato2.save()
+        plato2.contiene.add('Ingrediente 2')
 
     def tearDown(self):
         self.browser.quit()
@@ -149,8 +167,8 @@ class PruebasAdministrador(LiveServerTestCase):
 
         self.assertEqual(home_admin_url, self.browser.current_url)
 
-        # En la página principal ve una opción que dice "Ver clientes" y le da
-        # click
+        # En la página principal ve una opción que dice "Ver clientes
+        # registrados" y le da click
         ver_clientes = self.buscar_elemento_por_id(
                 'ver_clientes_button',
                 'No hay un botón para ver clientes!\n'
@@ -230,3 +248,48 @@ class PruebasAdministrador(LiveServerTestCase):
             'No hay botón para regresar a la página principal!'
             ' (se buscó un elemento con id="botón_home")')
         home.click()
+
+    def test_crear_menu(self):
+        # El administrador entra a la página de inicio
+        self.browser.get(self.live_server_url)
+
+        # El admin ingresa el nombre de usuario "admin" con su contraseña
+        username_input = self.browser.find_element_by_id('username_field')
+        username_input.send_keys('admin')
+
+        password_input = self.browser.find_element_by_id('password_field')
+        password_input.send_keys('pw')
+
+        password_input.send_keys(Keys.ENTER)
+
+        # El admin es llevado a un nuevo URL donde está su paǵina principal
+        home_admin_url = self.concatenar(self.live_server_url, '/administrador/')
+
+        self.assertEqual(home_admin_url, self.browser.current_url)
+
+        # En la página principal ve una opción que dice "Crear menú" y le da
+        # click 
+        crear_menu = self.buscar_elemento_por_id(
+                'crear_menu_button',
+                'No hay un botón para crear menú!\n'
+                '(Se buscó un elemento con id = crear_menu_button)')
+
+        crear_menu.click()
+
+        # La página ahora redirecciona a admin a otra página que muestra un título
+        # que dice "Ingrese la información del nuevo menú:"
+        self.assertNotEqual(home_admin_url, self.browser.current_url)
+        ver_clientes_url = self.browser.current_url
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertEqual('Ingrese la información del nuevo menú:', header_text)
+
+        # Abajo del título se muestra un formulario con un campo para el nombre
+        # del menú y otro con la lista de ingredientes para seleccionarlos
+
+        menu_form = self.buscar_elemento_por_id(
+            'menu_form', 'No se encontró "menu_form".')
+
+        # admin crea un menú con nombre "menu 1" y con sólo el plato 1
+        self.browser.find_element_by_id('nombre') 
+
+        self.fail('Hay que terminar la prueba!')

@@ -18,5 +18,5 @@
         <p id="fecha_registro">Fecha de registro: {{cliente.usuario.date_joined|date:'d/m/Y'}}</p>
     {% endif %}
     <div class="divider"/>
-    <a id="boton_regresar" class="btn-success" href="{% url 'ver_clientes' %}">Regresar a la lista de clientes</a>
+    <a id="boton_regresar" class="btn btn-info" href="{% url 'ver_clientes' %}" role="button">Regresar a la lista de clientes</a>
 {% endblock %}
