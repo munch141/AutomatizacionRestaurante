@@ -8,11 +8,16 @@ from .models import Menu, Plato, Ingrediente
 
 class CrearMenuForm(forms.ModelForm):
     incluye = forms.ModelMultipleChoiceField(
-        queryset=Plato.objects.all(), widget=forms.CheckboxSelectMultiple())
+        queryset=Plato.objects.all(),
+        widget=forms.CheckboxSelectMultiple(attrs={'id': 'incluye'}))
     
     class Meta:
         model = Menu
         fields = ['nombre', 'incluye', 'actual']
+        widgets  = {
+            'nombre': forms.TextInput(attrs={'id': 'nombre'}),
+            'actual': forms.CheckboxInput(attrs={'id': 'actual'})
+        }
 
     def __init__(self, *args, **kwargs):
         super(CrearMenuForm, self).__init__(*args, **kwargs)

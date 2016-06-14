@@ -7,8 +7,9 @@ from django.contrib import messages
 from django.forms.models import inlineformset_factory
 from django.contrib.auth.models import User
 
-from cuentas.models import Proveedor, Inventario
 from administrador.models import Ingrediente
+
+from .models import Proveedor, Inventario
 from .forms import EditarPerfilForm, AgregarIngredienteForm, CrearInventarioForm
 
 

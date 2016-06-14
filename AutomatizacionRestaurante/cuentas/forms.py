@@ -12,8 +12,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Field, Layout, MultiWidgetField, Submit
 from crispy_forms.bootstrap import PrependedText
 
-from .models import Cliente
-from .models import Proveedor
+from cliente.models import Cliente
+from proveedor.models import Proveedor
 
 SEXOS = (
     ('', '-'),

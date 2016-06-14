@@ -9,8 +9,10 @@ from django.utils.decorators import method_decorator
 from django.views import generic
 
 from AutomatizacionRestaurante.decorators import login_check
+from cliente.models import Cliente
+from proveedor.models import Proveedor
+
 from .forms import LoginForm, RegistroClienteForm, RegistroProveedorForm
-from .models import Cliente, Proveedor
 
 app_name = 'cuentas'
 

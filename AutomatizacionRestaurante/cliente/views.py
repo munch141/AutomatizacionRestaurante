@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.forms.models import inlineformset_factory
 from django.contrib.auth.models import User
 
-from cuentas.models import Cliente
+from .models import Cliente
 from .models import BilleteraElectronica
 from .forms import EditarPerfilForm, CrearBilleteraForm
 

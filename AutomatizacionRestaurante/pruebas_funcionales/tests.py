@@ -5,7 +5,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 
 from administrador.models import Administrador, Ingrediente, Plato, Menu
-from cuentas.models import Cliente
+from cliente.models import Cliente
 
 class PruebasAdministrador(LiveServerTestCase):
     
@@ -290,6 +290,25 @@ class PruebasAdministrador(LiveServerTestCase):
             'menu_form', 'No se encontró "menu_form".')
 
         # admin crea un menú con nombre "menu 1" y con sólo el plato 1
-        self.browser.find_element_by_id('nombre') 
+        nombre_input = self.browser.find_element_by_id('nombre')
+        nombre_input.send_keys('menu 1')
+
+        self.browser.find_element_by_xpath(
+            ".//div[@id='div_id_incluye']/div[1]/div[1]/label[1]"
+        ).click()
+
+        # self.browser.find_element_by_xpath(
+        #     ".//div[@id='div_id_actual']"
+        # ).click()
+
+        self.browser.find_element_by_xpath(
+            ".//input[@value='Crear menú']"
+        ).click()
+
+        menu1 = Menu.objects.get(nombre='menu 1')
+        plato1 = Plato.objects.get(nombre='Plato 1')
+        
+        self.assertEquals(menu1.nombre, 'menu 1')
+        self.assertEquals(plato1.nombre, menu1.incluye.all()[0].nombre)
 
         self.fail('Hay que terminar la prueba!')

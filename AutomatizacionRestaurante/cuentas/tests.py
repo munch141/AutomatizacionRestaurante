@@ -4,9 +4,10 @@ import unittest
 from django.test import TestCase
 from django.contrib.auth.models import User
 
+from cliente.models import Cliente
+from proveedor.models import Proveedor
+
 from .forms import RegistroClienteForm, RegistroProveedorForm
-from .models import Cliente
-from .models import Proveedor
 
 
 class PruebasFormRegistroCliente(TestCase):

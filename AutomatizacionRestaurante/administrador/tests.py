@@ -4,10 +4,11 @@ from django.http import HttpRequest
 from django.test import TestCase
 from django.template.loader import render_to_string
 
+from cliente.models import Cliente
+
 from .forms import CrearMenuForm
 from .models import Administrador, Ingrediente, Menu, Plato
 from .views import crear_menu, detalles_cliente, home, ver_clientes
-from cuentas.models import Cliente
 
 class PruebasHomeAdmin(TestCase):
     def agregar_cliente(

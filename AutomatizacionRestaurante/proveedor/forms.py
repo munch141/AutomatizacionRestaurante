@@ -7,7 +7,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Field, Layout, MultiWidgetField, Submit
 
 from administrador.models import Ingrediente
-from cuentas.models import Inventario
+
+from .models import Inventario
 
 
 class EditarPerfilForm(ModelForm):
