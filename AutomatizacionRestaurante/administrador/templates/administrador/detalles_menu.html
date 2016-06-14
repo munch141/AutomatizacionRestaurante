@@ -9,19 +9,32 @@
         <h1>Datos de {{ menu.nombre }}</h1>
 
         <h3>Actual:
-            {% if menu.actual == "False" %} 
-                <span style="color:#c20a0a">{{menu.actual}}</span>
-            {% else %}
+            {% if menu.actual %} 
                 <span style="color:#64bb33">{{menu.actual}}</span>
-            {% endif %}
+            {% else %}
+                <span style="color:#c20a0a">{{menu.actual}}</span>
+            {% endif %} 
         </h3>
 
-        <h3>Platos:</h3>
-        <ul>
-            {% for plato in menu.incluye.all %}
-                <li>{{plato.nombre}}</li>
-            {% endfor %}
-        </ul>
+        <table id="tabla_platos" class="table table-condensed">
+            <thead>
+                <tr>
+                    <th width="15%">Plato</th>
+                    <th width="30%">Descripción</th>
+                    <th width="30%">Precio</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for plato in menu.incluye.all %}
+                    <tr>
+                        <td>{{plato.nombre}}</td>
+                        <td>{{plato.descripcion}}</td>
+                        <td>{{plato.precio}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     
     {% endif %}
     <div class="divider"/>

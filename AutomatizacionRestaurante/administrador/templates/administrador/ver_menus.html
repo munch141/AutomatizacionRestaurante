@@ -7,18 +7,27 @@
 {% block contenido %}
     <h1>Menús en el sistema:</h1>
     <table id="tabla_menus" class='table table-hover'>
-        <tr>
-            <th>Nombre</th>
-        </tr>
-        {% for menu in menus %}
+        <thead>
             <tr>
-                <td>
-                    <a id="{{menu.nombre}}" class="btn-link" href="{% url 'detalles_menu' menu.nombre %}">
-                        {{ menu.nombre }}
-                    </a>
-                </td>
+                <th>Nombre</th>
             </tr>
-        {% endfor %}
+        </thead>
+
+        <tbody>
+            {% for menu in menus %}
+                {% if menu.actual %}
+                    <tr class="success">
+                {% else %}
+                    <tr>
+                {% endif %}
+                    <td>
+                        <a id="{{menu.nombre}}" class="btn-link" href="{% url 'detalles_menu' menu.nombre %}">
+                            {{ menu.nombre }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 
     <div class="row">

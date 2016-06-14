@@ -1,44 +1,53 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block head %}
+    <link href="{% static 'administrador/css/home.css' %}" rel="stylesheet" type="text/css">
+{% endblock head %}
 
 {% block title %}
     Adiministrador Restaurante
 {% endblock %}
 
 {% block contenido %}
-    <h1>Bienvenido a la administración del restaurante.</h1>
+    <div class="page-header">
+        <h1>Bienvenido a la administración del restaurante.</h1>
+    </div>
 
     {% if messages %}
-        <div class="messages" style="background-color:#83e965">
+        <div class="alert alert-success">
             {% for message in messages %}
                 <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
             {% endfor %}
         </div>
     {% endif %}
 
-    <div class="row">
         <div class="col-md-3">
-            <div class="row">
-                <a class="btn btn-lg btn-link" href="{% url 'ver_menus' %}" role="button">Ver menús</a>
-            </div>
+            <ul class="nav nav-pills nav-stacked">
+                <li role="presentation" class="text-left">
+                    <a href="{% url 'ver_menus' %}" role="button">Ver menús</a>
+                </li>
 
-            <div class="row">
-                <a id="crear_menu_button" class="btn btn-lg btn-link" href="{% url 'crear_menu' %}" role="button">Crear menú</a>
-            </div>
-            
-            <div class="row">
-                <a class="btn btn-lg btn-link" href="{% url 'crear_plato' %}" role="button">Crear plato</a>
-            </div>
-            
-            <div class="row">
-                <a class="btn btn-lg btn-link" href="{% url 'agregar_ingrediente' %}" role="button">Agregar ingrediente</a>
-            </div>
+                <li role="presentation" class="text-left">
+                    <a id="crear_menu_button" href="{% url 'crear_menu' %}" role="button">Crear menú</a>
+                </li>
+                
+                <li role="presentation" class="text-left">
+                    <a href="{% url 'crear_plato' %}" role="button">Crear plato</a>
+                </li>
+                
+                <li role="presentation" class="text-left">
+                    <a href="{% url 'agregar_ingrediente' %}" role="button">Agregar ingrediente</a>
+                </li>
 
-            <div class="row">
-                <a id="ver_clientes_button" class="btn btn-lg btn-link" href="{% url 'ver_clientes' %}" role="button">Ver clientes registrados</a>
-            </div>
+                <li role="presentation" class="text-left">
+                    <a id="ver_clientes_button" href="{% url 'ver_clientes' %}" role="button">Ver clientes registrados</a>
+                </li>
+            </ul>
         </div>
 
-        <div class="col-md-6" style="background-color:ffffff">
+        <div class="col-md-6">
             {% if menu_actual %}
                 <h2>Menú actual: <span style="color:#69cf2f">{{menu_actual.nombre}}</span></h2>
                 <h3>Platos:</h3>
@@ -49,6 +58,6 @@
                 </ul>
             {% endif %}
         </div>
-    </div>
+
 
 {% endblock %}

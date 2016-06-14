@@ -6,6 +6,7 @@ from crispy_forms.layout import ButtonHolder, Field, Layout, MultiWidgetField, S
 
 from .models import Menu, Plato, Ingrediente
 
+
 class CrearMenuForm(forms.ModelForm):
     incluye = forms.ModelMultipleChoiceField(
         queryset=Plato.objects.all(),
@@ -26,9 +27,11 @@ class CrearMenuForm(forms.ModelForm):
         self.fields['incluye'].required = False
         self.fields['actual'].label = "¿Desea que este sea el menú actual?"
 
+
 class CrearPlatoForm(forms.ModelForm):
     contiene = forms.ModelMultipleChoiceField(
-        queryset=Ingrediente.objects.all(), widget=forms.CheckboxSelectMultiple())
+        queryset=Ingrediente.objects.all(),
+        widget=forms.CheckboxSelectMultiple())
     
     class Meta:
         model = Plato
@@ -46,6 +49,7 @@ class CrearPlatoForm(forms.ModelForm):
             raise forms.ValidationError('El precio debe ser mayor que 0.')
         else:
             return precio
+
 
 class AgregarIngredienteForm(forms.ModelForm):    
     class Meta:
