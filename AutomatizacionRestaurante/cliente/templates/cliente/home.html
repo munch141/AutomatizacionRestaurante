@@ -15,5 +15,20 @@
     {% endif %}
 
     <h1>Bienvenido {{user.first_name}}.</h1>
-    <a class="btn btn-lg btn-success" id="crear_billetera_button" href="{% url 'crear_billetera' %}" role="button">Crear Billetera</a>
+    {% if user.billetera %}
+        <div class="col-md-3">
+            <h2>Billetera</h2>
+            <ul class="nav nav-pills nav-stacked">
+                <li role="presentation">
+                    <a href="{% url 'consultar_saldo' %}" role="button">Consultar saldo</a>
+                </li>
+
+                <li role="presentation">
+                    <a href="#" role="button">Recargar</a>
+                </li>
+            </ul>
+        </div>
+    {% else %}
+        <a class="btn btn-lg btn-info" id="crear_billetera_button" href="{% url 'crear_billetera' %}" role="button">Crear Billetera</a>
+    {% endif %}
 {% endblock %}

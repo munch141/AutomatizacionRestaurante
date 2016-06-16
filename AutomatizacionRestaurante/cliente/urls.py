@@ -10,5 +10,9 @@ urlpatterns = [
         views.editar_perfil,
         name='editar_perfil_cliente'),
 
-	url(r'^crear_billetera/$', views.crear_billetera, name='crear_billetera'),
+    url(r'^crear_billetera/$', views.crear_billetera, name='crear_billetera'),
+
+    url(r'^consultar_saldo/$', views.consultar_saldo, name='consultar_saldo'),
+
+    url(r'^recargar_saldo/$', views.recargar_saldo, name='recargar_saldo'),
 ]

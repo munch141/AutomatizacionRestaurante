@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Consultar saldo
+{% endblock %}
+
+{% block contenido %}
+    <h2>Su saldo es: {{billetera.saldo}}</h2>
+    <a href="{% url 'home_cliente' %}" class="btn btn-success" role="button">Regresar a la página principal</a>
+{% endblock %}

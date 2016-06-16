@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Consultar saldo
+{% endblock %}
+
+{% block contenido %}
+    <h2>Ingrese el PIN de su billetera:</h2>
+
+    {% if messages %}
+        <div class="alert alert-danger">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <form action="." role="form" class="form-horizontal" method="post">
+        <div class="row">
+        <div class="col-md-2">
+            {% csrf_token %}
+            {{ form|crispy }}
+        </div>
+        </div>
+
+        <div class="row">
+        <div class="col-md-3">
+            <input type="submit" class="btn btn-success" value="Continuar">
+            <a href="{% url 'home_cliente' %}" class="btn btn-default" role="button">Cancelar</a>
+        </div>
+        </div>
+    </form>
+{% endblock %}

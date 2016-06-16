@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import BilleteraElectronica, Cliente
+from .models import Billetera, Cliente
 
 admin.site.register(Cliente)
-admin.site.register(BilleteraElectronica)
+admin.site.register(Billetera)

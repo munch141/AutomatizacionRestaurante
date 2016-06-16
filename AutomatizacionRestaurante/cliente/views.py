@@ -8,8 +8,8 @@ from django.forms.models import inlineformset_factory
 from django.contrib.auth.models import User
 
 from .models import Cliente
-from .models import BilleteraElectronica
-from .forms import EditarPerfilForm, CrearBilleteraForm
+from .models import Billetera
+from .forms import EditarPerfilForm, ClaveBilleteraForm, CrearBilleteraForm
 
 
 @login_required(login_url=reverse_lazy('login'))
@@ -51,17 +51,39 @@ def editar_perfil(request):
 
 @login_required(login_url=reverse_lazy('login'))
 def crear_billetera(request):
-	if request.method == 'POST':
-		form = CrearBilleteraForm(request.POST)
-		if form.is_valid():
-			pin = form.cleaned_data['pin']
-			billetera = BilleteraElectronica.objects.create(
-                usuario=request.user.cliente, pin=pin)
-			billetera.save()
+    if request.method == 'POST':
+        form = CrearBilleteraForm(request.POST)
+        
+        if form.is_valid():
+            pin = form.cleaned_data['pin']
+            billetera = Billetera.objects.create(
+                usuario=request.user, pin=pin)
+            messages.success(request, '✓ Se ha creado su billetera')
 
-			messages.success(request, '✓ Se ha creado su billetera')       
+            return redirect(reverse('home_cliente'))
+    else:
+        form = CrearBilleteraForm()
+    return render(request, 'cliente/crear_billetera.html', {'form': form})
 
-			return redirect(reverse('home_cliente'))
-	else:
-		form = CrearBilleteraForm()
-	return render(request, 'cliente/crear_billetera.html', {'form': form})
+@login_required(login_url=reverse_lazy('login'))
+def consultar_saldo(request):
+    if request.method == 'POST':
+        form = ClaveBilleteraForm(request.POST)
+        
+        if form.is_valid():
+            billetera = request.user.billetera
+            
+            if form.cleaned_data['pin'] == billetera.pin:
+                return render(
+                    request,
+                    'cliente/consultar_saldo.html',
+                    {'billetera': billetera})
+            else:
+                messages.error(
+                    request, 'La contraseña es incorrecta, intente de nuevo.')
+                form = ClaveBilleteraForm()
+    else:
+        form = ClaveBilleteraForm()
+    return render(request, 'cliente/consultar_saldo_clave.html', {'form': form})
+
+

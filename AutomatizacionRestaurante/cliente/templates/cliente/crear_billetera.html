@@ -6,10 +6,8 @@
     Crear Billetera
 {% endblock %}
 
-
-
 {% block contenido %}
-    <h2>Ingrese Pin para su Billetera:</h2>
+    <h2>Ingrese PIN para su Billetera:</h2>
 
 	<div class="row">
         <div class="col-md-3">
@@ -17,11 +15,9 @@
                 {% csrf_token %}
                 {{ form|crispy }}
 
-                <input type="submit" class="btn btn-success" value="Guardar cambios">
+                <input type="submit" class="btn btn-success" value="Guardar">
                 <a href="{% url 'home_cliente' %}" class="btn btn-default" role="button">Cancelar</a>
             </form>
         </div>
     </div>
-   
-
 {% endblock %}
