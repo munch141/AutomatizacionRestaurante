@@ -9,7 +9,8 @@ from django.contrib.auth.models import User
 
 from .models import Cliente
 from .models import Billetera
-from .forms import EditarPerfilForm, ClaveBilleteraForm, CrearBilleteraForm
+from .forms import EditarPerfilForm, ClaveBilleteraForm, CrearBilleteraForm, \
+RecargaBilleteraForm
 
 
 @login_required(login_url=reverse_lazy('login'))
@@ -85,5 +86,25 @@ def consultar_saldo(request):
     else:
         form = ClaveBilleteraForm()
     return render(request, 'cliente/consultar_saldo_clave.html', {'form': form})
+
+
+@login_required(login_url=reverse_lazy('login'))
+def recargar_saldo(request):
+    if request.method == 'POST':
+        form = RecargaBilleteraForm(request.POST)
+
+        if form.is_valid():
+            monto = form.cleaned_data['monto']
+            billetera = request.user.billetera
+            billetera.recargar(monto)
+            return render(
+                    request,
+                    'cliente/home.html',
+                    {'billetera': billetera})
+            
+    else:
+        form = RecargaBilleteraForm()
+    return render(request, 'cliente/recargar_saldo.html', {'form': form})
+
 
 

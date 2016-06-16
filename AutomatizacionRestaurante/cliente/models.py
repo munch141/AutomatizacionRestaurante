@@ -6,7 +6,7 @@ from django.core.validators import RegexValidator
 
 from administrador.models import Ingrediente
 
-from cliente.utils import Historial
+from cliente.utils import Historial, Transaccion
 
 SEXOS = (
     ('M', 'Masculino'),
@@ -46,7 +46,7 @@ class Billetera(models.Model):
             return -1 # saldo negativo
         return self.creditos.total - self.debitos.total
     
-    def recargar(self, monto, id_rest):
+    def recargar(self, monto):
         if not isinstance(monto, float) and not isinstance(monto, int):
             return -1 # tipo incorrecto
         else:

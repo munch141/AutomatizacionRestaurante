@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.forms import EmailField, ModelForm, CharField, Form
+from django.forms import EmailField, ModelForm, CharField, Form, FloatField
 from django.contrib.auth.models import User
-from django.forms.widgets import PasswordInput
+from django.forms.widgets import PasswordInput, NumberInput
 
 from .models import Billetera
 
@@ -54,3 +54,14 @@ class ClaveBilleteraForm(Form):
         label='Pin',
         widget=PasswordInput(attrs={'required': True}),
         error_messages={'required': 'Este campo es requerido.'})
+
+
+class RecargaBilleteraForm(Form):
+    #class Meta:
+        #model = Billetera 
+        #fields = ['creditos']
+
+    monto = FloatField(
+        label='monto',
+        widget=NumberInput(),
+        error_messages={'required':'Este campo es requerido.'})
