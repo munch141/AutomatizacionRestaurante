@@ -7,16 +7,13 @@
 {% endblock %}
 
 {% block contenido %}
-    <h2>Ingrese monto a recargar:</h2>
+    <h2>Ingrese monto a recargar y datos de su tarjeta de crédito:</h2>
 
-	<div class="row">
+	<div class="row container">
         <div class="col-md-4">
-            <form action="." role="form" class="form-horizontal" method="post">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <input type="submit" class="btn btn-success" value="Recargar">
-                <a href="{% url 'home_cliente' %}" class="btn btn-default" role="button">Cancelar</a>
-            </form>
+            
+            {% crispy form form.helper %}
+                
         </div>
     </div>
 {% endblock %}
