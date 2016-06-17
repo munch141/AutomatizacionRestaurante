@@ -17,4 +17,7 @@ urlpatterns = [
         r'^ver_menu/(.+)$',
         views.detalles_menu,
         name='detalles_menu'),
+    url(r'^editar_menu/(.+)$', views.editar_menu, name='editar_menu'),
+
+    url(r'^editar_menu/$', views.ver_menus, name='edicion_menu'),
 ]

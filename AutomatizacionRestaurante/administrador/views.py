@@ -5,10 +5,12 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.forms.models import modelformset_factory
+
 
 from cliente.models import Cliente
 from .models import Ingrediente, Menu, Plato
-from .forms import CrearMenuForm, CrearPlatoForm, AgregarIngredienteForm
+from .forms import CrearMenuForm, CrearPlatoForm, AgregarIngredienteForm, EditarMenuForm
 
 
 def home(request):
@@ -100,3 +102,42 @@ def detalles_menu(request, nombre):
     except:
         menu = None
     return render(request, 'administrador/detalles_menu.html', {'menu': menu})
+
+def editar_menu(request, nombre):
+    menu = Menu.objects.get(nombre=nombre)
+    
+    if request.method == 'POST':
+
+        form = EditarMenuForm(request.POST)
+        
+
+        if form.is_valid():
+            n_nombre = form.cleaned_data['nombre']
+            actual = form.cleaned_data['actual']
+            platos = form.cleaned_data['incluye']
+
+            menu.nombre = n_nombre
+            menu.actual = actual
+
+            for p in platos:
+                plato = Plato.objects.get(nombre=p.nombre)
+                menu.incluye.add(plato)
+            menu.save()
+            messages.success(request, '✓ Se creó un nuevo menú "%s"!' % nombre)
+            return redirect(reverse('home_administrador'))
+            
+    else:
+        form = EditarMenuForm()
+    return render(request, 'administrador/editar_menu.html', {'menu': menu, 'form': form})
+
+
+
+
+
+
+
+
+
+
+
+    

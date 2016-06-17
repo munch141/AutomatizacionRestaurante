@@ -55,3 +55,26 @@ class AgregarIngredienteForm(forms.ModelForm):
     class Meta:
         model = Ingrediente
         fields = ['nombre']
+
+class EditarMenuForm(forms.ModelForm):
+    incluye = forms.ModelMultipleChoiceField(
+        queryset=Plato.objects.all(),
+        widget=forms.CheckboxSelectMultiple(attrs={'id': 'incluye'}))
+
+    class Meta:
+        model = Menu
+        fields = ['nombre', 'incluye', 'actual']
+        widgets  = {
+            'nombre': forms.TextInput(attrs={'id': 'nombre'}),
+            'actual': forms.CheckboxInput(attrs={'id': 'actual'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(EditarMenuForm, self).__init__(*args, **kwargs)
+
+        self.fields['incluye'].label = "Elija los platos del menú:"
+        self.fields['incluye'].required = False
+        self.fields['actual'].label = "¿Desea que este sea el menú actual?"
+
+
+    

@@ -38,5 +38,6 @@
     
     {% endif %}
     <div class="divider"/>
+    <a id="boton_regresar" class="btn btn-info" href="{% url 'editar_menu' menu.nombre %}" >Editar menu</a>
     <a id="boton_regresar" class="btn btn-info" href="{% url 'ver_menus' %}" role="button">Regresar a la lista de menus</a>
 {% endblock %}

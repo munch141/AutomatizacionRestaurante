@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.forms.widgets import PasswordInput, NumberInput
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Field
+from crispy_forms.layout import Submit, Layout, Field, Button
 
 
 from .models import Billetera
@@ -69,7 +69,7 @@ class RecargaBilleteraForm(Form):
         self.helper.form_class = 'forms col-md-8'
         self.helper.form_method = 'POST'
         self.helper.add_input(Submit('submit', 'Recargar', css_class='btn-success'))
-        self.helper.add_input(Submit('cancel', 'Cancel', css_class='btn btn-default'))
+        self.helper.add_input(Button('cancel', 'Cancel', css_class='btn btn-default'))
         self.helper.layout = Layout(
             Field('numero', placeholder='e.g. 0000-0000-0000-0000'),
             Field('nombre', placeholder='Nombre'),
