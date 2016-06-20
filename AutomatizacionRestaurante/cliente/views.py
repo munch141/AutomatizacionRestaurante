@@ -7,6 +7,13 @@ from django.contrib import messages
 from django.forms.models import inlineformset_factory
 from django.contrib.auth.models import User
 
+
+
+from django.forms import ValidationError
+
+
+
+
 from .models import Cliente
 from .models import Billetera
 from .forms import EditarPerfilForm, ClaveBilleteraForm, CrearBilleteraForm, \
@@ -98,9 +105,7 @@ def recargar_saldo(request):
             billetera = request.user.billetera
             billetera.recargar(monto)
             return render(
-                    request,
-                    'cliente/home.html',
-                    {'billetera': billetera})
+                request, 'cliente/home.html', {'billetera': billetera})
             
     else:
         form = RecargaBilleteraForm()

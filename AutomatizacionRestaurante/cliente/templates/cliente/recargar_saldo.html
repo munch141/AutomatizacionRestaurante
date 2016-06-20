@@ -6,14 +6,21 @@
     Recargar saldo
 {% endblock %}
 
+{% block head %}
+    <link href="{% static 'cuentas/css/login.css' %}" rel="stylesheet" type="text/css">
+{% endblock head %}
+
 {% block contenido %}
     <h2>Ingrese monto a recargar y datos de su tarjeta de crédito:</h2>
 
 	<div class="row container">
-        <div class="col-md-4">
-            
-            {% crispy form form.helper %}
-                
+        <div class="col-md-3">
+            <form action="." role="form" class="form-horizontal" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" class="btn btn-success" value="Recargar">
+                <a href="{% url 'home_cliente' %}" class="btn btn-default" role="button">Cancelar</a>
+            </form>   
         </div>
     </div>
 {% endblock %}

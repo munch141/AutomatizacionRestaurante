@@ -17,3 +17,8 @@ administrador/migrations/
 cliente/migrations/
 cuentas/migrations/
 proveedor/migrations/
+administrador/migrations/0001_initial.py administrador/migrations/__init__.py administrador/migrations/__pycache__
+proveedor/migrations/0001_initial.py proveedor/migrations/__init__.py proveedor/migrations/__pycache__
+cliente/migrations/0001_initial.py cliente/migrations/__init__.py cliente/migrations/__pycache__
+cuentas/migrations/*
+AutomatizacionRestaurante/migrations/*

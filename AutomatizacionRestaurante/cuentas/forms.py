@@ -122,7 +122,7 @@ class RegistroClienteForm(Form):
 
     clave2 = CharField(
         label='Confirme Contraseña',
-        widget=PasswordInput(attrs={'required': True}),
+        widget=PasswordInput(),
         error_messages={'required': 'Este campo es requerido.'})
 
 
@@ -227,7 +227,7 @@ class RegistroProveedorForm(Form):
 
     clave2 = CharField(
         label='Confirme Contraseña',
-        widget=PasswordInput(attrs={'required': True}),
+        widget=PasswordInput(),
         error_messages={'required': 'Este campo es requerido.'})
 
     def clean_username(self):

@@ -1,17 +1,34 @@
 # -*- coding: utf-8 -*-
 
+import sys
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import RegexValidator
 
 from administrador.models import Ingrediente
 
-from cliente.utils import Historial, Transaccion
 
 SEXOS = (
     ('M', 'Masculino'),
     ('F', 'Femenino')
 )
+
+
+class Historial(models.Model):
+    total = models.FloatField()
+        
+    def agregarTransaccion(self, t):
+        self.trans.add(t)
+        self.total += t.monto
+        self.save()
+
+    def __str__(self):
+        try:
+            return str(self.debitos)+'_debitos'
+        except:
+            return str(self.creditos)+'_creditos'
 
 
 class Cliente(models.Model):
@@ -34,31 +51,40 @@ class Billetera(models.Model):
     usuario = models.OneToOneField(
         User, on_delete = models.CASCADE, primary_key=True,)
     pin = models.CharField(max_length=100)
-    debitos = Historial()
-    creditos = Historial()
+    debitos = models.OneToOneField(
+        Historial, on_delete=models.CASCADE, related_name='debitos')
+    creditos = models.OneToOneField(
+        Historial, on_delete=models.CASCADE, related_name='creditos')
 
     def __str__(self):
         return str(self.usuario.username)
 
+    def save(self, *args, **kwargs):
+        self.debitos = Historial.objects.create(total=0)
+        self.creditos = Historial.objects.create(total=0)
+        super(Billetera, self).save(*args, **kwargs)
+
     def saldo(self):
-        if (self.creditos.total - self.debitos.total < 0) \
-           or (self.debitos.total < 0):
-            return -1 # saldo negativo
         return self.creditos.total - self.debitos.total
     
     def recargar(self, monto):
-        if not isinstance(monto, float) and not isinstance(monto, int):
-            return -1 # tipo incorrecto
-        else:
-            self.creditos.agregarTransaccion(Transaccion(monto))
+        print(monto)
+        self.creditos.agregarTransaccion(
+                Transaccion.objects.create(
+                    monto=monto, fecha=datetime.now(), historial=self.creditos))
         
-    def consumir(self, monto, pin):
-        if not isinstance(monto, float) and not isinstance(monto, int):
-            return -3 # tipo incorrecto
+    def consumir(self, monto):
+        if self.saldo() < monto:
+            return False
         else:
-            if pin == self.pin and monto <= self.saldo():
-                self.debitos.agregarTransaccion(Transaccion(monto))
-            elif pin != self.pin:
-                return -2 # pin incorrecto
-            elif self.saldo() < monto:
-                return -1 # saldo insuficiente
+            self.debitos.agregarTransaccion(
+                Transaccion.objects.create(
+                    monto=monto, fecha=datetime.now(), historial=self.debitos))
+            return True
+
+
+class Transaccion(models.Model):
+    monto = models.FloatField()
+    fecha = models.DateTimeField()
+    historial = models.ForeignKey(
+        'Historial', on_delete=models.CASCADE, related_name='trans')
