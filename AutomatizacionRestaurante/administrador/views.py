@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.forms.models import modelformset_factory
 
-
 from cliente.models import Cliente
 from .models import Ingrediente, Menu, Plato
 from .forms import CrearMenuForm, CrearPlatoForm, AgregarIngredienteForm, EditarMenuForm
@@ -108,27 +107,30 @@ def editar_menu(request, nombre):
     
     if request.method == 'POST':
 
-        form = EditarMenuForm(request.POST)
-        
+        form = EditarMenuForm(request.POST, instance=menu)
 
         if form.is_valid():
             n_nombre = form.cleaned_data['nombre']
             actual = form.cleaned_data['actual']
             platos = form.cleaned_data['incluye']
 
+
             menu.nombre = n_nombre
             menu.actual = actual
-
-            for p in platos:
-                plato = Plato.objects.get(nombre=p.nombre)
-                menu.incluye.add(plato)
             menu.save()
-            messages.success(request, '✓ Se creó un nuevo menú "%s"!' % nombre)
+
+            menu.incluye.clear()
+            for plato in platos:
+                p = Plato.objects.get(nombre=plato.nombre)
+                menu.incluye.add(p)
+            messages.success(
+                request, '✓ Se actualizó el menú "%s"!' % menu.nombre)
             return redirect(reverse('home_administrador'))
             
     else:
-        form = EditarMenuForm()
-    return render(request, 'administrador/editar_menu.html', {'menu': menu, 'form': form})
+        form = EditarMenuForm(instance=menu)
+    return render(
+        request, 'administrador/editar_menu.html', {'menu': menu, 'form': form})
 
 
 

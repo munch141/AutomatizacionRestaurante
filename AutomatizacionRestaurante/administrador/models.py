@@ -34,7 +34,7 @@ class Plato(models.Model):
 
 
 class Menu(models.Model):
-    nombre = models.CharField(max_length=30, primary_key=True)
+    nombre = models.CharField(max_length=30, unique=True)
     actual = models.BooleanField(default=False)
     incluye = models.ManyToManyField(Plato)
 

@@ -15,12 +15,11 @@
     {% if menu %}
     <div class="row">
         <div class="col-md-4">
-            <form id="menu_form" action="." role="form" class="form-horizontal" method="post">
-                
+            <form id="menu_form" role="form" method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
                 <input type="submit" class="btn btn-success" value="Guardar menú">
-                <a href="{% url 'home_administrador' %}" class="btn btn-default" role="button">Cancelar</a>
+                <a href="{% url 'detalles_menu' menu.nombre %}" class="btn btn-default" role="button">Cancelar</a>
             </form>
         </div>
     </div>

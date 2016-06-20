@@ -56,6 +56,7 @@ class AgregarIngredienteForm(forms.ModelForm):
         model = Ingrediente
         fields = ['nombre']
 
+
 class EditarMenuForm(forms.ModelForm):
     incluye = forms.ModelMultipleChoiceField(
         queryset=Plato.objects.all(),
@@ -75,6 +76,3 @@ class EditarMenuForm(forms.ModelForm):
         self.fields['incluye'].label = "Elija los platos del menú:"
         self.fields['incluye'].required = False
         self.fields['actual'].label = "¿Desea que este sea el menú actual?"
-
-
-    
