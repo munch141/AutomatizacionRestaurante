@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django.forms import EmailField, ModelForm, CharField, Form, FloatField, \
-RegexField
+RegexField, ValidationError
 from django.contrib.auth.models import User
-from django.forms.widgets import PasswordInput, NumberInput
-
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Field, Button
-
+from django.forms.widgets import PasswordInput, NumberInput, TextInput
 
 from .models import Billetera
 
@@ -62,42 +58,38 @@ class ClaveBilleteraForm(Form):
 
 
 class RecargaBilleteraForm(Form):
-    def __init__(self, *args, **kwargs):
-        super(RecargaBilleteraForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_id = 'recargar_biletera_form'
-        self.helper.form_class = 'forms col-md-8'
-        self.helper.form_method = 'POST'
-        self.helper.add_input(Submit('submit', 'Recargar', css_class='btn-success'))
-        self.helper.add_input(Button('cancel', 'Cancel', css_class='btn btn-default'))
-        self.helper.layout = Layout(
-            Field('numero', placeholder='e.g. 0000-0000-0000-0000'),
-            Field('nombre', placeholder='Nombre'),
-            Field('codigo', placeholder='Codigo'),
-            Field('monto', placeholder='Monto'))
-        
-    monto = FloatField(
-        label='monto',
-        widget=NumberInput(attrs={ 'min': '0'}),
-        error_messages={'required':'Este campo es requerido.'})
-
     nombre = RegexField(
-        label='Nombre en Tarjeta',
+        label='Nombre en tarjeta:',
         regex=r'^([a-zA-Z]+|[a-zA-Z]+\s[a-zA-Z]+)$',
+        widget=TextInput(attrs={'placeholder': 'nombre en tarjeta'}),
         error_messages={
-            'invalid': 'El nombre de usuario sólo puede tener letras',
+            'invalid': 'El nombre sólo puede tener letras y máximo 2 nombres.',
             'required': 'Este campo es requerido.'})
 
     numero = RegexField(
-        label='Numero Tarjeta',
+        label='Número de tarjeta:',
         regex=r'^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$',
+        widget=TextInput(attrs={'placeholder': 'número de tarjeta'}),
         error_messages={
-            'invalid': 'El número de la tarjeta debe tener este formato: 0000-0000-0000-0000',
+            'invalid': 'El número de la tarjeta debe tener este formato: '
+                       '0000-0000-0000-0000.',
             'required': 'Este campo es requerido.'})
 
     codigo = RegexField(
-        label='Codigo de Seguridad',
+        label='Código de seguridad:',
         regex=r'^[0-9]{3}$',
+        widget=TextInput(attrs={'placeholder': 'código de seguridad'}),
         error_messages={
             'invalid': 'El código de seguridad tiene que ser de 3 dígitos',
             'required': 'Este campo es requerido.'})
+
+    monto = FloatField(
+        label='Monto:',
+        widget=NumberInput(attrs={'placeholder': 'monto'}),
+        error_messages={'required': 'Este campo es requerido.'})
+
+    def clean_monto(self):
+        monto = self.cleaned_data.get('monto')
+        if monto <= 0:
+            raise ValidationError('El monto debe ser mayor que 0.')
+        return monto

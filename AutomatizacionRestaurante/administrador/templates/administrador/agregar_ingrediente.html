@@ -15,7 +15,7 @@
 
     <div class="row">
         <div class="col-md-4">
-            <form id="menu_form" action="." role="form" class="form-horizontal" method="post">
+            <form id="menu_form" action="." role="form" method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
                 <input type="submit" class="btn btn-success" value="Agregar ingrediente">
