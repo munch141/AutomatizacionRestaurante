@@ -104,6 +104,7 @@ def recargar_saldo(request):
             monto = form.cleaned_data['monto']
             billetera = request.user.billetera
             billetera.recargar(monto)
+            messages.success(request, '✓ Recarga exitosa: %s Bs.' % monto)
             return render(
                 request, 'cliente/home.html', {'billetera': billetera})
             
