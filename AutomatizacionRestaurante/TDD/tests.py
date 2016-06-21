@@ -219,7 +219,6 @@ class PruebasAdministrador(LiveServerTestCase):
         # una página con los datos del cliente. Luego de ver los datos de un
         # admin le da al botón que dice 'Regresar a la lista de clientes' que
         # lo lleva de regreso a la página anterior
-
         link_cliente1 = self.buscar_elemento_por_id(
             'cliente1',
             'No hay link para cliente1!\n'
@@ -297,10 +296,6 @@ class PruebasAdministrador(LiveServerTestCase):
             ".//div[@id='div_id_incluye']/div[1]/div[1]/label[1]"
         ).click()
 
-        # self.browser.find_element_by_xpath(
-        #     ".//div[@id='div_id_actual']"
-        # ).click()
-
         self.browser.find_element_by_xpath(
             ".//input[@value='Crear menú']"
         ).click()
@@ -310,5 +305,3 @@ class PruebasAdministrador(LiveServerTestCase):
         
         self.assertEquals(menu1.nombre, 'menu 1')
         self.assertEquals(plato1.nombre, menu1.incluye.all()[0].nombre)
-
-        self.fail('Hay que terminar la prueba!')
