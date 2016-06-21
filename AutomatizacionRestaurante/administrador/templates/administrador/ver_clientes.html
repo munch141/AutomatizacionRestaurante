@@ -5,25 +5,25 @@
 {% endblock %}
 
 {% block contenido %}
-    <h1>Clientes registrados:</h1>
-    <table id="tabla_clientes" class='table table-hover'>
-        <tr>
-            <th>Nombre de usuario</th>
-            <th>Fecha de registro</th>
-        </tr>
-        {% for cliente in clientes %}
-            <tr>
-                <td>
-                    <a id="{{cliente.usuario.username}}" class="btn-link" href="{% url 'detalles_cliente' cliente.usuario.username %}">
-                        {{ cliente.usuario.username }}
-                    </a>
-                </td>
-                <td>{{ cliente.usuario.date_joined|date:'d/m/Y' }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+    {% include 'administrador/nav_admin.html' %}
 
-    <div class="row">
-        <a class="btn btn-lg btn-link" href="{% url 'home_administrador' %}" role="button">Regresar a la página principal</a>
+    <div class="col-md-9">
+        <h1>Clientes registrados:</h1>
+        <table id="tabla_clientes" class='table table-hover'>
+            <tr>
+                <th>Nombre de usuario</th>
+                <th>Fecha de registro</th>
+            </tr>
+            {% for cliente in clientes %}
+                <tr>
+                    <td>
+                        <a id="{{cliente.usuario.username}}" class="btn-link" href="{% url 'detalles_cliente' cliente.usuario.username %}">
+                            {{ cliente.usuario.username }}
+                        </a>
+                    </td>
+                    <td>{{ cliente.usuario.date_joined|date:'d/m/Y' }}</td>
+                </tr>
+            {% endfor %}
+        </table>    
     </div>
 {% endblock %}

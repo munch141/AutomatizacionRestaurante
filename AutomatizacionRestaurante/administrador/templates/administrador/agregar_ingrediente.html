@@ -11,9 +11,10 @@
 {% endblock head %}
 
 {% block contenido %}
-    <h2>Nuevo ingrediente:</h2>
+    {% include 'administrador/nav_admin.html' %}
 
-    <div class="row">
+    <div class="col-md-9">
+        <h2>Nuevo ingrediente:</h2>
         <div class="col-md-4">
             <form id="menu_form" action="." role="form" method="post">
                 {% csrf_token %}
@@ -23,6 +24,5 @@
             </form>
         </div>
     </div>
-
 
 {% endblock %}

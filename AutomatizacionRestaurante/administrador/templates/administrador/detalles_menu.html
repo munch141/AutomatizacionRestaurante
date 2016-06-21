@@ -5,9 +5,11 @@
 {% endblock title %}
 
 {% block contenido %}
+    {% include 'administrador/nav_admin.html' %}
+
+    <div class="col-md-9">
     {% if menu %}
         <h1>{{ menu.nombre }}</h1>
-
         <h3>Actual:
             {% if menu.actual %} 
                 <span style="color:#64bb33">{{menu.actual}}</span>
@@ -36,7 +38,8 @@
             </tbody>
         </table>
     
-    <a id="boton_regresar" class="btn btn-info" href="{% url 'editar_menu' menu.nombre %}" >Editar menú</a>
+        <a id="boton_regresar" class="btn btn-info" href="{% url 'editar_menu' menu.nombre %}" >Editar menú</a>
     {% endif %}
-    <a id="boton_regresar" class="btn btn-default" href="{% url 'ver_menus' %}" role="button">Regresar a la lista de menús</a>
+        <a id="boton_regresar" class="btn btn-default" href="{% url 'ver_menus' %}" role="button">Regresar a la lista de menús</a>
+    </div>
 {% endblock %}

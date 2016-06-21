@@ -11,6 +11,8 @@
 {% endblock %}
 
 {% block contenido %}
+    {% include 'administrador/nav_admin.html' %}
+    
     <div class="page-header">
         <h1>Bienvenido a la administración del restaurante.</h1>
     </div>
@@ -23,41 +25,17 @@
         </div>
     {% endif %}
 
-        <div class="col-md-3">
-            <ul class="nav nav-pills nav-stacked">
-                <li role="presentation">
-                    <a href="{% url 'ver_menus' %}" role="button">Ver menús</a>
-                </li>
 
-                <li role="presentation">
-                    <a id="crear_menu_button" href="{% url 'crear_menu' %}" role="button">Crear menú</a>
-                </li>
-                
-                <li role="presentation">
-                    <a href="{% url 'crear_plato' %}" role="button">Crear plato</a>
-                </li>
-                
-                <li role="presentation">
-                    <a href="{% url 'agregar_ingrediente' %}" role="button">Agregar ingrediente</a>
-                </li>
-
-                <li role="presentation">
-                    <a id="ver_clientes_button" href="{% url 'ver_clientes' %}" role="button">Ver clientes registrados</a>
-                </li>
+    <div class="col-md-6">
+        {% if menu_actual %}
+            <h2>Menú actual: <span style="color:#69cf2f">{{menu_actual.nombre}}</span></h2>
+            <h3>Platos:</h3>
+            <ul>
+                {% for plato in menu_actual.incluye.all %}
+                    <li>{{plato.nombre}}</li>
+                {% endfor %}
             </ul>
-        </div>
-
-        <div class="col-md-6">
-            {% if menu_actual %}
-                <h2>Menú actual: <span style="color:#69cf2f">{{menu_actual.nombre}}</span></h2>
-                <h3>Platos:</h3>
-                <ul>
-                    {% for plato in menu_actual.incluye.all %}
-                        <li>{{plato.nombre}}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-
+        {% endif %}
+    </div>
 
 {% endblock %}

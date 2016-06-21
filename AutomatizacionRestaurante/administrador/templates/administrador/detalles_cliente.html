@@ -5,6 +5,9 @@
 {% endblock title %}
 
 {% block contenido %}
+    {% include 'administrador/nav_admin.html' %}
+
+    <div class="col-md-9">
     {% if cliente %}
         <h1>Datos de {{ cliente.usuario.username }}</h1>
 
@@ -19,4 +22,5 @@
     {% endif %}
     <div class="divider"/>
     <a id="boton_regresar" class="btn btn-info" href="{% url 'ver_clientes' %}" role="button">Regresar a la lista de clientes</a>
+</div>
 {% endblock %}

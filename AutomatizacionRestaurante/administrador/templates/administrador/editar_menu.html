@@ -11,7 +11,10 @@
 {% endblock head %}
 
 {% block contenido %}
+    {% include 'administrador/nav_admin.html' %}
+
     <h1>Ingrese la información del nuevo menú:</h1>
+
     {% if menu %}
     <div class="row">
         <div class="col-md-4">
