@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import redirect, render
-from django.utils.decorators import method_decorator
 from django.views import generic
 
 from AutomatizacionRestaurante.decorators import login_check

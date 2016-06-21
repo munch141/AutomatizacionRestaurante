@@ -1,3 +1,5 @@
+"""Pruebas hechas durante el desaarrollo usando TDD."""
+
 from django.contrib.auth.models import User
 from django.test import LiveServerTestCase
 from selenium import webdriver
@@ -7,8 +9,10 @@ from selenium.webdriver.common.keys import Keys
 from administrador.models import Administrador, Ingrediente, Plato, Menu
 from cliente.models import Cliente
 
+
 class PruebasAdministrador(LiveServerTestCase):
-    
+    """Pruebas para los casos de uso del administrador."""
+
     def agregar_cliente(
         self,
         username,
@@ -20,25 +24,29 @@ class PruebasAdministrador(LiveServerTestCase):
         sexo,
         fecha_nacimiento
     ):
+        u"""Agrega un cliente a la base de datos."""
         user = User.objects.create(
-                username=username,
-                password='pw',
-                email=email,
-                first_name=nombre,
-                last_name=apellido
-            )
+            username=username,
+            password='pw',
+            email=email,
+            first_name=nombre,
+            last_name=apellido)
+
         cliente = Cliente.objects.create(
             usuario=user,
             ci=ci,
             fecha_nacimiento=fecha_nacimiento,
             sexo=sexo,
-            telefono=telefono,
-        )
+            telefono=telefono)
+
         user.save()
         cliente.save()
         return user
 
     def setUp(self):
+        """Agrega el usuario admin, 3 clientes, 2 ingredientes y 2 platos a la
+        base de datos.
+        """
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(2)
 
@@ -68,12 +76,16 @@ class PruebasAdministrador(LiveServerTestCase):
         ingrediente2.save()
 
         plato1 = Plato(
-            nombre='Plato 1', descripcion = 'Descripción del plato1', precio = 1)
+            nombre='Plato 1',
+            descripcion='Descripción del plato1',
+            precio=1)
         plato1.save()
         plato1.contiene.add('Ingrediente 1', 'Ingrediente 2')
 
         plato2 = Plato(
-            nombre='Plato 2', descripcion = 'Descripción del plato2', precio = 2)
+            nombre='Plato 2',
+            descripcion='Descripción del plato2',
+            precio=2)
         plato2.save()
         plato2.contiene.add('Ingrediente 2')
 
@@ -81,30 +93,35 @@ class PruebasAdministrador(LiveServerTestCase):
         self.browser.quit()
 
     def chequear_fila_en_tabla_clientes(self, texto_fila):
+        u"""Chequea que 'texto_fila' esté en la tabla de clientes."""
         tabla = self.browser.find_element_by_id('tabla_clientes')
         filas = tabla.find_elements_by_tag_name('td')
         self.assertIn(texto_fila, [fila.text for fila in filas])
 
     def concatenar(self, s1, s2):
+        """Concatena s1 y s2."""
         return '%s%s' % (s1, s2)
 
     def buscar_elemento_por_id(self, ident, error):
+        """Busca un elemento de HTML por su id, si no está, la prueba falla."""
         try:
             elem = self.browser.find_element_by_id(ident)
             return elem
         except NoSuchElementException:
             return self.fail(error)
 
-    def chequear_datos_cliente(self, link_cliente, home_admin_url, ver_clientes_url):
+    def chequear_datos_cliente(
+            self, link_cliente, home_admin_url, ver_clientes_url):
+        u"""Verifica que los datos mostrados en la página son correctos."""
         user = User.objects.get(username=link_cliente.text)
         cliente = Cliente.objects.get(usuario=user)
-        
+
         link_cliente.click()
-        
+
         self.assertNotEqual(home_admin_url, self.browser.current_url)
         self.assertNotEqual(ver_clientes_url, self.browser.current_url)
         self.assertIn(user.username, self.browser.current_url)
-        
+
         header_text = self.browser.find_element_by_tag_name('h1').text
         titulo_esperado = self.concatenar('Datos de ', user.username)
         self.assertEqual(titulo_esperado, header_text)
@@ -146,10 +163,14 @@ class PruebasAdministrador(LiveServerTestCase):
             'boton_regresar',
             'No hay botón para regresar a la página anterior! (se buscó un '
             'elemento con id = "boton_regresar")')
-        
+
         regresar.click()
 
     def test_administrador_puede_ver_clientes_registrados(self):
+        """Prueba para la historia:
+        'En tanto que soy administrador puedo ver a los
+        clientes registrados'
+        """
         # El administrador entra a la página de inicio
         self.browser.get(self.live_server_url)
 
@@ -163,21 +184,22 @@ class PruebasAdministrador(LiveServerTestCase):
         password_input.send_keys(Keys.ENTER)
 
         # El admin es llevado a un nuevo URL donde está su paǵina principal
-        home_admin_url = self.concatenar(self.live_server_url, '/administrador/')
+        home_admin_url = self.concatenar(
+            self.live_server_url, '/administrador/')
 
         self.assertEqual(home_admin_url, self.browser.current_url)
 
         # En la página principal ve una opción que dice "Ver clientes
         # registrados" y le da click
         ver_clientes = self.buscar_elemento_por_id(
-                'ver_clientes_button',
-                'No hay un botón para ver clientes!\n'
-                '(Se buscó un elemento con id = ver_clientes_button)')
+            'ver_clientes_button',
+            'No hay un botón para ver clientes!\n'
+            '(Se buscó un elemento con id = ver_clientes_button)')
 
         ver_clientes.click()
 
-        # La página ahora redirecciona a admin a otra página que muestra un título
-        # que dice "Clientes registrados:"
+        # La página ahora redirecciona a admin a otra página que muestra un
+        # título que dice "Clientes registrados:"
         self.assertNotEqual(home_admin_url, self.browser.current_url)
         ver_clientes_url = self.browser.current_url
         header_text = self.browser.find_element_by_tag_name('h1').text
@@ -249,6 +271,10 @@ class PruebasAdministrador(LiveServerTestCase):
         home.click()
 
     def test_crear_menu(self):
+        """
+        Prueba para la historia: 'En tanto que soy administrador puedo crear un
+        menú'
+        """
         # El administrador entra a la página de inicio
         self.browser.get(self.live_server_url)
 
@@ -267,25 +293,24 @@ class PruebasAdministrador(LiveServerTestCase):
         self.assertEqual(home_admin_url, self.browser.current_url)
 
         # En la página principal ve una opción que dice "Crear menú" y le da
-        # click 
+        # click
         crear_menu = self.buscar_elemento_por_id(
-                'crear_menu_button',
-                'No hay un botón para crear menú!\n'
-                '(Se buscó un elemento con id = crear_menu_button)')
+            'crear_menu_button',
+            'No hay un botón para crear menú!\n'
+            '(Se buscó un elemento con id = crear_menu_button)')
 
         crear_menu.click()
 
-        # La página ahora redirecciona a admin a otra página que muestra un título
-        # que dice "Ingrese la información del nuevo menú:"
+        # La página ahora redirecciona a admin a otra página que muestra un
+        # título que dice "Ingrese la información del nuevo menú:"
         self.assertNotEqual(home_admin_url, self.browser.current_url)
-        ver_clientes_url = self.browser.current_url
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertEqual('Ingrese la información del nuevo menú:', header_text)
 
         # Abajo del título se muestra un formulario con un campo para el nombre
         # del menú y otro con la lista de ingredientes para seleccionarlos
 
-        menu_form = self.buscar_elemento_por_id(
+        self.buscar_elemento_por_id(
             'menu_form', 'No se encontró "menu_form".')
 
         # admin crea un menú con nombre "menu 1" y con sólo el plato 1
@@ -302,6 +327,6 @@ class PruebasAdministrador(LiveServerTestCase):
 
         menu1 = Menu.objects.get(nombre='menu 1')
         plato1 = Plato.objects.get(nombre='Plato 1')
-        
+
         self.assertEquals(menu1.nombre, 'menu 1')
         self.assertEquals(plato1.nombre, menu1.incluye.all()[0].nombre)
