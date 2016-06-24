@@ -15,4 +15,6 @@ urlpatterns = [
     url(r'^consultar_saldo/$', views.consultar_saldo, name='consultar_saldo'),
 
     url(r'^recargar_saldo/$', views.recargar_saldo, name='recargar_saldo'),
+
+    url(r'^realizar_pedido/$', views.realizar_pedido, name='realizar_pedido'),
 ]

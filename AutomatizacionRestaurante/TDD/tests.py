@@ -10,8 +10,8 @@ from administrador.models import Administrador, Ingrediente, Plato, Menu
 from cliente.models import Cliente
 
 
-class PruebasAdministrador(LiveServerTestCase):
-    """Pruebas para los casos de uso del administrador."""
+class Historias(LiveServerTestCase):
+    """Pruebas para las historias de usuario."""
 
     def agregar_cliente(
         self,
@@ -27,10 +27,10 @@ class PruebasAdministrador(LiveServerTestCase):
         u"""Agrega un cliente a la base de datos."""
         user = User.objects.create(
             username=username,
-            password='pw',
             email=email,
             first_name=nombre,
             last_name=apellido)
+        user.set_password('pw')
 
         cliente = Cliente.objects.create(
             usuario=user,
@@ -330,3 +330,34 @@ class PruebasAdministrador(LiveServerTestCase):
 
         self.assertEquals(menu1.nombre, 'menu 1')
         self.assertEquals(plato1.nombre, menu1.incluye.all()[0].nombre)
+
+
+    def test_realizar_pedidos_cliente(self):
+        """Prueba para la historia de usuario: 'En tanto que el cliente puede
+        realizar pedidos'
+        """
+        # El cliente entra a la página de inicio
+        self.browser.get(self.live_server_url)
+
+        # El cliente ingresa el nombre de usuario "cliente1" con su contraseña
+        username_input = self.browser.find_element_by_id('username_field')
+        username_input.send_keys('cliente1')
+
+        password_input = self.browser.find_element_by_id('password_field')
+        password_input.send_keys('pw')
+
+        password_input.send_keys(Keys.ENTER)
+
+        # El cliente es llevado a un nuevo URL donde está su paǵina principal
+        home_admin_url = self.concatenar(self.live_server_url, '/cliente/')
+
+        self.assertEqual(home_admin_url, self.browser.current_url)
+
+        # El cliente le da click a la opciónn "Realizar pedido" y es llevado a
+        # una página con los platos (nombre, descripción y precio) del menú
+        # actual
+        self.browser.find_element_by_xpath(
+            ".//input[@value='Realizar pedido']"
+        ).click()
+
+        self.fail('hay que terminar la prueba!')

@@ -104,3 +104,7 @@ def recargar_saldo(request):
     else:
         form = RecargaBilleteraForm()
     return render(request, 'cliente/recargar_saldo.html', {'form': form})
+
+@login_required(login_url=reverse_lazy('login'))
+def realizar_pedido(request):
+    return render(request, 'cliente/realizar_pedido.html')
