@@ -10,7 +10,7 @@ from .models import Menu, Plato, Ingrediente
 class CrearMenuForm(forms.ModelForm):
     incluye = forms.ModelMultipleChoiceField(
         queryset=Plato.objects.all(),
-        widget=forms.CheckboxSelectMultiple(attrs={'id': 'incluye'}))
+        widget=forms.CheckboxSelectMultiple())
     
     class Meta:
         model = Menu
@@ -23,6 +23,8 @@ class CrearMenuForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CrearMenuForm, self).__init__(*args, **kwargs)
 
+        self.fields['incluye'].field = forms.ModelMultipleChoiceField(
+            queryset=Plato.objects.all())
         self.fields['incluye'].label = "Elija los platos del menú:"
         self.fields['incluye'].required = False
         self.fields['actual'].label = "¿Desea que este sea el menú actual?"
@@ -40,6 +42,8 @@ class CrearPlatoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CrearPlatoForm, self).__init__(*args, **kwargs)
 
+        self.fields['contiene'].field = forms.ModelMultipleChoiceField(
+            queryset=Ingrediente.objects.all())
         self.fields['contiene'].label = "Elija los ingredientes del plato:"
 
     def clean_precio(self):

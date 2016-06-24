@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.messages.storage.fallback import FallbackStorage
 from django.core.urlresolvers import resolve, reverse
 from django.http import HttpRequest
 from django.test import TestCase
@@ -102,6 +103,10 @@ class PruebasHomeAdmin(TestCase):
         request.method = 'POST'
         request.POST['nombre'] = 'Menu 1'
 
+        setattr(request, 'session', 'session')
+        messages = FallbackStorage(request)
+        setattr(request, '_messages', messages)
+
         response = crear_menu(request)
 
         self.assertEqual(Menu.objects.count(), 1)
@@ -109,9 +114,14 @@ class PruebasHomeAdmin(TestCase):
         self.assertEqual(nuevo_menu.nombre, 'Menu 1')
 
     def test_crear_menu_redireccion_despues_del_POST(self):
+        
         request = HttpRequest()
         request.method = 'POST'
         request.POST['nombre'] = 'Menu 1'
+
+        setattr(request, 'session', 'session')
+        messages = FallbackStorage(request)
+        setattr(request, '_messages', messages)
 
         response = crear_menu(request)
 

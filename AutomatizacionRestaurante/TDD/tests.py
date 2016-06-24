@@ -79,15 +79,15 @@ class PruebasAdministrador(LiveServerTestCase):
             nombre='Plato 1',
             descripcion='Descripción del plato1',
             precio=1)
-        plato1.save()
         plato1.contiene.add('Ingrediente 1', 'Ingrediente 2')
+        plato1.save()
 
         plato2 = Plato(
             nombre='Plato 2',
             descripcion='Descripción del plato2',
             precio=2)
-        plato2.save()
         plato2.contiene.add('Ingrediente 2')
+        plato2.save()
 
     def tearDown(self):
         self.browser.quit()
@@ -318,7 +318,7 @@ class PruebasAdministrador(LiveServerTestCase):
         nombre_input.send_keys('menu 1')
 
         self.browser.find_element_by_xpath(
-            ".//div[@id='div_id_incluye']/div[1]/div[1]/label[1]"
+            ".//input[@value='Plato 1']"
         ).click()
 
         self.browser.find_element_by_xpath(
