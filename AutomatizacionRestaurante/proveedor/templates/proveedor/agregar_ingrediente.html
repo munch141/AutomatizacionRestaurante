@@ -18,7 +18,7 @@
                 <form action="." role="form" method="post">
                     {% csrf_token %}
                     {{ form|crispy }}
-                    <input type="submit" class="btn btn-success" value="Guardar  5 cambios">
+                    <input type="submit" class="btn btn-success" value="Guardar cambios">
                     <a href="{% url 'editar_inventario' %}" class="btn btn-default" role="button">Cancelar</a>
                 </form>
             </div>

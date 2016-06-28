@@ -49,10 +49,14 @@ class EditarInventarioForm(forms.ModelForm):
         model = Inventario
         fields = ['ingredientes']
 
+
     def __init__(self, *args, **kwargs):
         super(EditarInventarioForm, self).__init__(*args, **kwargs)
 
         self.fields['ingredientes'].label = "Elija los ingredientes para el inventario:"
         self.fields['ingredientes'].required = False
+        
+
+    
 
     
