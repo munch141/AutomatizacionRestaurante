@@ -55,19 +55,24 @@ def editar_perfil(request):
 
 @login_required(login_url=reverse_lazy('login'))
 def agregar_ingrediente(request):
-	if request.method == 'POST':
-		form = AgregarIngredienteForm(request.POST)
-		if form.is_valid():
-			nombre = form.cleaned_data['nombre']
-			ingrediente = Ingrediente.objects.create(nombre=nombre)
-			ingrediente.save()   
+    #inventario = Inventario.objects.get(usuario=request.user)
 
-			messages.success(request, '✓ Se agrego ingrediente "%s"' % nombre)       
+    if request.method == 'POST':
+        form = AgregarIngredienteForm(request.POST)
+        if form.is_valid():
+            nombre = form.cleaned_data['nombre']
+            ingrediente = Ingrediente.objects.create(nombre=nombre)
+            ingrediente.save()   
 
-			return redirect(reverse('crear_inventario'))
-	else:
-		form = AgregarIngredienteForm()
-	return render(request, 'proveedor/agregar_ingrediente.html', {'form': form})
+            messages.success(request, '✓ Se agrego ingrediente "%s"' % nombre)       
+
+            if Inventario.objects.filter(usuario=request.user).exists():    
+                return redirect(reverse('editar_inventario'))
+            else:
+                return redirect(reverse('crear_inventario'))
+    else:
+        form = AgregarIngredienteForm()
+    return render(request, 'proveedor/agregar_ingrediente.html', {'form': form})
 
 
 @login_required(login_url=reverse_lazy('login'))
@@ -80,7 +85,14 @@ def crear_inventario(request):
             ingredientes = form.cleaned_data['ingredientes']
 
             inventario = Inventario.objects.create(usuario=request.user)
-            inventario.ingredientes.add(ingredientes)
+
+            inventario.save()
+
+            inventario.ingredientes.clear()
+            for ingrediente in ingredientes:
+                p = Ingrediente.objects.get(nombre=ingrediente.nombre)
+                inventario.ingredientes.add(p)
+
             i = [ingrediente.nombre for ingrediente in ingredientes]
             messages.success(
                 request,
