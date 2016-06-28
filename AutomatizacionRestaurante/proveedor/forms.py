@@ -26,7 +26,7 @@ class AgregarIngredienteForm(ModelForm):
     nombre = CharField(label='Ingrediente')
 
 class CrearInventarioForm(forms.ModelForm):
-    ingredientes = forms.ModelMultipleChoiceField(queryset=Ingrediente.objects.all(), widget = forms.CheckboxSelectMultiple())
+    ingredientes = forms.ModelMultipleChoiceField(queryset=Ingrediente.objects.all(), widget = forms.CheckboxSelectMultiple(attrs={'id': 'ingredientes'}))
 
     class Meta:
         model = Inventario
@@ -40,5 +40,19 @@ class CrearInventarioForm(forms.ModelForm):
         self.fields['ingredientes'].label = "Elija los ingredientes para el inventario:"
         self.fields['ingredientes'].required = False
 
+class EditarInventarioForm(forms.ModelForm):
+    ingredientes = forms.ModelMultipleChoiceField(
+        queryset=Ingrediente.objects.all(),
+        widget=forms.CheckboxSelectMultiple(attrs={'id': 'ingredientes'}))
+
+    class Meta:
+        model = Inventario
+        fields = ['ingredientes']
+
+    def __init__(self, *args, **kwargs):
+        super(EditarInventarioForm, self).__init__(*args, **kwargs)
+
+        self.fields['ingredientes'].label = "Elija los ingredientes para el inventario:"
+        self.fields['ingredientes'].required = False
 
     

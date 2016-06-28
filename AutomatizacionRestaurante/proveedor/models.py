@@ -23,7 +23,7 @@ class Proveedor(models.Model):
 
 
 class Inventario(models.Model):
-    rif_proveedor = models.OneToOneField(Proveedor, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE,  primary_key=True,)
     ingredientes = models.ManyToManyField(Ingrediente) 
 
     def __str__(self):

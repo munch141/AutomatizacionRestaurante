@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Datos de Inventario de {{ user.username }}:
+{% endblock title %}
+
+{% block contenido %}
+
+    <div class="col-md-9">
+    {% if inventario %}
+        
+
+        <table id="tabla_platos" class="table table-condensed">
+            <thead>
+                <tr>
+                    <th width="15%">Ingredientes</th>
+                    
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for ingrediente in inventario.ingredientes.all %}
+                    <tr>
+                        <td>{{ingrediente.nombre}}</td>
+                        
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+        <a id="boton_regresar" class="btn btn-info" href="{% url 'editar_inventario' %}" >Editar inventario</a>
+    {% endif %}
+        <a id="boton_regresar" class="btn btn-default" href="{% url 'home_proveedor' %}" role="button">Regresar al inicio</a>
+    </div>
+{% endblock %}

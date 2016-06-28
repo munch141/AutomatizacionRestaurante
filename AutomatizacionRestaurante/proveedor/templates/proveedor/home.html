@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block title %}
     {{ user.username }}
@@ -15,5 +16,11 @@
     {% endif %}
 
     <h1>Bienvenido {{user.first_name}}.</h1>
-    <a class="btn btn-lg btn-success" id="crear_inventario_button" href="{% url 'crear_inventario' %}" role="button">Editar Inventario</a>
+    {% if user.inventario %}
+        <a class="btn btn-lg btn-success" id="crear_inventario_button" href="{% url 'detalles_inventario' %}" role="button">Editar Inventario</a>
+
+
+    {% else %}
+        <a class="btn btn-lg btn-success" id="crear_inventario_button" href="{% url 'crear_inventario' %}" role="button">Crear Inventario</a>
+    {% endif %}
 {% endblock %}

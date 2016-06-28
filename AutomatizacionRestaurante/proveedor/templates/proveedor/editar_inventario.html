@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block title %}
+    Proveedor {{ user.username }} - Editar Inventario
+{% endblock %}
+
+
+{% block contenido %}
+
+    <h1>Ingrese la información del nuevo inventario:</h1>
+
+    {% if inventario %}
+    <div class="row">
+        <div class="col-md-4">
+            <form id="inventario_form" role="form" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" class="btn btn-success" value="Guardar inventario">
+                <a href="{% url 'home_proveedor'%}" class="btn btn-default" role="button">Cancelar</a>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <h2> </h2>
+
+
+    <a class="btn-link" href="{% url 'agregar_ingrediente_proveedor' %}" role="button">Agregar Ingrediente Nuevo</a>
+
+
+{% endblock %}

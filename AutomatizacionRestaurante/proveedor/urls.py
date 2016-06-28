@@ -12,5 +12,9 @@ urlpatterns = [
 
     url(r'^crear_inventario/$' , views.crear_inventario, name='crear_inventario'),
 
-	url(r'^agregar_ingrediente/$' , views.agregar_ingrediente, name='agregar_ingrediente_proveedor'),	
+	url(r'^agregar_ingrediente/$' , views.agregar_ingrediente, name='agregar_ingrediente_proveedor'),
+
+	url(r'^editar_inventario/$' , views.editar_inventario, name='editar_inventario'),
+
+	url(r'^detalles_inventario/$' , views.detalles_inventario, name='detalles_inventario'),	
 ]

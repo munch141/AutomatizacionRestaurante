@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from administrador.models import Ingrediente
 
 from .models import Proveedor, Inventario
-from .forms import EditarPerfilForm, AgregarIngredienteForm, CrearInventarioForm
+from .forms import EditarPerfilForm, AgregarIngredienteForm, CrearInventarioForm, EditarInventarioForm
 
 
 @login_required(login_url=reverse_lazy('login'))
@@ -76,10 +76,10 @@ def crear_inventario(request):
         form = CrearInventarioForm(request.POST)
 
         if form.is_valid():
-            rif_proveedor = request.user.proveedor
+            #usuario = request.user.proveedor
             ingredientes = form.cleaned_data['ingredientes']
 
-            inventario = Inventario.objects.create(rif_proveedor=rif_proveedor)
+            inventario = Inventario.objects.create(usuario=request.user)
             inventario.ingredientes.add(ingredientes)
             i = [ingrediente.nombre for ingrediente in ingredientes]
             messages.success(
@@ -89,4 +89,39 @@ def crear_inventario(request):
     else:
         form = CrearInventarioForm()
     return render(request, 'proveedor/crear_inventario.html', {'form':form, 'user': request.user})
-		
+
+
+@login_required(login_url=reverse_lazy('login'))
+def editar_inventario(request):
+    inventario = Inventario.objects.get(usuario=request.user)
+    
+    if request.method == 'POST':
+
+        form = EditarInventarioForm(request.POST, instance=inventario)
+
+        if form.is_valid():
+            ingredientes = form.cleaned_data['ingredientes']
+
+            inventario.save()
+
+            inventario.ingredientes.clear()
+            for ingrediente in ingredientes:
+                p = Ingrediente.objects.get(nombre=ingrediente.nombre)
+                inventario.ingredientes.add(p)
+            messages.success(
+                request, '✓ Se actualizó el inventario!')
+            return redirect(reverse('home_proveedor'))
+            
+    else:
+        form = EditarInventarioForm(instance=inventario)
+    return render(
+        request, 'proveedor/editar_inventario.html', {'inventario': inventario, 'form': form})
+
+
+@login_required(login_url=reverse_lazy('login'))		
+def detalles_inventario(request):
+    try:
+        inventario = Inventario.objects.get(usuario=request.user)
+    except:
+        inventario = None
+    return render(request, 'proveedor/detalles_inventario.html', {'inventario': inventario})
