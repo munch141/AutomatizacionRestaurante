@@ -23,6 +23,35 @@ class PruebasCliente(TestCase):
             telefono='123456')
         cliente.save()
 
+        ingrediente = Ingrediente(
+            nombre='Ingrediente 1', descripcion='Descripción del ingrediente')
+        ingrediente.save()
+
+        ingrediente2 = Ingrediente(
+            nombre='Ingrediente 2', descripcion='Descripción del ingrediente 2')
+        ingrediente2.save()
+
+        plato1 = Plato(
+            nombre='Plato 1',
+            descripcion='Descripción del plato1',
+            precio=1)
+        plato1.save()
+        plato1.contiene.add('Ingrediente 1', 'Ingrediente 2')
+
+        plato2 = Plato(
+            nombre='Plato 2',
+            descripcion='Descripción del plato2',
+            precio=2)
+        plato2.save()
+        plato2.contiene.add('Ingrediente 2')
+
+        menu1 = Menu.objects.create(nombre='Menú 1', actual=True)
+        menu1.incluye.add('Plato 1')
+        menu1.incluye.add('Plato 2')
+
+        menu2 = Menu.objects.create(nombre='Menú 2', actual=False)
+        menu1.incluye.add('Plato 2')
+
     def test_realizar_pedido_url_llama_a_vista_realizar_pedido(self):
         found = resolve(reverse('realizar_pedido'))
         self.assertEqual(found.func, realizar_pedido)
@@ -40,3 +69,18 @@ class PruebasCliente(TestCase):
         expected_html = render_to_string(
             'cliente/realizar_pedido.html', request=request)
         self.assertEqual(response.content.decode(), expected_html)
+
+    def test_realizar_pedido_puede_guardar_una_solicitud_POST(self):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['platos'] = ['Plato 1']
+        engine = import_module(settings.SESSION_ENGINE)
+        session_key = None
+        request.session = engine.SessionStore(session_key)
+        user = authenticate(username='cliente', password='pw')
+        request.user = user
+        login(request, user)
+
+        response = realizar_pedido(request)
+
+        # FALTAN LOS CHEQUEOS

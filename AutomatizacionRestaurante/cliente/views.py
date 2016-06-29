@@ -107,4 +107,13 @@ def recargar_saldo(request):
 
 @login_required(login_url=reverse_lazy('login'))
 def realizar_pedido(request):
+    if request.method == 'POST':
+        form = PedidoClienteForm(request.POST)
+
+        if form.is_valid():
+            return render(
+                request, 'cliente/home.html')
+            
+    else:
+        form = PedidoClienteForm()
     return render(request, 'cliente/realizar_pedido.html')

@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block contenido %}
-
 	{% if messages %}
         <div class="alert alert-success">
             {% for message in messages %}
@@ -15,8 +14,9 @@
     {% endif %}
 
     <h1>Bienvenido {{user.first_name}}.</h1>
+    
+    <div class="col-md-4">
     {% if user.billetera %}
-        <div class="col-md-3">
             <h2>Billetera</h2>
             <ul class="nav nav-pills nav-stacked">
                 <li role="presentation">
@@ -27,8 +27,9 @@
                     <a href="{% url 'recargar_saldo' %}" role="button">Recargar</a>
                 </li>
             </ul>
-        </div>
     {% else %}
-        <a class="btn btn-lg btn-info" id="crear_billetera_button" href="{% url 'crear_billetera' %}" role="button">Crear Billetera</a>
+        <a class="btn btn-md btn-info" id="crear_billetera_button" href="{% url 'crear_billetera' %}" role="button">Crear Billetera</a>
     {% endif %}
+        <a id="realizar_pedido" class="btn btn-md btn-success" href="{% url 'realizar_pedido' %}" role="button">Realizar pedido</a>
+    </div>
 {% endblock %}

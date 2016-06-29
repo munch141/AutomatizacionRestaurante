@@ -89,6 +89,14 @@ class Historias(LiveServerTestCase):
         plato2.save()
         plato2.contiene.add('Ingrediente 2')
 
+        menu1 = Menu.objects.create(nombre='Menú 1', actual=True)
+        menu1.incluye.add('Plato 1')
+        menu1.incluye.add('Plato 2')
+
+        menu2 = Menu.objects.create(nombre='Menú 2', actual=False)
+        menu1.incluye.add('Plato 2')
+
+
     def tearDown(self):
         self.browser.quit()
 
@@ -354,10 +362,14 @@ class Historias(LiveServerTestCase):
         self.assertEqual(home_admin_url, self.browser.current_url)
 
         # El cliente le da click a la opciónn "Realizar pedido" y es llevado a
-        # una página con los platos (nombre, descripción y precio) del menú
+        # una página con una tabla los platos (nombre, descripción y precio) del menú
         # actual
         self.browser.find_element_by_xpath(
-            ".//input[@value='Realizar pedido']"
+            "//a[@id='realizar_pedido']"
         ).click()
+
+        menu_form = self.browser.find_element_by_xpath(
+            "//form"
+        )
 
         self.fail('hay que terminar la prueba!')
