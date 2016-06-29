@@ -23,8 +23,17 @@ class Proveedor(models.Model):
 
 
 class Inventario(models.Model):
-    rif_proveedor = models.OneToOneField(Proveedor, on_delete=models.CASCADE)
-    ingredientes = models.ManyToManyField(Ingrediente) 
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.rif_proveedor)
+        return 'inventario_'+str(self.usuario.username)
+
+
+class Ingrediente_inventario(models.Model):
+    inventario = models.ForeignKey(Inventario, related_name='ingredientes')
+    ingrediente = models.ForeignKey(Ingrediente)
+    cantidad = models.IntegerField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return str(self.ingrediente)+'_'+str(self.inventario)

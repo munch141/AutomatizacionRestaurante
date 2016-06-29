@@ -51,8 +51,6 @@ def editar_perfil(request):
         {'user': request.user, 'formset': formset, 'form': form})
 
 
-
-
 @login_required(login_url=reverse_lazy('login'))
 def agregar_ingrediente(request):
 	if request.method == 'POST':
@@ -76,10 +74,9 @@ def crear_inventario(request):
         form = CrearInventarioForm(request.POST)
 
         if form.is_valid():
-            rif_proveedor = request.user.proveedor
             ingredientes = form.cleaned_data['ingredientes']
 
-            inventario = Inventario.objects.create(rif_proveedor=rif_proveedor)
+            inventario = Inventario.objects.create(usuario=request.user)
             inventario.ingredientes.add(ingredientes)
             i = [ingrediente.nombre for ingrediente in ingredientes]
             messages.success(
