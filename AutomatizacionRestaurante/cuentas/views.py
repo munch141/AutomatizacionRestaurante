@@ -8,7 +8,7 @@ from django.views import generic
 
 from AutomatizacionRestaurante.decorators import login_check
 from cliente.models import Cliente
-from proveedor.models import Proveedor
+from proveedor.models import Proveedor, Inventario
 
 from .forms import LoginForm, RegistroClienteForm, RegistroProveedorForm
 
@@ -66,6 +66,7 @@ def registro_proveedor(request):
                 telefono=form.cleaned_data['telefono'],
                 direccion=form.cleaned_data['direccion']
             )
+            inventario = Inventario.objects.create(usuario=user)
             user.save()
             perfil.save()
             return redirect(reverse('exito'))

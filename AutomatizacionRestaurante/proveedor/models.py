@@ -32,7 +32,7 @@ class Inventario(models.Model):
 class Ingrediente_inventario(models.Model):
     inventario = models.ForeignKey(Inventario, related_name='ingredientes')
     ingrediente = models.ForeignKey(Ingrediente)
-    cantidad = models.IntegerField()
+    cantidad = models.PositiveIntegerField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):

@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from django.forms import EmailField, ModelForm, CharField
+from django.forms import EmailField, ModelForm, CharField,ValidationError
 from django.contrib.auth.models import User
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import ButtonHolder, Field, Layout, MultiWidgetField, Submit
+from crispy_forms.layout import ButtonHolder, Field, Layout, MultiWidgetField,\
+                                Div, Submit
 
 from administrador.models import Ingrediente
 
-from .models import Inventario
+from .models import Ingrediente_inventario, Inventario
 
 
 class EditarPerfilForm(ModelForm):
@@ -25,20 +26,34 @@ class AgregarIngredienteForm(ModelForm):
 
     nombre = CharField(label='Ingrediente')
 
-class CrearInventarioForm(forms.ModelForm):
-    ingredientes = forms.ModelMultipleChoiceField(queryset=Ingrediente.objects.all(), widget = forms.CheckboxSelectMultiple())
+class CrearInventarioForm1(forms.Form):
+    ingredientes = forms.ModelMultipleChoiceField(
+        queryset=Ingrediente.objects.all(),
+        widget=forms.CheckboxSelectMultiple(),
+        required=False,
+        label='Elija los ingredientes del inventario:')
 
-    class Meta:
-        model = Inventario
-        fields = ['ingredientes']
 
+class IngredienteInventarioFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
-        super(CrearInventarioForm, self).__init__(*args, **kwargs)
+        super(IngredienteInventarioFormSetHelper, self).__init__(*args, **kwargs)
+        self.form_method = 'POST'
+        self.form_tag = False
+        self
+        self.layout = Layout(
+            Div(
+                Div('ingrediente',css_class='col-md-3',),
+                Div('cantidad',css_class='col-md-2',),
+                Div('precio',css_class='col-md-2',),
+                css_class='row'))
 
-        #self.fields['ingredientes'].id = 'ingredientes'
+class IngredienteInventarioForm(forms.ModelForm):
+    class Meta:
+        model = Ingrediente_inventario
+        fields = ['ingrediente', 'cantidad', 'precio']
 
-        self.fields['ingredientes'].label = "Elija los ingredientes para el inventario:"
-        self.fields['ingredientes'].required = False
+    ingrediente = CharField(disabled=True)
 
-
-    
+    def clean_precio(self):
+        if precio < 0:
+            raise ValidationError('El precio debe ser mayor que 0!')

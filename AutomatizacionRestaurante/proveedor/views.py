@@ -4,13 +4,15 @@ from django.shortcuts import redirect, render
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.forms.models import inlineformset_factory
+from django.forms.models import inlineformset_factory, formset_factory
 from django.contrib.auth.models import User
 
 from administrador.models import Ingrediente
 
-from .models import Proveedor, Inventario
-from .forms import EditarPerfilForm, AgregarIngredienteForm, CrearInventarioForm
+from .models import Proveedor, Ingrediente_inventario, Inventario
+from .forms import EditarPerfilForm, AgregarIngredienteForm, \
+                   CrearInventarioForm1, IngredienteInventarioForm, \
+                   IngredienteInventarioFormSetHelper
 
 
 @login_required(login_url=reverse_lazy('login'))
@@ -62,28 +64,64 @@ def agregar_ingrediente(request):
 
 			messages.success(request, '✓ Se agrego ingrediente "%s"' % nombre)       
 
-			return redirect(reverse('crear_inventario'))
+			return redirect(reverse('crear_inventario_1'))
 	else:
 		form = AgregarIngredienteForm()
 	return render(request, 'proveedor/agregar_ingrediente.html', {'form': form})
 
 
 @login_required(login_url=reverse_lazy('login'))
-def crear_inventario(request):
+def crear_inventario_1(request):
     if request.method == 'POST':
-        form = CrearInventarioForm(request.POST)
+        form = CrearInventarioForm1(request.POST)
 
         if form.is_valid():
-            ingredientes = form.cleaned_data['ingredientes']
+            ingredientes = [i.nombre for i in form.cleaned_data['ingredientes']]
+            request.session['ingredientes'] = ingredientes
 
-            inventario = Inventario.objects.create(usuario=request.user)
-            inventario.ingredientes.add(ingredientes)
-            i = [ingrediente.nombre for ingrediente in ingredientes]
-            messages.success(
-                request,
-                '✓ Se creó el inventario con los ingredientes "%s"' % str(i))
-            return redirect(reverse('home_proveedor'))
+            return redirect(reverse('crear_inventario_2'))
     else:
-        form = CrearInventarioForm()
-    return render(request, 'proveedor/crear_inventario.html', {'form':form, 'user': request.user})
+        form = CrearInventarioForm1()
+    return render(
+        request,
+        'proveedor/crear_inventario_1.html',
+        {'form':form, 'user': request.user})
+
+
+@login_required(login_url=reverse_lazy('login'))
+def crear_inventario_2(request):
+    user = request.user
+    ingredientes = []
+
+    for nombre in request.session['ingredientes']:
+        ingrediente = Ingrediente.objects.get(nombre=nombre)
+        try:
+            i = Ingrediente_inventario.objects.get(
+                inventario=user.inventario,
+                ingrediente=ingrediente)
+        except:
+            i = Ingrediente_inventario.objects.create(
+                inventario=user.inventario,
+                ingrediente=ingrediente,
+                cantidad=0,
+                precio=0)
+        ingredientes.append(i)
+    
+    IngredienteFormset = formset_factory(
+        IngredienteInventarioForm, extra=0)
+    
+    initial_data = []
+    for i in ingredientes:
+        initial_data.append(
+            {'ingrediente': i.ingrediente,
+             'cantidad': 0,
+             'precio': 0})
+
+    formset = IngredienteFormset(initial=initial_data)
+    helper = IngredienteInventarioFormSetHelper()
+
+    return render(
+        request,
+        'proveedor/crear_inventario_2.html',
+        {'formset': formset, 'helper': helper, 'user': user})
 		
