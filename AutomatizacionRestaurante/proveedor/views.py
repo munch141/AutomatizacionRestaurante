@@ -7,11 +7,11 @@ from django.contrib import messages
 from django.forms.models import inlineformset_factory, formset_factory
 from django.contrib.auth.models import User
 
-from administrador.models import Ingrediente
+from administrador.models import Ingrediente,Ingrediente_inventario
 
-from .models import Proveedor, Ingrediente_inventario, Inventario
+from .models import Proveedor, Inventario
 from .forms import EditarPerfilForm, AgregarIngredienteForm, \
-                   CrearInventarioForm1, IngredienteInventarioForm, \
+                   ElegirIngredientesForm, IngredienteInventarioForm, \
                    IngredienteInventarioFormSetHelper
 
 
@@ -62,7 +62,7 @@ def agregar_ingrediente(request):
 			ingrediente = Ingrediente.objects.create(nombre=nombre)
 			ingrediente.save()   
 
-			messages.success(request, '✓ Se agrego ingrediente "%s"' % nombre)       
+			messages.success(request, '✓ Se agrego ingrediente "%s"' % nombre)
 
 			return redirect(reverse('crear_inventario_1'))
 	else:
@@ -71,27 +71,27 @@ def agregar_ingrediente(request):
 
 
 @login_required(login_url=reverse_lazy('login'))
-def crear_inventario_1(request):
+def elegir_ingredientes_inventario(request):
     if request.method == 'POST':
-        form = CrearInventarioForm1(request.POST)
+        form = ElegirIngredientesForm(request.POST)
 
         if form.is_valid():
             ingredientes = [i.nombre for i in form.cleaned_data['ingredientes']]
             request.session['ingredientes'] = ingredientes
 
-            return redirect(reverse('crear_inventario_2'))
+            return redirect(reverse('detalles_ingredientes_inventario'))
     else:
-        form = CrearInventarioForm1()
+        form = ElegirIngredientesForm()
     return render(
         request,
-        'proveedor/crear_inventario_1.html',
+        'proveedor/elegir_ingredientes.html',
         {'form':form, 'user': request.user})
 
 
 @login_required(login_url=reverse_lazy('login'))
-def crear_inventario_2(request):
+def detalles_ingredientes_inventario(request):
     user = request.user
-    ingredientes = []
+    ingredientes = [i for i in user.inventario.ingrediente_inventario_set.all()]
 
     for nombre in request.session['ingredientes']:
         ingrediente = Ingrediente.objects.get(nombre=nombre)
@@ -100,7 +100,7 @@ def crear_inventario_2(request):
                 inventario=user.inventario,
                 ingrediente=ingrediente)
         except:
-            i = Ingrediente_inventario.objects.create(
+            i = Ingrediente_inventario(
                 inventario=user.inventario,
                 ingrediente=ingrediente,
                 cantidad=0,
@@ -109,19 +109,99 @@ def crear_inventario_2(request):
     
     IngredienteFormset = formset_factory(
         IngredienteInventarioForm, extra=0)
-    
-    initial_data = []
-    for i in ingredientes:
-        initial_data.append(
-            {'ingrediente': i.ingrediente,
-             'cantidad': 0,
-             'precio': 0})
 
-    formset = IngredienteFormset(initial=initial_data)
-    helper = IngredienteInventarioFormSetHelper()
+    if request.method == 'POST':
+        formset = IngredienteFormset(request.POST)
+
+        if formset.is_valid():
+            for form in formset:
+                ingrediente = form.cleaned_data['ingrediente']
+                cantidad = form.cleaned_data['cantidad']
+                precio = form.cleaned_data['precio']
+
+                ing = Ingrediente_inventario.objects.update_or_create(
+                    inventario=user.inventario,
+                    ingrediente=ingrediente,
+                    cantidad=cantidad,
+                    precio=precio)
+
+                ing.save()
+                messages.success(request, '✓ Se actualizó el inventario!')
+                return redirect(reverse('editar_inventario'))
+
+    else:
+        initial_data = []
+        for i in ingredientes:
+            initial_data.append(
+                {'ingrediente': i.ingrediente,
+                 'cantidad': i.cantidad,
+                 'precio': i.precio})
+        formset = IngredienteFormset(initial=initial_data)
+        helper = IngredienteInventarioFormSetHelper()
 
     return render(
         request,
-        'proveedor/crear_inventario_2.html',
+        'proveedor/detalles_ingredientes.html',
         {'formset': formset, 'helper': helper, 'user': user})
-		
+
+
+@login_required(login_url=reverse_lazy('login'))
+def editar_inventario(request):
+    user = request.user
+    ingredientes = [i for i in user.inventario.ingrediente_inventario_set.all()]
+
+    # for nombre in request.session['ingredientes']:
+    #     ingrediente = Ingrediente.objects.get(nombre=nombre)
+    #     try:
+    #         i = Ingrediente_inventario.objects.get(
+    #             inventario=user.inventario,
+    #             ingrediente=ingrediente)
+    #     except:
+    #         i = Ingrediente_inventario(
+    #             inventario=user.inventario,
+    #             ingrediente=ingrediente,
+    #             cantidad=0,
+    #             precio=0)
+    #     ingredientes.append(i)
+    
+    IngredienteFormset = formset_factory(
+        IngredienteInventarioForm, extra=0)
+
+    if request.method == 'POST':
+        formset = IngredienteFormset(request.POST)
+
+        if formset.is_valid():
+            for form in formset:
+                ingrediente = form.cleaned_data['ingrediente']
+                cantidad = form.cleaned_data['cantidad']
+                precio = form.cleaned_data['precio']
+
+                ing = Ingrediente_inventario.objects.update_or_create(
+                    inventario=user.inventario,
+                    ingrediente=ingrediente,
+                    cantidad=cantidad,
+                    precio=precio)
+
+                ing.save()
+                messages.success(request, '✓ Se actualizó el inventario!')
+                return redirect(reverse('home_proveedor'))
+
+    else:
+        if ingredientes == []:
+            formset = None
+            helper = None
+        else:
+            initial_data = []
+            for i in ingredientes:
+                initial_data.append(
+                    {'ingrediente': i.ingrediente,
+                     'cantidad': i.cantidad,
+                     'precio': i.precio})
+            formset = IngredienteFormset(initial=initial_data)
+            helper = IngredienteInventarioFormSetHelper()
+
+    return render(
+        request,
+        'proveedor/editar_inventario.html',
+        {'formset': formset, 'helper': helper, 'user': user})
+        

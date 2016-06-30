@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from proveedor.models import Inventario
+
 
 class Administrador(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -11,26 +13,45 @@ class Administrador(models.Model):
 
 class Ingrediente(models.Model):
     nombre = models.CharField(max_length=30, primary_key=True)
-    descripcion = models.TextField()
 
     def __str__(self):
         return str(self.nombre)
 
+
+class Ingrediente_inventario(models.Model):
+    inventario = models.ForeignKey(Inventario, on_delete=models.CASCADE)
+    ingrediente = models.ForeignKey(Ingrediente, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=10, default='')
+    cantidad = models.PositiveIntegerField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+
     def __str__(self):
-        return str(self.nombre)
+        return str(self.ingrediente)+'_'+str(self.inventario)
 
 
 class Plato(models.Model):
     nombre = models.CharField(max_length=30, primary_key=True)
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
-    contiene = models.ManyToManyField(Ingrediente)
+    contiene = models.ManyToManyField(Ingrediente_inventario)
+    disponible = models.BooleanField()
+
+    def esta_disponible(self, inventario):
+        for ingrediente in self.contiene.all():
+            ingrediente_inventario = inventario.ingrediente_inventario_set.get(
+                ingrediente=ingrediente.ingrediente)
+            if ingrediente_inventario.cantidad < ingrediente.cantidad:
+                self.disponible = False
+                self.save()
+                return False
+        
+        self.disponible = True
+        self.save()
+        return True
 
     def __str__(self):
         return str(self.nombre)
 
-    def __str__(self):
-        return str(self.nombre)
 
 
 class Menu(models.Model):

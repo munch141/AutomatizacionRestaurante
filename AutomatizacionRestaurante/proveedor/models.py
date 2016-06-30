@@ -4,8 +4,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import RegexValidator
 
-from administrador.models import Ingrediente
-
 
 class Proveedor(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -29,11 +27,4 @@ class Inventario(models.Model):
         return 'inventario_'+str(self.usuario.username)
 
 
-class Ingrediente_inventario(models.Model):
-    inventario = models.ForeignKey(Inventario, related_name='ingredientes')
-    ingrediente = models.ForeignKey(Ingrediente)
-    cantidad = models.PositiveIntegerField()
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
 
-    def __str__(self):
-        return str(self.ingrediente)+'_'+str(self.inventario)

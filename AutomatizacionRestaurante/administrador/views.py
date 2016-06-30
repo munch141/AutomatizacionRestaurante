@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.forms.models import modelformset_factory
 
 from cliente.models import Cliente
-from .models import Ingrediente, Menu, Plato
+from .models import Ingrediente, Ingrediente_inventario, Menu, Plato
 from .forms import CrearMenuForm, CrearPlatoForm, AgregarIngredienteForm, EditarMenuForm
 
 
@@ -52,6 +52,7 @@ def crear_menu(request):
     return render(request, 'administrador/crear_menu.html', {'form': form})
 
 def crear_plato(request):
+    user = request.user
     if request.method == 'POST':
         form = CrearPlatoForm(request.POST)
 
@@ -62,11 +63,18 @@ def crear_plato(request):
             ingredientes = form.cleaned_data['contiene']
 
             plato = Plato.objects.create(
-                nombre=nombre, descripcion=descripcion, precio=precio)
+                nombre=nombre, descripcion=descripcion, precio=precio, disponible=False)
                 
             for i in ingredientes:
-                ingrediente = Ingrediente.objects.get(nombre=i.nombre)
+                try:
+                    ingrediente = user.inventario.ingrediente_inventario_set.get(nombre=i.nombre)
+                except:
+                    ingrediente = Ingrediente_inventario.objects.create(
+                        inventario=user.inventario, ingrediente=i, nombre=i.nombre,
+                        cantidad=0, precio=0)
+
                 plato.contiene.add(ingrediente)
+            plato.esta_disponible(request.user.inventario)
                 
             messages.success(request, '✓ Se creó un nuevo plato "%s"!' % nombre)
             return redirect(reverse('home_administrador'))

@@ -10,13 +10,17 @@ urlpatterns = [
         views.editar_perfil,
         name='editar_perfil_proveedor'),
 
-    url(r'^crear_inventario/ingredientes$',
-        views.crear_inventario_1,
-        name='crear_inventario_1'),
+    url(r'^editar_inventario$',
+        views.editar_inventario,
+        name='editar_inventario'),
 
-    url(r'^crear_inventario/ingredientes/precios_cantidades$',
-        views.crear_inventario_2,
-        name='crear_inventario_2'),
+    url(r'^editar_inventario/elegir_ingredientes$',
+        views.elegir_ingredientes_inventario,
+        name='elegir_ingredientes_inventario'),
+
+    url(r'^editar_inventario/elegir_ingredientes/detalles$',
+        views.detalles_ingredientes_inventario,
+        name='detalles_ingredientes_inventario'),
 
 	url(r'^agregar_ingrediente/$',
         views.agregar_ingrediente,

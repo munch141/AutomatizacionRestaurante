@@ -7,9 +7,9 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Field, Layout, MultiWidgetField,\
                                 Div, Submit
 
-from administrador.models import Ingrediente
+from administrador.models import Ingrediente, Ingrediente_inventario
 
-from .models import Ingrediente_inventario, Inventario
+from .models import Inventario
 
 
 class EditarPerfilForm(ModelForm):
@@ -26,7 +26,7 @@ class AgregarIngredienteForm(ModelForm):
 
     nombre = CharField(label='Ingrediente')
 
-class CrearInventarioForm1(forms.Form):
+class ElegirIngredientesForm(forms.Form):
     ingredientes = forms.ModelMultipleChoiceField(
         queryset=Ingrediente.objects.all(),
         widget=forms.CheckboxSelectMultiple(),
@@ -53,7 +53,3 @@ class IngredienteInventarioForm(forms.ModelForm):
         fields = ['ingrediente', 'cantidad', 'precio']
 
     ingrediente = CharField(disabled=True)
-
-    def clean_precio(self):
-        if precio < 0:
-            raise ValidationError('El precio debe ser mayor que 0!')
