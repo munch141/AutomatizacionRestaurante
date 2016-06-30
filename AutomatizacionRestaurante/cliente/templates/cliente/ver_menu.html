@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ user.username }}
+{% endblock %}
+
+{% block contenido %}
+
+	{% if messages %}
+        <div class="alert alert-success">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h1>Bienvenido {{user.first_name}}.</h1>
+
+    <div class="col-md-6">
+        {% if menu_actual %}
+            <h1>Menu.</h1>
+            <h3>Platos:</h3>
+            <ul>
+                {% for plato in menu_actual.incluye.all %}
+                    <a id="{{plato.nombre}}" style='color: black' href="{% url 'detalles_plato' plato.nombre %}">
+                    {{plato.nombre}}
+                    </a>
+                    <ul>
+                        <li>{{plato.descripcion}}</li>
+                        <li>{{plato.precio}}</li>
+                        <li>{{plato.contiene}}</li>
+                    </ul>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+
+{% endblock %}

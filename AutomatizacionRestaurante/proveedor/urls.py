@@ -10,7 +10,7 @@ urlpatterns = [
         views.editar_perfil,
         name='editar_perfil_proveedor'),
 
-    url(r'^crear_inventario/ingredientes$',
+    url(r'^crear_inventario/ingredientes/$',
         views.crear_inventario_1,
         name='crear_inventario_1'),
 

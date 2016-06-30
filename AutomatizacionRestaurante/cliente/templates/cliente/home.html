@@ -15,6 +15,7 @@
     {% endif %}
 
     <h1>Bienvenido {{user.first_name}}.</h1>
+
     {% if user.billetera %}
         <div class="col-md-3">
             <h2>Billetera</h2>
@@ -26,9 +27,34 @@
                 <li role="presentation">
                     <a href="{% url 'recargar_saldo' %}" role="button">Recargar</a>
                 </li>
+                <h2></h2>
+                <li role="presentation">
+
+                    <a class="btn btn-lg btn-info" id="crear_inventario_button" href="{% url 'ver_menu' %}" role="button">Ver Menu</a>
+                </li>
             </ul>
         </div>
+        
+
     {% else %}
         <a class="btn btn-lg btn-info" id="crear_billetera_button" href="{% url 'crear_billetera' %}" role="button">Crear Billetera</a>
+
+        <a class="btn btn-lg btn-success" id="crear_inventario_button" href="{% url 'ver_menu' %}" role="button">Ver Menu</a>
     {% endif %}
+
+   
+
+    <div class="col-md-6">
+        {% if menu_actual %}
+            <h2>Menú actual: <span style="color:#69cf2f">{{menu_actual.nombre}}</span></h2>
+            <h3>Platos:</h3>
+            <ul>
+                {% for plato in menu_actual.incluye.all %}
+                    <li>{{plato.nombre}}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+
 {% endblock %}

@@ -26,6 +26,7 @@ class Historial(models.Model):
 
     def __str__(self):
         try:
+            self.debitos
             return str(self.debitos)+'_debitos'
         except:
             return str(self.creditos)+'_creditos'
