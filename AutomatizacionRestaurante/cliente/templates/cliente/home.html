@@ -31,6 +31,7 @@
                     {% if menu %}
                         <a class="btn btn-lg btn-info" id="elegir_platos_button" href="{% url 'elegir_platos' %}" role="button">Ver Menu</a>
                     {% else %}
+                        <h1> </h1>
                         <p>No hay un menú actualmente</p>
                     {% endif %}
                 </li>
@@ -41,6 +42,7 @@
         {% if menu %}
             <a class="btn btn-lg btn-success" id="ver_menu_button" href="{% url 'ver_menu' %}" role="button">Ver Menu</a>
         {% else %}
+            <h1> </h1>
             <p>No hay un menú actualmente</p>
         {% endif %}
 
