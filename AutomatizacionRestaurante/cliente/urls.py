@@ -28,4 +28,7 @@ urlpatterns = [
 
     url(r'^billetera/([0-9]+.[0-9]+)$', views.billetera, name='billetera'),
 
+    url(r'^billetera/ver_transacciones$',
+        views.ver_transacciones,
+        name='ver_transacciones'),
 ]

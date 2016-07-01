@@ -196,3 +196,11 @@ def billetera(request, monto):
     return render(request, 'cliente/billetera.html', {'form': form, 'monto':monto})
 
 
+@login_required(login_url=reverse_lazy('login'))
+def ver_transacciones(request):
+    billetera = request.user.billetera
+    print(billetera.creditos.transaccion_set.all())
+    return render(
+        request,
+        'cliente/ver_transacciones.html',
+        {'user': request.user, 'billetera': billetera})

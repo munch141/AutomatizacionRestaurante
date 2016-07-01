@@ -20,7 +20,7 @@ class Historial(models.Model):
     total = models.FloatField()
         
     def agregarTransaccion(self, t):
-        self.trans.add(t)
+        self.transaccion_set.add(t)
         self.total += t.monto
         self.save()
 
@@ -87,4 +87,7 @@ class Transaccion(models.Model):
     monto = models.FloatField()
     fecha = models.DateTimeField()
     historial = models.ForeignKey(
-        'Historial', on_delete=models.CASCADE, related_name='trans')
+        'Historial', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.monto)+'_'+str(self.fecha)
