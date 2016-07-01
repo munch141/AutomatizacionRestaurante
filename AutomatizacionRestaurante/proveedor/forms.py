@@ -19,6 +19,7 @@ class EditarPerfilForm(ModelForm):
 
     email = EmailField(label='Correo electrónico')
 
+
 class AgregarIngredienteForm(ModelForm):
     class Meta:
         model = Ingrediente
@@ -26,11 +27,12 @@ class AgregarIngredienteForm(ModelForm):
 
     nombre = CharField(label='Ingrediente')
 
+
 class ElegirIngredientesForm(forms.Form):
     ingredientes = forms.ModelMultipleChoiceField(
         queryset=Ingrediente.objects.all(),
         widget=forms.CheckboxSelectMultiple(),
-        required=False,
+        required=True,
         label='Elija los ingredientes del inventario:')
 
 
@@ -43,13 +45,13 @@ class IngredienteInventarioFormSetHelper(FormHelper):
         self.layout = Layout(
             Div(
                 Div('ingrediente',css_class='col-md-3',),
-                Div('cantidad',css_class='col-md-2',),
                 Div('precio',css_class='col-md-2',),
                 css_class='row'))
 
-class IngredienteInventarioForm(forms.ModelForm):
+
+class DetallesIngredienteInventarioForm(forms.ModelForm):
     class Meta:
         model = Ingrediente_inventario
-        fields = ['ingrediente', 'cantidad', 'precio']
+        fields = ['ingrediente', 'precio']
 
-    ingrediente = CharField(disabled=True)
+    ingrediente = CharField(disabled=True, required=False)

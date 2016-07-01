@@ -18,11 +18,11 @@ urlpatterns = [
         views.elegir_ingredientes_inventario,
         name='elegir_ingredientes_inventario'),
 
+    url(r'^editar_inventario/elegir_ingredientes/agregar_nuevo$',
+        views.agregar_ingrediente,
+        name='agregar_ingrediente_p'),
+
     url(r'^editar_inventario/elegir_ingredientes/detalles$',
         views.detalles_ingredientes_inventario,
         name='detalles_ingredientes_inventario'),
-
-	url(r'^agregar_ingrediente/$',
-        views.agregar_ingrediente,
-        name='agregar_ingrediente_proveedor'),	
 ]

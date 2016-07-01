@@ -21,7 +21,6 @@ class Ingrediente(models.Model):
 class Ingrediente_inventario(models.Model):
     inventario = models.ForeignKey(Inventario, on_delete=models.CASCADE)
     ingrediente = models.ForeignKey(Ingrediente, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=10, default='')
     cantidad = models.PositiveIntegerField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
 

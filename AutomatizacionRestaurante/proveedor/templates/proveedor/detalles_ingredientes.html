@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Editar perfil de {{ user.username }}
+{% endblock %}
+
+{% block head %}
+    <link href="{% static 'home/css/login.css' %}" rel="stylesheet" type="text/css">
+{% endblock head %}
+
+{% block contenido %}
+    <h1>Ingrese el precio del ingrediente:</h1>
+
+    <div class="row">
+        <div class="col-md-7">
+            <form action="{% url 'detalles_ingredientes_inventario' %}" method="post">
+                {% csrf_token %}
+                {% crispy formset helper %}
+                <input type="submit" class="btn btn-success" value="Guardar ingredientes">
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

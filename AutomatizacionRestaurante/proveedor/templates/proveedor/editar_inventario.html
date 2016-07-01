@@ -32,10 +32,18 @@
 
         <h2> </h2>
 
-        <a class="btn-link" href="{% url 'agregar_ingrediente_proveedor' %}" role="button">Agregar ingrediente</a>
     {% else %}
         <p>Su inventario está vacío.</p>
-        <a class="btn btn-info" href="{% url 'agregar_ingrediente_proveedor' %}" role="button">Agregar ingrediente</a>
     {% endif %}
     
+    <div class="row">
+        <a class="btn btn-success" href="{% url 'elegir_ingredientes_inventario' %}" role="button">Agregar ingrediente al inventario</a>
+    </div>
+
+    <h1> </h1>
+
+    <div class="row">
+        <a class="btn btn-danger" href="#" role="button">Eliminar ingrediente del inventario</a>
+    </div>
+
 {% endblock %}

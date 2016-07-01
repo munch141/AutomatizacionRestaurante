@@ -53,6 +53,8 @@ def crear_menu(request):
 
 def crear_plato(request):
     user = request.user
+    inventario = user.inventario
+
     if request.method == 'POST':
         form = CrearPlatoForm(request.POST)
 
@@ -63,23 +65,30 @@ def crear_plato(request):
             ingredientes = form.cleaned_data['contiene']
 
             plato = Plato.objects.create(
-                nombre=nombre, descripcion=descripcion, precio=precio, disponible=False)
+                nombre=nombre,
+                descripcion=descripcion,
+                precio=precio,
+                disponible=False)
                 
-            for i in ingredientes:
+            for ingrediente in ingredientes:
                 try:
-                    ingrediente = user.inventario.ingrediente_inventario_set.get(nombre=i.nombre)
+                    i = inventario.ingrediente_inventario_set.get(
+                        ingrediente=ingrediente)
                 except:
                     ingrediente = Ingrediente_inventario.objects.create(
-                        inventario=user.inventario, ingrediente=i, nombre=i.nombre,
-                        cantidad=0, precio=0)
+                        inventario=inventario,
+                        ingrediente=ingrediente,
+                        cantidad=0,
+                        precio=0)
 
-                plato.contiene.add(ingrediente)
-            plato.esta_disponible(request.user.inventario)
+                plato.contiene.add(i)
+            plato.esta_disponible(inventario)
                 
             messages.success(request, '✓ Se creó un nuevo plato "%s"!' % nombre)
             return redirect(reverse('home_administrador'))
     else:
         form = CrearPlatoForm()
+
     return render(request, 'administrador/crear_plato.html', {'form': form})
 
 

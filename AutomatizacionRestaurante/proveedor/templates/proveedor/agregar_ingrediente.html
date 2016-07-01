@@ -15,7 +15,7 @@
 
 	<div class="row">
         <div class="col-md-4">
-            <form action="." role="form" method="post">
+            <form action="{% url 'agregar_ingrediente_p' %}" role="form" method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
                 <input type="submit" class="btn btn-success" value="Guardar cambios">
