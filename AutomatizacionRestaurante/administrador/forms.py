@@ -101,3 +101,13 @@ class DetallesIngredientePlatoForm(forms.ModelForm):
             raise forms.ValidationError(
                 'La cantidad del ingrediente debe ser mayor a 0.')
         return requiere
+
+
+class ElegirPlatosForm(forms.Form):
+    def __init__(self, menu, *args, **kwargs):
+        super(ElegirPlatosForm, self).__init__(*args, **kwargs)
+        ingredientes = forms.ModelMultipleChoiceField(
+            queryset=Ingrediente.objects.all(),
+            widget=forms.CheckboxSelectMultiple(),
+            required=True,
+            label='Elija los ingredientes del inventario:')
