@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Adiministrador Restaurante - Ver Inventario
+{% endblock %}
+
+{% block contenido %}
+    {% include 'administrador/nav_admin.html' %}
+
+    <div class="col-md-9">
+        <h1>Ingredientes en el inventario:</h1>
+        <table id="tabla_clientes" class='table table-hover'>
+            <tr>
+                <th>Nombre del Ingrediente </th>
+                <th>Cantidad disponible </th>
+            </tr>
+            {% for ingrediente in ingredientes %}
+                <tr>
+                    <td>
+                        
+                        {{ ingrediente.nombre }}
+
+                        
+                    </td>
+                    <td>
+                        {{ ingrediente.cantidad }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>    
+    </div>
+{% endblock %}

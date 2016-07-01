@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Datos de {{ plato.nombre }}:
+{% endblock title %}
+
+{% block contenido %}
+    {% include 'administrador/nav_admin.html' %}
+
+
+    <div class="col-md-9">
+    {% if plato %}
+        <h1>{{ plato.nombre }} </h1>
+
+        <p id="nombre"><b>Nombre del Plato:</b> {{plato.nombre}}</p>
+        <p id="descripcion"><b>Descripción:</b> {{plato.descripcion}}</p>
+        <p id="precio"><b>Precio:</b> {{plato.precio}}</p>
+        <p id="ingredientes"><b>Ingredientes:</b> {{plato.contiene}}</p>
+        {% if plato.disponible %}
+            <p id="disponible"><b>Disponible:</b> Si</p>
+        {% else %}
+            <p id="disponible"><b>Disponible:</b> No</p>
+        {% endif %}
+    {% endif %}
+        <a id="boton_regresar" class="btn btn-default" href="{% url 'ver_platos' %}" role="button">Regresar a la lista de platos</a>
+    </div>
+{% endblock %}

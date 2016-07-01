@@ -25,4 +25,20 @@ urlpatterns = [
     url(r'^editar_menu/(?P<nombre>.+)$',
         views.editar_menu,
         name='editar_menu'),
+
+    url(r'^ver_proveedores/$', views.ver_proveedores, name='ver_proveedores'),
+
+    url(r'^ver_proveedores/([a-zA-Z0-9_@+.-]+)$',
+        views.detalles_proveedor,
+        name='detalles_proveedor'),
+
+    url(r'^ver_platos/$', views.ver_platos, name='ver_platos'),
+
+    url(r'^ver_platos/(?P<nombre>.+)$',
+        views.detalles_plato,
+        name='detalles_plato1'),
+
+    url(r'^ver_ingredientes/$', views.ver_ingredientes, name='ver_ingredientes'),
+
+    url(r'^ver_inventario/$', views.ver_inventario, name='ver_inventario'),
 ]
