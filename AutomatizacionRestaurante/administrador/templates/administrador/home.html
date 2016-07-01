@@ -55,11 +55,11 @@
                         </tr>
                     {% endfor %}
                 </table>
+                <a class="btn btn-info" href="{% url 'editar_menu' menu_actual.nombre %}" >Editar menú actual</a>
             {% else %}
                 <h2>Menú actual: <span style="color:#c20a0a">No hay menú actual</span></h2>
             {% endif %}
         </div>
-        <a id="boton_regresar" class="btn btn-info" href="{% url 'editar_menu' menu_actual.nombre %}" >Editar menú</a>
     </div>
 
 {% endblock %}

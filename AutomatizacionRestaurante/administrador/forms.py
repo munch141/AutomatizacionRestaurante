@@ -104,10 +104,20 @@ class DetallesIngredientePlatoForm(forms.ModelForm):
 
 
 class ElegirPlatosForm(forms.Form):
-    def __init__(self, menu, *args, **kwargs):
-        super(ElegirPlatosForm, self).__init__(*args, **kwargs)
-        ingredientes = forms.ModelMultipleChoiceField(
-            queryset=Ingrediente.objects.all(),
+    platos = forms.ModelMultipleChoiceField(
+            queryset=Plato.objects.all(),
             widget=forms.CheckboxSelectMultiple(),
-            required=True,
-            label='Elija los ingredientes del inventario:')
+            required=False,
+            label='')
+
+
+    def __init__(self, menu, agregar, *args, **kwargs):
+        super(ElegirPlatosForm, self).__init__(*args, **kwargs)
+        platos_del_menu = [m.nombre for m in menu.incluye.all()]
+
+        if agregar:
+            self.fields['platos'].queryset = Plato.objects.exclude(
+                nombre__in=platos_del_menu)
+        else:
+            self.fields['platos'].queryset = Plato.objects.filter(
+                nombre__in=platos_del_menu)

@@ -38,8 +38,7 @@
             </tbody>
         </table>
     
-        <a id="boton_regresar" class="btn btn-info" href="{% url 'editar_menu' menu.nombre %}" >Editar menú</a>
+        <a class="btn btn-info" href="{% url 'editar_menu' menu.nombre %}" >Editar menú</a>
     {% endif %}
-        <a id="boton_regresar" class="btn btn-default" href="{% url 'ver_menus' %}" role="button">Regresar a la lista de menús</a>
     </div>
 {% endblock %}

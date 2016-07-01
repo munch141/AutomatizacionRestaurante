@@ -21,15 +21,15 @@
                     {% csrf_token %}
                     {{ form|crispy }}
                     <input type="submit" class="btn btn-info" value="Guardar cambios">
-                    <a href="{% url 'detalles_menu' menu.nombre %}" class="btn btn-default" role="button">Cancelar</a>
+                    <a href="{% url 'home_administrador' %}" class="btn btn-default" role="button">Cancelar</a>
                 </form>
         
                 <div class="row">
-                    <a class="btn" style="color:green" href="#" role="button">+ Agregar plato al menú</a>
+                    <a class="btn" style="color:green" href="{% url 'agregar_platos' menu.nombre %}" role="button">+ Agregar platos al menú</a>
                 </div>
 
                 <div class="row">
-                    <a class="btn" style="color:red" href="#" role="button">- Eliminar plato del menú</a>
+                    <a class="btn" style="color:red" href="{% url 'eliminar_platos' menu.nombre %}" role="button">- Eliminar platos del menú</a>
                 </div>
             </div>
 
