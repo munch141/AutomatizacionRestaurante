@@ -18,7 +18,7 @@
                 {% csrf_token %}
                 {{ form|crispy }}
                 <input type="submit" class="btn btn-success" value="Consumir">
-                <a href="{% url 'home_cliente' %}" class="btn btn-default" role="button">Cancelar</a>
+                <a href="{% url 'pagar_pedido' %}" class="btn btn-default" role="button">Cancelar</a>
             </form>   
         </div>
     </div>

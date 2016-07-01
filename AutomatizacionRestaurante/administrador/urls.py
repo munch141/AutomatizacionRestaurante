@@ -45,4 +45,7 @@ urlpatterns = [
     url(r'^ver_ingredientes/$', views.ver_ingredientes, name='ver_ingredientes'),
 
     url(r'^ver_inventario/$', views.ver_inventario, name='ver_inventario'),
+
+    url(r'^consultar_saldo/$', views.consultar_saldo, name='consultar_saldo_admin'),
+
 ]

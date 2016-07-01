@@ -156,6 +156,7 @@ def pagar_pedido(request):
 
 @login_required(login_url=reverse_lazy('login'))
 def tarjeta_credito(request, monto):
+    menu = Menu.objects.get(actual=True)
     if request.method == 'POST':
         form = TarjetaCreditoForm(request.POST)
 
@@ -166,7 +167,7 @@ def tarjeta_credito(request, monto):
             billetera.recargar(monto_p)
             messages.success(request, '✓ Consumo exitoso: %s Bs.' % monto)
             return render(
-                request, 'cliente/home.html', {'billetera': billetera})
+                request, 'cliente/home.html', {'billetera': billetera, 'menu':menu})
             
     else:
         form = TarjetaCreditoForm()
@@ -175,6 +176,7 @@ def tarjeta_credito(request, monto):
 
 @login_required(login_url=reverse_lazy('login'))
 def billetera(request, monto):
+    menu = Menu.objects.get(actual=True)
     if request.method == 'POST':
         form = ClaveBilleteraForm(request.POST)
 
@@ -187,7 +189,7 @@ def billetera(request, monto):
             billetera_admin.recargar(monto_p)
             messages.success(request, '✓ Consumo exitoso: %s Bs.' % monto)
             return render(
-                request, 'cliente/home.html', {'billetera': billetera})
+                request, 'cliente/home.html', {'billetera': billetera, 'menu':menu})
             
     else:
         form = ClaveBilleteraForm()

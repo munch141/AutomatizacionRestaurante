@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Consultar saldo. Administrador
+{% endblock %}
+
+{% block contenido %}
+	{% include 'administrador/nav_admin.html' %}
+    <h2>Su saldo es: {{billetera.saldo}} Bs.</h2>
+    <a href="{% url 'home_administrador' %}" class="btn btn-success" role="button">Regresar a la página principal</a>
+{% endblock %}

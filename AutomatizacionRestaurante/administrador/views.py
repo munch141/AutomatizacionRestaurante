@@ -15,6 +15,8 @@ from .models import Ingrediente, Ingrediente_inventario, Menu, Plato, Tiene
 from .forms import CrearMenuForm, CrearPlatoForm, AgregarIngredienteForm,\
                    EditarMenuForm, DetallesIngredientePlatoForm, IngredientePlatoFormSetHelper
 
+from cliente.forms import ClaveBilleteraForm
+
 
 def home(request):
     try:
@@ -229,3 +231,25 @@ def ver_inventario(request):
     user = request.user
     ingredientes = user.inventario.ingrediente_inventario_set.all()
     return render(request, 'administrador/ver_inventario.html', {'ingredientes': ingredientes})
+
+
+def consultar_saldo(request):
+    if request.method == 'POST':
+        form = ClaveBilleteraForm(request.POST)
+        
+        if form.is_valid():
+            billetera = request.user.billetera
+            
+            if form.cleaned_data['pin'] == billetera.pin:
+                return render(
+                    request,
+                    'administrador/consultar_saldo.html',
+                    {'billetera': billetera})
+            else:
+                messages.error(
+                    request, 'La contraseña es incorrecta, intente de nuevo.')
+                form = ClaveBilleteraForm()
+    else:
+        form = ClaveBilleteraForm()
+    return render(request, 'administrador/consultar_saldo_clave.html', {'form': form})
+
