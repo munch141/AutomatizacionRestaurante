@@ -102,6 +102,7 @@ def crear_plato(request):
 
 def detalles_ingredientes_plato(request):
     user = request.user
+    inventario = user.inventario
     session = request.session
     contiene = []
 
@@ -127,6 +128,14 @@ def detalles_ingredientes_plato(request):
                 requiere = form['requiere']
                 Tiene.objects.create(
                     plato=plato, ingrediente=contiene[n], requiere=requiere)
+                
+                try:
+                    Ingrediente_inventario.objects.get(
+                        inventario=inventario, ingrediente=contiene[n])
+                except:
+                    Ingrediente_inventario.objects.create(
+                        inventario=inventario, ingrediente=contiene[n],
+                        cantidad=0, precio=0)
                 n += 1
 
             plato.save()

@@ -18,20 +18,26 @@
 
     <div class="col-md-6">
         {% if menu.actual %}
-            <h1>Menu.</h1>
-            <h3>Platos:</h3>
-            <ul>
-                {% for plato in menu.incluye.all %}
-                    <a id="{{plato.nombre}}" style='color: black' href="{% url 'detalles_plato' plato.nombre %}">
-                    {{plato.nombre}}
-                    </a>
-                    <ul>
-                        <li>{{plato.descripcion}}</li>
-                        <li>{{plato.precio}}</li>
-                        <li>{{plato.contiene}}</li>
-                    </ul>
-                {% endfor %}
-            </ul>
+            <h1>Menú.</h1>
+            <table id="tabla_platos" class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th width="15%">Plato</th>
+                        <th width="30%">Descripción</th>
+                        <th width="30%">Precio</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for plato in menu.incluye.all %}
+                        <tr>
+                            <td>{{plato.nombre}}</td>
+                            <td>{{plato.descripcion}}</td>
+                            <td>{{plato.precio}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             <h2></h2>
             <a class="btn btn-lg btn-success" id="ver_menu_button" href="{% url 'elegir_platos' %}" role="button">Elegir Platos</a>
         {% endif %}
