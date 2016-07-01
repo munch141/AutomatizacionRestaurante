@@ -96,9 +96,12 @@ class RecargaBilleteraForm(Form):
         return monto
 
 class ElegirPlatosForm(forms.Form):
-    menu = Menu.objects.get(actual=True)
+    try:
+        menu = Menu.objects.get(actual=True).incluye
+    except:
+        menu = Menu.objects.none()
     platos = forms.ModelMultipleChoiceField(
-        queryset= menu.incluye,
+        queryset=menu,
         widget=forms.CheckboxSelectMultiple(),
         required=True,
         label='Elija los platos que desea ordenar:')

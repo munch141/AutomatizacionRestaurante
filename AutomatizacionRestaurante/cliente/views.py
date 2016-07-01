@@ -17,7 +17,11 @@ from administrador.models import Menu, Plato
 
 @login_required(login_url=reverse_lazy('login'))
 def home(request):
-    return render(request, 'cliente/home.html', {'user': request.user})
+    try:
+        menu = Menu.objects.get(actual=True)
+    except:
+        menu = None
+    return render(request, 'cliente/home.html', {'user': request.user, 'menu': menu})
 
 
 @login_required(login_url=reverse_lazy('login'))

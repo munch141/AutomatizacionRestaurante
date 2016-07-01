@@ -28,14 +28,21 @@
                 </li>
                 <h2></h2>
                 <li role="presentation">
-
-                    <a class="btn btn-lg btn-info" id="elegir_platos_button" href="{% url 'elegir_platos' %}" role="button">Ver Menu</a>
+                    {% if menu %}
+                        <a class="btn btn-lg btn-info" id="elegir_platos_button" href="{% url 'elegir_platos' %}" role="button">Ver Menu</a>
+                    {% else %}
+                        <p>No hay un menú actualmente</p>
+                    {% endif %}
                 </li>
             </ul>
         </div>
     {% else %}
         <a class="btn btn-lg btn-info" id="crear_billetera_button" href="{% url 'crear_billetera' %}" role="button">Crear Billetera</a>
-        <a class="btn btn-lg btn-success" id="ver_menu_button" href="{% url 'ver_menu' %}" role="button">Ver Menu</a>
+        {% if menu %}
+            <a class="btn btn-lg btn-success" id="ver_menu_button" href="{% url 'ver_menu' %}" role="button">Ver Menu</a>
+        {% else %}
+            <p>No hay un menú actualmente</p>
+        {% endif %}
 
     {% endif %}
 
