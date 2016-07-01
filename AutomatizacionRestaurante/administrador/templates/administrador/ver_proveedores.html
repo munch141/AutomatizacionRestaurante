@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Adiministrador Restaurante - Ver Proveedores
+{% endblock %}
+
+{% block contenido %}
+    {% include 'administrador/nav_admin.html' %}
+
+    <div class="col-md-9">
+        <h1>Proveedores registrados:</h1>
+        <table id="tabla_clientes" class='table table-hover'>
+            <tr>
+                <th>Nombre de usuario</th>
+                <th>Fecha de registro</th>
+            </tr>
+            {% for proveedor in proveedores %}
+                <tr>
+                    <td>
+                        <a id="{{proveedor.usuario.username}}" class="btn-link" href="{% url 'detalles_proveedor' proveedor.usuario.username %}">
+                            {{ proveedor.usuario.username }}
+                        </a>
+                    </td>
+                    <td>{{ proveedor.usuario.date_joined|date:'d/m/Y' }}</td>
+                </tr>
+            {% endfor %}
+        </table>    
+    </div>
+{% endblock %}

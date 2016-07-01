@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.forms.models import modelformset_factory
 
 from cliente.models import Cliente
+from proveedor.models import Proveedor, Inventario
 from .models import Ingrediente, Ingrediente_inventario, Menu, Plato
 from .forms import CrearMenuForm, CrearPlatoForm, AgregarIngredienteForm, EditarMenuForm
 
@@ -17,11 +18,17 @@ def home(request):
         menu_actual = Menu.objects.get(actual=True)
     except:
         menu_actual = None
+
     return render(request, 'administrador/home.html', {'menu_actual': menu_actual})
 
 def ver_clientes(request):
     clientes = Cliente.objects.all()
     return render(request, 'administrador/ver_clientes.html', {'clientes': clientes})
+
+def ver_proveedores(request):
+    proveedores = Proveedor.objects.all()
+    return render(request, 'administrador/ver_proveedores.html', {'proveedores': proveedores})
+
 
 def detalles_cliente(request, username):
     try:
@@ -29,6 +36,14 @@ def detalles_cliente(request, username):
     except:
         cliente = None
     return render(request, 'administrador/detalles_cliente.html', {'cliente': cliente})
+
+def detalles_proveedor(request, username):
+    try:
+        proveedor = User.objects.get(username=username).proveedor
+    except:
+        proveedor = None
+    return render(request, 'administrador/detalles_proveedor.html', {'proveedor': proveedor})
+
 
 def crear_menu(request):
     if request.method == 'POST':
@@ -150,7 +165,27 @@ def editar_menu(request, nombre):
         request, 'administrador/editar_menu.html', {'menu': menu, 'form': form})
 
 
+def ver_platos(request):
+    platos = Plato.objects.all()
+    return render(request, 'administrador/ver_platos.html', {'platos': platos})
 
+
+def detalles_plato(request, nombre):
+    try:
+        plato = Plato.objects.get(nombre=nombre)
+    except:
+        plato = None
+    print(nombre)
+    return render(request, 'administrador/detalles_plato.html', {'plato': plato})
+
+def ver_ingredientes(request):
+    ingredientes = Ingrediente.objects.all()
+    return render(request, 'administrador/ver_ingredientes.html', {'ingredientes': ingredientes})
+
+def ver_inventario(request):
+    user = request.user
+    ingredientes = user.inventario.ingrediente_inventario_set.all()
+    return render(request, 'administrador/ver_inventario.html', {'ingredientes': ingredientes})
 
 
 

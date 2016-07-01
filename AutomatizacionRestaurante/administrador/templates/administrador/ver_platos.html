@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Adiministrador Restaurante - Ver Platos
+{% endblock %}
+
+{% block contenido %}
+    {% include 'administrador/nav_admin.html' %}
+
+    <div class="col-md-9">
+        <h1>Platos:</h1>
+        <table id="tabla_clientes" class='table table-hover'>
+            <tr>
+                <th>Nombre del Plato </th>
+                <th>Precio </th>
+            </tr>
+            {% for plato in platos %}
+                <tr>
+                    <td>
+                        <a id="{{plato.nombre}}" class="btn-link" href="{% url 'detalles_plato1' plato.nombre %}">
+                            {{ plato.nombre }}
+                        </a>
+                    </td>
+                    <td>{{ plato.precio }}</td>
+                </tr>
+            {% endfor %}
+        </table>    
+    </div>
+{% endblock %}

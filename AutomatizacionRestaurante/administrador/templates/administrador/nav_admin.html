@@ -27,6 +27,9 @@
                     <li role="presentation">
                         <a href="{% url 'crear_plato' %}" role="button">Crear plato</a>
                     </li>
+                    <li role="presentation">
+                        <a href="{% url 'ver_platos' %}" role="button">Ver platos</a>
+                    </li>
                 </ul>
             </li>
 
@@ -39,12 +42,22 @@
                     <li role="presentation">
                         <a href="{% url 'agregar_ingrediente' %}" role="button">Agregar ingrediente</a>
                     </li>
+                    <li role="presentation">
+                        <a href="{% url 'ver_ingredientes' %}" role="button">Ver ingredientes</a>
+                    </li>
                 </ul>
             </li>
             
 
             <li role="presentation">
                 <a id="ver_clientes_button" href="{% url 'ver_clientes' %}" role="button">Ver clientes registrados</a>
+            </li>
+            <li role="presentation">
+                <a id="ver_clientes_button" href="{% url 'ver_proveedores' %}" role="button">Ver proveedores registrados</a>
+            </li>
+
+            <li role="presentation">
+                <a id="ver_inventario_button" href="{% url 'ver_inventario' %}" role="button">Ver inventario Restaurante</a>
             </li>
         </ul>
     </div>

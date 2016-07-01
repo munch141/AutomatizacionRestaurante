@@ -12,6 +12,8 @@ from .models import Billetera
 from .forms import EditarPerfilForm, ClaveBilleteraForm, CrearBilleteraForm, \
 RecargaBilleteraForm
 
+from administrador.models import Menu, Plato
+
 
 @login_required(login_url=reverse_lazy('login'))
 def home(request):
@@ -104,3 +106,15 @@ def recargar_saldo(request):
     else:
         form = RecargaBilleteraForm()
     return render(request, 'cliente/recargar_saldo.html', {'form': form})
+
+
+@login_required(login_url=reverse_lazy('login'))
+def ver_plato(request):
+    menu = Menu.objects.get(actual=True)
+
+    return render(request, 'cliente/ver_menu.html', {'menu':menu})
+
+@login_required(login_url=reverse_lazy('login'))
+def detalle_plato(request, nombre):
+    plato = Plato.objects.get(nombre=nombre)
+    return render(request, 'cliente/detalles_plato.html', {'plato':plato})
