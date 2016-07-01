@@ -27,15 +27,37 @@
         {% endif %}
 
 
-        <div class="col-md-6">
+        <div class="col-md-12">
             {% if menu_actual %}
                 <h2>Menú actual: <span style="color:#69cf2f">{{menu_actual.nombre}}</span></h2>
                 <h3>Platos:</h3>
-                <ul>
+                <table id="tabla_clientes" class='table table-hover'>
+                    <tr>
+                        <th>Nombre del Plato </th>
+                        <th>Descripción </th>
+                        <th>Precio </th>
+                        <th>Disponible </th>
+                    </tr>
                     {% for plato in menu_actual.incluye.all %}
-                        <li>{{plato.nombre}}</li>
+                        <tr>
+                            <td>
+                                <a id="{{plato.nombre}}" class="btn-link" href="{% url 'detalles_plato1' plato.nombre %}">{{ plato.nombre }}</a>
+                            </td>
+                            <td>{{ plato.descripcion }}</td>
+                            <td>{{ plato.precio }}</td>
+                            <td>
+                                {% if plato.disponible %}
+                                    <span style="color:#64bb33">Si</span>
+                                {% else %}
+                                    <span style="color:#c20a0a">No</span>
+                                {% endif %}
+                            </td>
+                        </tr>
                     {% endfor %}
-                </ul>
+                </table>
+                <a class="btn btn-info" href="{% url 'editar_menu' menu_actual.nombre %}" >Editar menú actual</a>
+            {% else %}
+                <h2>Menú actual: <span style="color:#c20a0a">No hay menú actual</span></h2>
             {% endif %}
         </div>
     </div>

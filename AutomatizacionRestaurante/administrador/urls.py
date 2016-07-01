@@ -22,13 +22,21 @@ urlpatterns = [
 
     url(r'^ver_menus/$', views.ver_menus, name='ver_menus'),
 
-    url(r'^ver_menu/(?P<nombre>.+)$',
+    url(r'^ver_menu/(?P<nombre>[^/]+)$',
         views.detalles_menu,
         name='detalles_menu'),
 
-    url(r'^editar_menu/(?P<nombre>.+)$',
+    url(r'^editar_menu/(?P<nombre>[^/]+)$',
         views.editar_menu,
         name='editar_menu'),
+
+    url(r'^editar_menu/(?P<nombre>.+(?=/))/agregar_platos$',
+        views.agregar_platos,
+        name='agregar_platos'),
+
+    url(r'^editar_menu/(?P<nombre>.+(?=/))/eliminar_platos$',
+        views.eliminar_platos,
+        name='eliminar_platos'),
 
     url(r'^ver_proveedores/$', views.ver_proveedores, name='ver_proveedores'),
 

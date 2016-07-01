@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block title %}
+    Adiministrador Restaurante - Editar Menú
+{% endblock %}
+
+{% block head %}
+    <link href="{% static 'administrador/css/forms.css' %}" rel="stylesheet" type="text/css">
+{% endblock head %}
+
+{% block contenido %}
+    {% include 'administrador/nav_admin.html' %}
+
+    <h2>Elija los platos que desea agregar:</h2>
+
+    <div class="col-md-4">
+        <form id="menu_form" role="form" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" class="btn btn-info" value="Agregar">
+            <a class="btn btn-default" href="{% url 'editar_menu' menu.nombre %}">Cancelar</a>
+        </form>
+    </div>
+{% endblock %}

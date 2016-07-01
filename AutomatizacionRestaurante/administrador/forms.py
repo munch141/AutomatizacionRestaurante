@@ -62,13 +62,9 @@ class AgregarIngredienteForm(forms.ModelForm):
 
 
 class EditarMenuForm(forms.ModelForm):
-    incluye = forms.ModelMultipleChoiceField(
-        queryset=Plato.objects.all(),
-        widget=forms.CheckboxSelectMultiple(attrs={'id': 'incluye'}))
-
     class Meta:
         model = Menu
-        fields = ['nombre', 'incluye', 'actual']
+        fields = ['nombre', 'actual']
         widgets  = {
             'nombre': forms.TextInput(attrs={'id': 'nombre'}),
             'actual': forms.CheckboxInput(attrs={'id': 'actual'})
@@ -76,9 +72,6 @@ class EditarMenuForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EditarMenuForm, self).__init__(*args, **kwargs)
-
-        self.fields['incluye'].label = "Elija los platos del menú:"
-        self.fields['incluye'].required = False
         self.fields['actual'].label = "¿Desea que este sea el menú actual?"
 
 
@@ -108,3 +101,23 @@ class DetallesIngredientePlatoForm(forms.ModelForm):
             raise forms.ValidationError(
                 'La cantidad del ingrediente debe ser mayor a 0.')
         return requiere
+
+
+class ElegirPlatosForm(forms.Form):
+    platos = forms.ModelMultipleChoiceField(
+            queryset=Plato.objects.all(),
+            widget=forms.CheckboxSelectMultiple(),
+            required=False,
+            label='')
+
+
+    def __init__(self, menu, agregar, *args, **kwargs):
+        super(ElegirPlatosForm, self).__init__(*args, **kwargs)
+        platos_del_menu = [m.nombre for m in menu.incluye.all()]
+
+        if agregar:
+            self.fields['platos'].queryset = Plato.objects.exclude(
+                nombre__in=platos_del_menu)
+        else:
+            self.fields['platos'].queryset = Plato.objects.filter(
+                nombre__in=platos_del_menu)

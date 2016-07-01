@@ -13,20 +13,25 @@
 {% block contenido %}
     {% include 'administrador/nav_admin.html' %}
 
-    <h1>Ingrese la información del nuevo menú:</h1>
+    <h2>Editar campos:</h2>
 
     {% if menu %}
-    <div class="row">
-        <div class="col-md-4">
-            <form id="menu_form" role="form" method="post">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <input type="submit" class="btn btn-success" value="Guardar menú">
-                <a href="{% url 'detalles_menu' menu.nombre %}" class="btn btn-default" role="button">Cancelar</a>
-            </form>
-        </div>
-    </div>
+            <div class="col-md-4">
+                <form id="menu_form" role="form" method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="submit" class="btn btn-info" value="Guardar cambios">
+                    <a href="{% url 'home_administrador' %}" class="btn btn-default" role="button">Cancelar</a>
+                </form>
+        
+                <div class="row">
+                    <a class="btn" style="color:green" href="{% url 'agregar_platos' menu.nombre %}" role="button">+ Agregar platos al menú</a>
+                </div>
+
+                <div class="row">
+                    <a class="btn" style="color:red" href="{% url 'eliminar_platos' menu.nombre %}" role="button">- Eliminar platos del menú</a>
+                </div>
+            </div>
+
     {% endif %}
-
-
 {% endblock %}

@@ -13,7 +13,8 @@ from cliente.models import Cliente
 from proveedor.models import Proveedor, Inventario
 from .models import Ingrediente, Ingrediente_inventario, Menu, Plato, Tiene
 from .forms import CrearMenuForm, CrearPlatoForm, AgregarIngredienteForm,\
-                   EditarMenuForm, DetallesIngredientePlatoForm, IngredientePlatoFormSetHelper
+                   EditarMenuForm, DetallesIngredientePlatoForm,\
+                   IngredientePlatoFormSetHelper, ElegirPlatosForm
 
 from cliente.forms import ClaveBilleteraForm
 
@@ -76,6 +77,7 @@ def crear_menu(request):
         form = CrearMenuForm()
     return render(request, 'administrador/crear_menu.html', {'form': form})
 
+
 def crear_plato(request):
     user = request.user
     inventario = user.inventario
@@ -105,8 +107,6 @@ def detalles_ingredientes_plato(request):
 
     for i in session['plato_contiene']:
         contiene.append(Ingrediente.objects.get(nombre=i))
-
-    print(session['plato_precio'])
 
     plato = Plato(
         nombre=session['plato_nombre'],
@@ -177,7 +177,6 @@ def detalles_menu(request, nombre):
 
 def editar_menu(request, nombre):
     menu = Menu.objects.get(nombre=nombre)
-    
     if request.method == 'POST':
 
         form = EditarMenuForm(request.POST, instance=menu)
@@ -185,17 +184,11 @@ def editar_menu(request, nombre):
         if form.is_valid():
             n_nombre = form.cleaned_data['nombre']
             actual = form.cleaned_data['actual']
-            platos = form.cleaned_data['incluye']
-
 
             menu.nombre = n_nombre
             menu.actual = actual
             menu.save()
 
-            menu.incluye.clear()
-            for plato in platos:
-                p = Plato.objects.get(nombre=plato.nombre)
-                menu.incluye.add(p)
             messages.success(
                 request, '✓ Se actualizó el menú "%s"!' % menu.nombre)
             return redirect(reverse('home_administrador'))
@@ -204,6 +197,53 @@ def editar_menu(request, nombre):
         form = EditarMenuForm(instance=menu)
     return render(
         request, 'administrador/editar_menu.html', {'menu': menu, 'form': form})
+
+def agregar_platos(request, nombre):
+    menu = Menu.objects.get(nombre=nombre)
+    if request.method == 'POST':
+
+        form = ElegirPlatosForm(menu, True, request.POST)
+
+        if form.is_valid():
+            platos = form.cleaned_data['platos']
+            for p in platos:
+                menu.incluye.add(p)
+            menu.save()
+
+            messages.success(
+                request,
+                '✓ Se agregaron los platos "%s" al menú "%s"!'\
+                 % ([p.nombre for p in platos], menu.nombre))
+            return redirect(reverse('home_administrador'))
+            
+    else:
+        form = ElegirPlatosForm(menu, True)
+    return render(
+        request, 'administrador/agregar_platos.html', {'menu': menu, 'form': form})
+
+
+def eliminar_platos(request, nombre):
+    menu = Menu.objects.get(nombre=nombre)
+    if request.method == 'POST':
+
+        form = ElegirPlatosForm(menu, False, request.POST)
+
+        if form.is_valid():
+            platos = form.cleaned_data['platos']
+            for p in platos:
+                menu.incluye.remove(p)
+            menu.save()
+
+            messages.success(
+                request,
+                '✓ Se eliminaron los platos "%s" del menú "%s"!'\
+                 % ([p.nombre for p in platos], menu.nombre))
+            return redirect(reverse('home_administrador'))
+            
+    else:
+        form = ElegirPlatosForm(menu, False)
+    return render(
+        request, 'administrador/eliminar_platos.html', {'menu': menu, 'form': form})
 
 
 def ver_platos(request):
@@ -215,7 +255,6 @@ def detalles_plato(request, nombre):
     try:
         plato = Plato.objects.get(nombre=nombre)
         tiene = Tiene.objects.filter(plato=plato)
-        print(tiene)
     except:
         plato = None
     return render(
