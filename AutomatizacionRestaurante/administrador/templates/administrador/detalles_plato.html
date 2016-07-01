@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Datos de {{ plato.nombre }}:
+    Crear Plato
 {% endblock title %}
 
 {% block contenido %}
@@ -15,12 +15,26 @@
         <p id="nombre"><b>Nombre del Plato:</b> {{plato.nombre}}</p>
         <p id="descripcion"><b>Descripción:</b> {{plato.descripcion}}</p>
         <p id="precio"><b>Precio:</b> {{plato.precio}}</p>
-        <p id="ingredientes"><b>Ingredientes:</b> {{plato.contiene}}</p>
         {% if plato.disponible %}
             <p id="disponible"><b>Disponible:</b> Si</p>
         {% else %}
             <p id="disponible"><b>Disponible:</b> No</p>
         {% endif %}
+        
+        <h3>Ingredientes:</h3>
+        <table class='table table-hover'>
+            <tr>
+                <th>Ingrediente </th>
+                <th>Cantidad requerida </th>
+            </tr>
+            {% for i in tiene %}
+                <tr>
+                    <td>{{ i.ingrediente.nombre }}</td>
+                    <td>{{ i.requiere }}</td>
+                </tr>
+            {% endfor %}
+        </table> 
+
     {% endif %}
         <a id="boton_regresar" class="btn btn-default" href="{% url 'ver_platos' %}" role="button">Regresar a la lista de platos</a>
     </div>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.forms import EmailField, ModelForm, CharField,ValidationError
+from django.forms import EmailField, ModelForm, CharField, ValidationError
 from django.contrib.auth.models import User
 from django import forms
 from crispy_forms.helper import FormHelper

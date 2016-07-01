@@ -12,18 +12,19 @@
         <table id="tabla_clientes" class='table table-hover'>
             <tr>
                 <th>Nombre del Plato </th>
+                <th>Descripción </th>
                 <th>Precio </th>
             </tr>
             {% for plato in platos %}
                 <tr>
                     <td>
-                        <a id="{{plato.nombre}}" class="btn-link" href="{% url 'detalles_plato1' plato.nombre %}">
-                            {{ plato.nombre }}
-                        </a>
+                        <a id="{{plato.nombre}}" class="btn-link" href="{% url 'detalles_plato1' plato.nombre %}">{{ plato.nombre }}</a>
                     </td>
+                    <td>{{ plato.descripcion }}</td>
                     <td>{{ plato.precio }}</td>
                 </tr>
             {% endfor %}
-        </table>    
+        </table>
+        <p>Haga click el plato para ver los ingredientes.</p>    
     </div>
 {% endblock %}

@@ -32,14 +32,12 @@ class Plato(models.Model):
     nombre = models.CharField(max_length=30, primary_key=True)
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
-    contiene = models.ManyToManyField(Ingrediente_inventario)
+    contiene = models.ManyToManyField(Ingrediente, through='Tiene')
     disponible = models.BooleanField()
 
     def esta_disponible(self, inventario):
-        for ingrediente in self.contiene.all():
-            ingrediente_inventario = inventario.ingrediente_inventario_set.get(
-                ingrediente=ingrediente.ingrediente)
-            if ingrediente_inventario.cantidad < ingrediente.cantidad:
+        for tiene in self.tiene_set.all():
+            if tiene.ingrediente.cantidad < tiene.requiere:
                 self.disponible = False
                 self.save()
                 return False
@@ -51,6 +49,11 @@ class Plato(models.Model):
     def __str__(self):
         return str(self.nombre)
 
+
+class Tiene(models.Model):
+    plato = models.ForeignKey(Plato)
+    ingrediente = models.ForeignKey(Ingrediente)
+    requiere = models.PositiveIntegerField()
 
 
 class Menu(models.Model):

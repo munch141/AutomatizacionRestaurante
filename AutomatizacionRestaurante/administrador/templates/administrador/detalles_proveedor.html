@@ -11,14 +11,26 @@
     {% if proveedor %}
         <h1>Datos de {{ proveedor.usuario.username }}</h1>
 
-        <p id="nombre">Nombre: {{proveedor.usuario.first_name}}</p>
-        <p id="apellido">Apellido: {{proveedor.usuario.last_name}}</p>
-        <p id="cedula">Cédula: {{proveedor.ci}}</p>
-        <p id="email">Correo electrónico: {{proveedor.usuario.email}}</p>
-        <p id="telefono">Teléfono: {{proveedor.telefono}}</p>
-        <p id="sexo">Sexo: {{proveedor.sexo}}</p>
-        <p id="fecha_nacimiento">Fecha de nacimiento: {{proveedor.fecha_nacimiento|date:'d/m/Y'}}</p>
-        <p id="fecha_registro">Fecha de registro: {{proveedor.usuario.date_joined|date:'d/m/Y'}}</p>
+        <p id="nombre"><b>Nombre:</b> {{proveedor.usuario.first_name}}</p>
+        <p id="rif"><b>RIF:</b> {{proveedor.rif}}</p>
+        <p id="direccion"><b>Dirección:</b> {{proveedor.direccion}}</p>
+        <p id="email"><b>Correo electrónico:</b> {{proveedor.usuario.email}}</p>
+        <p id="telefono"><b>Teléfono:</b> {{proveedor.telefono}}</p>
+        <p id="fecha_registro"><b>Fecha de registro:</b> {{proveedor.usuario.date_joined|date:'d/m/Y'}}</p>
+
+        <h3>Inventario:</h3>
+        <table class='table table-hover'>
+            <tr>
+                <th>Ingrediente </th>
+                <th>Precio</th>
+            </tr>
+            {% for ingrediente in inventario %}
+                <tr>
+                    <td>{{ ingrediente.ingrediente.nombre }}</td>
+                    <td>{{ ingrediente.precio }}</td>
+                </tr>
+            {% endfor %}
+        </table> 
     {% endif %}
     <div class="divider"/>
     <a id="boton_regresar" class="btn btn-info" href="{% url 'ver_proveedores' %}" role="button">Regresar a la lista de proveedores</a>
