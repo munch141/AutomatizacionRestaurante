@@ -18,32 +18,29 @@
 
     <h1>Inventario de {{user.first_name}}:</h1>
 
-    {% if formset %}
-        <div class="row">
-            <div class="col-md-7">
-                <form action="{% url 'editar_inventario' %}" role="form" method="POST">
-                    {% csrf_token %}
-                    {% crispy formset helper %}
-                    <input type="submit" class="btn btn-success" value="Guardar cambios">
-                    <a href="{% url 'home_proveedor' %}" class="btn btn-default" role="button">Cancelar</a>
-                </form>
-            </div>
-        </div>
 
-        <h2> </h2>
+        <div class="row">
+        <div class="col-md-7">
+    {% if formset %}
+            <form action="{% url 'editar_inventario' %}" role="form" method="POST">
+                {% csrf_token %}
+                {% crispy formset helper %}
+                <input type="submit" class="btn btn-success" value="Guardar cambios">
+                <a href="{% url 'home_proveedor' %}" class="btn btn-default" role="button">Cancelar</a>
+            </form>
 
     {% else %}
-        <p>Su inventario está vacío.</p>
+            <p>Su inventario está vacío.</p>
     {% endif %}
-    
-    <div class="row">
-        <a class="btn btn-success" href="{% url 'elegir_ingredientes_inventario' %}" role="button">Agregar ingrediente al inventario</a>
+        </div>
     </div>
 
-    <h1> </h1>
+        <div class="row">
+            <a class="btn btn-link" href="{% url 'elegir_ingredientes_inventario' %}" role="button">+ Agregar ingrediente al inventario</a>
+        </div>
 
-    <div class="row">
-        <a class="btn btn-danger" href="#" role="button">Eliminar ingrediente del inventario</a>
-    </div>
+        <div class="row">
+            <a class="btn btn-link" href="#" role="button">- Eliminar ingrediente del inventario</a>
+        </div>
 
 {% endblock %}

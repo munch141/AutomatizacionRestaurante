@@ -14,6 +14,22 @@
         </div>
     {% endif %}
 
-    <h1>Bienvenido {{user.first_name}}.</h1>
-    <a class="btn btn-lg btn-success" id="editar_inventario_button" href="{% url 'editar_inventario' %}" role="button">Editar Inventario</a>
+    <h1>Inventario de {{user.first_name}}:</h1> 
+
+    <div class="col-md-5">
+        <table id="tabla_clientes" class='table'>
+            <tr>
+                <th>Ingrediente</th>
+                <th>Precio</th>
+            </tr>
+            {% for i in inventario %}
+                <tr>
+                    <td>{{ i.ingrediente.nombre }}</td>
+                    <td>{{ i.precio }} </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    <a class="btn btn-success" id="editar_inventario_button" href="{% url 'editar_inventario' %}" role="button">Editar</a>
+</div>
 {% endblock %}

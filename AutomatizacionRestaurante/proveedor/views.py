@@ -17,7 +17,10 @@ from .forms import EditarPerfilForm, AgregarIngredienteForm, \
 
 @login_required(login_url=reverse_lazy('login'))
 def home(request):
-    return render(request, 'proveedor/home.html', {'user': request.user})
+    return render(
+        request, 'proveedor/home.html',
+        {'user': request.user,
+         'inventario': request.user.inventario.ingrediente_inventario_set.all()})
 
 
 @login_required(login_url=reverse_lazy('login'))
