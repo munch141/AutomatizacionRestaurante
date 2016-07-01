@@ -55,3 +55,15 @@ class DetallesIngredienteInventarioForm(forms.ModelForm):
         fields = ['ingrediente', 'precio']
 
     ingrediente = CharField(disabled=True, required=False)
+
+
+class EliminarIngredientesForm(forms.Form):
+    ingredientes = forms.ModelMultipleChoiceField(
+        queryset= Ingrediente.objects.none(),
+        widget=forms.CheckboxSelectMultiple(),
+        required=True,
+        label='Elija los ingredientes que desea eliminar:')
+
+    def __init__(self, queryset, *args, **kwargs):
+        super(EliminarIngredientesForm, self).__init__(*args, **kwargs)
+        self.fields['ingredientes'].queryset = queryset

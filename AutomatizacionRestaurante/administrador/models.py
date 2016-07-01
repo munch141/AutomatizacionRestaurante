@@ -25,7 +25,7 @@ class Ingrediente_inventario(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return str(self.ingrediente)+'_'+str(self.inventario)
+        return str(self.ingrediente)
 
 
 class Plato(models.Model):

@@ -12,7 +12,7 @@ from administrador.models import Ingrediente,Ingrediente_inventario
 from .models import Proveedor, Inventario
 from .forms import EditarPerfilForm, AgregarIngredienteForm, \
                    ElegirIngredientesForm, DetallesIngredienteInventarioForm, \
-                   IngredienteInventarioFormSetHelper
+                   IngredienteInventarioFormSetHelper, EliminarIngredientesForm
 
 
 @login_required(login_url=reverse_lazy('login'))
@@ -190,4 +190,29 @@ def editar_inventario(request):
         request,
         'proveedor/editar_inventario.html',
         {'formset': formset, 'helper': helper, 'user': user})
-        
+
+
+@login_required(login_url=reverse_lazy('login'))
+def eliminar_ingredientes_inventario(request):
+    inventario = request.user.inventario
+    queryset = inventario.ingrediente_inventario_set.all()
+
+    if request.method == 'POST':
+        form = EliminarIngredientesForm(queryset, request.POST)
+
+        if form.is_valid():
+            eliminados = []
+            ingredientes = form.cleaned_data['ingredientes']
+            for i in ingredientes:
+                eliminados.append(i.ingrediente.nombre)
+                i.delete()
+
+            messages.success(request, '✓ Se eliminaron los ingredientes "%s"' % eliminados)
+            return redirect(reverse('editar_inventario'))
+    else:
+        form = EliminarIngredientesForm(queryset)
+
+    return render(
+        request,
+        'proveedor/eliminar_ingredientes.html',
+        {'form':form, 'user': request.user})

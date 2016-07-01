@@ -14,15 +14,19 @@ urlpatterns = [
         views.editar_inventario,
         name='editar_inventario'),
 
-    url(r'^editar_inventario/elegir_ingredientes$',
+    url(r'^editar_inventario/agregar_ingredientes$',
         views.elegir_ingredientes_inventario,
         name='elegir_ingredientes_inventario'),
 
-    url(r'^editar_inventario/elegir_ingredientes/agregar_nuevo$',
+    url(r'^editar_inventario/agregar_ingredientes/agregar_nuevo$',
         views.agregar_ingrediente,
         name='agregar_ingrediente_p'),
 
-    url(r'^editar_inventario/elegir_ingredientes/detalles$',
+    url(r'^editar_inventario/agregar_ingredientes/detalles$',
         views.detalles_ingredientes_inventario,
         name='detalles_ingredientes_inventario'),
+
+    url(r'^editar_inventario/eliminar_ingredientes$',
+        views.eliminar_ingredientes_inventario,
+        name='eliminar_ingredientes_inventario'),
 ]
