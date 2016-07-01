@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Editar Inventario
+{% endblock %}
+
+{% block head %}
+    <link href="{% static 'administrador/css/forms.css' %}" rel="stylesheet" type="text/css">
+{% endblock head %}
+
+{% block contenido %}
+    {% if messages %}
+        <div class="alert alert-success">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-4">
+            <form action="{% url 'elegir_platos' %}" method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" class="btn btn-success" value="Continuar">
+                <a class="btn btn-default" href="{% url 'home_cliente' %}" role="button">Regresar</a>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
