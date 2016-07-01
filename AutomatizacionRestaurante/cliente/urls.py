@@ -19,4 +19,13 @@ urlpatterns = [
     url(r'^ver_menu/$', views.ver_plato, name='ver_menu'),
 
     url(r'^detalles_plato/(?P<nombre>.+)$', views.detalle_plato, name='detalles_plato'),
+
+    url(r'^elegir_platos/$', views.elegir_platos, name='elegir_platos'),
+
+    url(r'^pagar_pedido/$', views.pagar_pedido, name='pagar_pedido'),
+
+    url(r'^tarjeta_credito/([0-9]+.[0-9]+)$', views.tarjeta_credito, name='tarjeta_credito'),
+
+    url(r'^billetera/([0-9]+.[0-9]+)$', views.billetera, name='billetera'),
+
 ]

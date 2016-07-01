@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from .models import Cliente
 from .models import Billetera
 from .forms import EditarPerfilForm, ClaveBilleteraForm, CrearBilleteraForm, \
-RecargaBilleteraForm
+RecargaBilleteraForm, ElegirPlatosForm, TarjetaCreditoForm
 
 from administrador.models import Menu, Plato
 
@@ -118,3 +118,75 @@ def ver_plato(request):
 def detalle_plato(request, nombre):
     plato = Plato.objects.get(nombre=nombre)
     return render(request, 'cliente/detalles_plato.html', {'plato':plato})
+
+@login_required(login_url=reverse_lazy('login'))
+def elegir_platos(request):
+    menu = Menu.objects.get(actual=True)
+    queryset = menu.incluye.all()
+
+    if request.method == 'POST':
+        form = ElegirPlatosForm(queryset, request.POST)
+        if form.is_valid():
+            elegidos = []
+            monto = 0
+            platos = form.cleaned_data['platos']
+            for i in platos:
+                elegidos.append(i.nombre)
+                monto = monto + i.precio 
+            
+
+            #messages.success(request, '✓ Se agregaron los platos "%s"' % elegidos)
+            return render(request, 'cliente/pagar_pedido.html', {'monto': monto})
+    else:
+        form = ElegirPlatosForm(queryset)
+
+    return render(
+        request,
+        'cliente/elegir_platos.html',
+        {'form':form, 'user': request.user})
+
+@login_required(login_url=reverse_lazy('login'))
+def pagar_pedido(request):
+    #platos = Plato.objects.get(nombre=nombre)
+    return render(request, 'cliente/pagar_pedido.html')
+
+@login_required(login_url=reverse_lazy('login'))
+def tarjeta_credito(request, monto):
+    if request.method == 'POST':
+        form = TarjetaCreditoForm(request.POST)
+
+        if form.is_valid():
+            usuario = User.objects.get(username='admin')
+            monto_p = float(monto)
+            billetera = Billetera.objects.get(usuario = usuario)
+            billetera.recargar(monto_p)
+            messages.success(request, '✓ Consumo exitoso: %s Bs.' % monto)
+            return render(
+                request, 'cliente/home.html', {'billetera': billetera})
+            
+    else:
+        form = TarjetaCreditoForm()
+    return render(request, 'cliente/tarjeta_credito.html', {'form': form, 'monto':monto})
+
+
+@login_required(login_url=reverse_lazy('login'))
+def billetera(request, monto):
+    if request.method == 'POST':
+        form = ClaveBilleteraForm(request.POST)
+
+        if form.is_valid():
+            usuario = User.objects.get(username='admin')
+            monto_p = float(monto)
+            billetera = request.user.billetera
+            billetera.consumir(monto_p)
+            billetera_admin = Billetera.objects.get(usuario = usuario)
+            billetera_admin.recargar(monto_p)
+            messages.success(request, '✓ Consumo exitoso: %s Bs.' % monto)
+            return render(
+                request, 'cliente/home.html', {'billetera': billetera})
+            
+    else:
+        form = ClaveBilleteraForm()
+    return render(request, 'cliente/billetera.html', {'form': form, 'monto':monto})
+
+

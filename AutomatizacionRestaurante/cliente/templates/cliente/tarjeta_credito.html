@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Pago Tarjeta de Crédito
+{% endblock %}
+
+{% block head %}
+    <link href="{% static 'cuentas/css/login.css' %}" rel="stylesheet" type="text/css">
+{% endblock head %}
+
+{% block contenido %}
+    <h2>Ingrese datos de su Tarjeta de Crédito:</h2>
+    <h3> Monto a pagar: {{monto}} </h3>
+	<div class="row container">
+        <div class="col-md-3">
+            <form action="{% url 'tarjeta_credito' monto%}" role="form" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" class="btn btn-success" value="Consumir">
+                <a href="{% url 'home_cliente' %}" class="btn btn-default" role="button">Cancelar</a>
+            </form>   
+        </div>
+    </div>
+{% endblock %}
