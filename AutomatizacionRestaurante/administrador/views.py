@@ -183,17 +183,11 @@ def editar_menu(request, nombre):
         if form.is_valid():
             n_nombre = form.cleaned_data['nombre']
             actual = form.cleaned_data['actual']
-            platos = form.cleaned_data['incluye']
-
 
             menu.nombre = n_nombre
             menu.actual = actual
             menu.save()
 
-            menu.incluye.clear()
-            for plato in platos:
-                p = Plato.objects.get(nombre=plato.nombre)
-                menu.incluye.add(p)
             messages.success(
                 request, '✓ Se actualizó el menú "%s"!' % menu.nombre)
             return redirect(reverse('home_administrador'))
